@@ -21,13 +21,19 @@ Edit `/etc/nixos/configuration.nix`:
 ```nix
 { config, pkgs, ... }:
 
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
   nixpkgs.overlays = [
-    (import /path/to/nix-ham-packages)
+    (import ham-packages)
   ];
 
   imports = [
-    /path/to/nix-ham-packages/linbpq/module.nix
+    "${ham-packages}/linbpq/module.nix"
   ];
 
   services.linbpq = {
@@ -89,13 +95,19 @@ The NixOS module handles user creation, directory setup, systemd service, and fi
 ```nix
 { config, pkgs, ... }:
 
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
   nixpkgs.overlays = [
-    (import /path/to/nix-ham-packages)
+    (import ham-packages)
   ];
 
   imports = [
-    /path/to/nix-ham-packages/linbpq/module.nix
+    "${ham-packages}/linbpq/module.nix"
   ];
 
   services.linbpq = {
@@ -107,14 +119,16 @@ The NixOS module handles user creation, directory setup, systemd service, and fi
 
 ### Method 2: Manual Installation
 
-Build and install the package without the module:
+Build and install the package after cloning the repository:
 
 ```bash
+git clone https://github.com/ben-kuhn/nix-ham-packages
+
 # Build the package
-nix-build /path/to/nix-ham-packages -A linbpq
+nix-build nix-ham-packages -A linbpq
 
 # Or install to user profile
-nix-env -f /path/to/nix-ham-packages -iA linbpq
+nix-env -f nix-ham-packages -iA linbpq
 ```
 
 ---
@@ -444,13 +458,19 @@ Connect to your node's callsign via RF using a TNC or software modem.
 ```nix
 { config, pkgs, ... }:
 
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
   nixpkgs.overlays = [
-    (import /path/to/nix-ham-packages)
+    (import ham-packages)
   ];
 
   imports = [
-    /path/to/nix-ham-packages/linbpq/module.nix
+    "${ham-packages}/linbpq/module.nix"
   ];
 
   environment.systemPackages = with pkgs; [

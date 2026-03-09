@@ -12,29 +12,31 @@ QtSoundModem is a multi-platform sound modem for packet radio, based on UZ7HO's 
 
 **Note:** QtSoundModem only handles modulation/demodulation. You'll need a packet terminal like QtTermTCP or LinBPQ to interact with other packet stations.
 
-## Recommended: Using the Overlay
+## Installation
 
-Use the nix-ham-packages overlay for the cleanest installation:
+Add to your `/etc/nixos/configuration.nix`:
 
 ```nix
 { config, pkgs, ... }:
 
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
-  # Import the overlay (adjust path to your clone location)
   nixpkgs.overlays = [
-    (import /path/to/nix-ham-packages)
+    (import ham-packages)
   ];
 
-  # Add qtsoundmodem to your system packages
   environment.systemPackages = with pkgs; [
     qtsoundmodem
   ];
 }
 ```
 
-## Apply the Configuration
-
-After editing `/etc/nixos/configuration.nix`, run:
+Then rebuild:
 
 ```bash
 sudo nixos-rebuild switch
@@ -42,23 +44,18 @@ sudo nixos-rebuild switch
 
 ## Verifying Installation
 
-After rebuilding, you should be able to:
+After rebuilding:
 - Run `QtSoundModem` from the command line
 - Find "QtSoundModem" in your application menu under Network/HamRadio
 
 ## Using with QtTermTCP or LinBPQ
 
-For a complete packet radio setup, you'll likely want both QtSoundModem (for modem functionality) and a terminal application:
+For a complete packet radio setup:
 
 ```nix
-nixpkgs.overlays = [
-  (import /path/to/nix-ham-packages)
-];
-
 environment.systemPackages = with pkgs; [
   qtsoundmodem
   qttermtcp
-  # Or use linbpq for a full node setup
 ];
 ```
 

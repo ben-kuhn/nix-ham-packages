@@ -4,29 +4,31 @@
 
 QtTermTCP is a GUI terminal for connecting to BPQ packet nodes. It supports FBB mode, AGWPE, KISS, and VARA modems.
 
-## Recommended: Using the Overlay
+## Installation
 
-Use the nix-ham-packages overlay for the cleanest installation:
+Add to your `/etc/nixos/configuration.nix`:
 
 ```nix
 { config, pkgs, ... }:
 
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
-  # Import the overlay (adjust path to your clone location)
   nixpkgs.overlays = [
-    (import /path/to/nix-ham-packages)
+    (import ham-packages)
   ];
 
-  # Add qttermtcp to your system packages
   environment.systemPackages = with pkgs; [
     qttermtcp
   ];
 }
 ```
 
-## Apply the Configuration
-
-After editing `/etc/nixos/configuration.nix`, run:
+Then rebuild:
 
 ```bash
 sudo nixos-rebuild switch
@@ -34,7 +36,7 @@ sudo nixos-rebuild switch
 
 ## Verifying Installation
 
-After rebuilding, you should be able to:
+After rebuilding:
 - Run `QtTermTCP` from the command line
 - Find "QtTermTCP" in your application menu under Network/HamRadio
 
@@ -43,10 +45,6 @@ After rebuilding, you should be able to:
 For a complete packet radio setup:
 
 ```nix
-nixpkgs.overlays = [
-  (import /path/to/nix-ham-packages)
-];
-
 environment.systemPackages = with pkgs; [
   qtsoundmodem
   qttermtcp

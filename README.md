@@ -15,22 +15,22 @@ This repository contains NixOS packages for amateur radio software.
 
 ## Installation
 
-### 1. Clone the repository
-
-```bash
-git clone <repository-url> /etc/nixos/nix-ham-packages
-```
-
-### 2. Add to your NixOS configuration
+### 1. Add to your NixOS configuration
 
 Edit `/etc/nixos/configuration.nix`:
 
 ```nix
 { config, pkgs, ... }:
 
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
   nixpkgs.overlays = [
-    (import /etc/nixos/nix-ham-packages)
+    (import ham-packages)
   ];
 
   environment.systemPackages = with pkgs; [
@@ -44,7 +44,7 @@ Edit `/etc/nixos/configuration.nix`:
 }
 ```
 
-### 3. Rebuild
+### 2. Rebuild
 
 ```bash
 sudo nixos-rebuild switch
@@ -56,16 +56,16 @@ sudo nixos-rebuild switch
 
 For non-NixOS systems using the Nix package manager:
 
-### 1. Create user overlays directory
+### 1. Clone the repository
 
 ```bash
-mkdir -p ~/.config/nixpkgs/overlays
+git clone https://github.com/ben-kuhn/nix-ham-packages ~/.config/nixpkgs/overlays/nix-ham-packages
 ```
 
-### 2. Symlink the overlay
+### 2. Create overlay symlink
 
 ```bash
-ln -s /path/to/nix-ham-packages/default.nix ~/.config/nixpkgs/overlays/ham-radio.nix
+ln -s ~/.config/nixpkgs/overlays/nix-ham-packages/default.nix ~/.config/nixpkgs/overlays/ham-radio.nix
 ```
 
 ### 3. Install packages
@@ -87,13 +87,19 @@ LinBPQ includes a NixOS module for running as a systemd service:
 ```nix
 { config, pkgs, ... }:
 
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
   nixpkgs.overlays = [
-    (import /etc/nixos/nix-ham-packages)
+    (import ham-packages)
   ];
 
   imports = [
-    /etc/nixos/nix-ham-packages/linbpq/module.nix
+    "${ham-packages}/linbpq/module.nix"
   ];
 
   services.linbpq = {

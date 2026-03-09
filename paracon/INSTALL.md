@@ -13,29 +13,31 @@ Paracon is a packet radio terminal application that runs in a terminal window. I
 
 **Note:** Paracon is a terminal application, not a modem. You'll need a packet modem like QtSoundModem or Direwolf to handle the actual radio modulation/demodulation.
 
-## Recommended: Using the Overlay
+## Installation
 
-Use the nix-ham-packages overlay for the cleanest installation:
+Add to your `/etc/nixos/configuration.nix`:
 
 ```nix
 { config, pkgs, ... }:
 
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
-  # Import the overlay (adjust path to your clone location)
   nixpkgs.overlays = [
-    (import /path/to/nix-ham-packages)
+    (import ham-packages)
   ];
 
-  # Add paracon to your system packages
   environment.systemPackages = with pkgs; [
     paracon
   ];
 }
 ```
 
-## Apply the Configuration
-
-After editing `/etc/nixos/configuration.nix`, run:
+Then rebuild:
 
 ```bash
 sudo nixos-rebuild switch
@@ -43,8 +45,7 @@ sudo nixos-rebuild switch
 
 ## Verifying Installation
 
-After rebuilding, you should be able to:
-- Run `paracon` from the command line
+After rebuilding, run `paracon` from the command line.
 
 ## Complete Packet Radio Setup
 
@@ -52,13 +53,7 @@ For a full packet radio station, you'll likely want:
 - **QtSoundModem** or **Direwolf** - Sound modem for radio modulation/demodulation
 - **Paracon** or **QtTermTCP** - Terminal for packet communications
 
-You can install multiple packages using the overlay:
-
 ```nix
-nixpkgs.overlays = [
-  (import /path/to/nix-ham-packages)
-];
-
 environment.systemPackages = with pkgs; [
   paracon
   qtsoundmodem
@@ -73,10 +68,7 @@ This package automatically includes:
 - **pyham_ax25** - AX.25 packet handling library
 - **pyham_pe** - AGWPE protocol client library
 
-All dependencies are bundled and will be installed automatically.
-
 ## Documentation
 
 - Homepage: https://github.com/mfncooper/paracon
-- Author: Martin F N Cooper (mfncooper)
 - License: MIT License
