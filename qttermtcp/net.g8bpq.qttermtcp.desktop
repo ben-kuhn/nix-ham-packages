@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=QtTermTCP
+Exec=QtTermTCP
+Icon=net.g8bpq.qttermtcp
+Type=Application
+Categories=Network;HamRadio;
