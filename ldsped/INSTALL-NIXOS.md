@@ -38,8 +38,14 @@ Copy the example configuration:
 
 ```bash
 sudo mkdir -p /etc/ax25
-sudo cp $(which ldsped | xargs dirname)/../etc/ax25/ldsped.conf.example /etc/ax25/ldsped.conf
+sudo cp $(nix eval --raw nixpkgs#ldsped.outPath 2>/dev/null || echo /nix/store/*-ldsped-*/)/etc/ax25/ldsped.conf.example /etc/ax25/ldsped.conf
 sudo nano /etc/ax25/ldsped.conf
+```
+
+Or find it manually:
+
+```bash
+find /nix/store -name "ldsped.conf.example" 2>/dev/null | head -1
 ```
 
 ## Running
@@ -70,4 +76,3 @@ systemd.services.ldsped = {
 ## Documentation
 
 - [ldsped GitHub Repository](https://github.com/ampledata/ldsped)
-- [AX.25 for Linux](https://www.linux-ax25.org/)
