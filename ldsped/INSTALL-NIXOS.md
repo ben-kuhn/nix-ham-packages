@@ -38,14 +38,8 @@ Copy the example configuration:
 
 ```bash
 sudo mkdir -p /etc/ax25
-sudo cp $(nix eval --raw nixpkgs#ldsped.outPath 2>/dev/null || echo /nix/store/*-ldsped-*/)/etc/ax25/ldsped.conf.example /etc/ax25/ldsped.conf
+sudo cp "$(dirname "$(readlink -f "$(which ldsped)")")/../etc/ax25/ldsped.conf.example" /etc/ax25/ldsped.conf
 sudo nano /etc/ax25/ldsped.conf
-```
-
-Or find it manually:
-
-```bash
-find /nix/store -name "ldsped.conf.example" 2>/dev/null | head -1
 ```
 
 ## Running
