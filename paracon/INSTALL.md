@@ -47,20 +47,6 @@ sudo nixos-rebuild switch
 
 After rebuilding, run `paracon` from the command line.
 
-## Complete Packet Radio Setup
-
-For a full packet radio station, you'll likely want:
-- **QtSoundModem** or **Direwolf** - Sound modem for radio modulation/demodulation
-- **Paracon** or **QtTermTCP** - Terminal for packet communications
-
-```nix
-environment.systemPackages = with pkgs; [
-  paracon
-  qtsoundmodem
-  qttermtcp
-];
-```
-
 ## Dependencies Included
 
 This package automatically includes:
