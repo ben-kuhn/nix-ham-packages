@@ -40,18 +40,7 @@ After rebuilding:
 - Run `QtTermTCP` from the command line
 - Find "QtTermTCP" in your application menu under Network/HamRadio
 
-## Using with QtSoundModem or LinBPQ
-
-For a complete packet radio setup:
-
-```nix
-environment.systemPackages = with pkgs; [
-  qtsoundmodem
-  qttermtcp
-];
-```
-
-To connect to a LinBPQ node, use the FBBPORT (default 8011) in QtTermTCP's connection settings.
+To connect to a BPQ node, use the FBBPORT (default 8011) in QtTermTCP's connection settings.
 
 ## Documentation
 
