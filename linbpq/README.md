@@ -39,16 +39,11 @@ sudo nixos-rebuild switch
 
 ## Initial Setup
 
-1. Create the configuration file:
+Create the configuration file:
 
 ```bash
-sudo nano /var/lib/linbpq/bpq32.cfg
-```
-
-2. Set ownership and start:
-
-```bash
-sudo chown -R bpq:bpq /var/lib/linbpq
+sudo nano /etc/linbpq/bpq32.cfg
+sudo chown -R bpq:bpq /etc/linbpq /var/lib/linbpq
 sudo systemctl start linbpq
 ```
 
@@ -62,11 +57,9 @@ services.linbpq = {
   user = "bpq";
   group = "bpq";
 
-  # All data stored here (config, mail, BBS data)
-  # This directory persists across rebuilds
-  dataDir = "/var/lib/linbpq";
-
-  logDir = "/var/lib/linbpq/logs";
+  configDir = "/etc/linbpq";       # bpq32.cfg location
+  dataDir = "/var/lib/linbpq";     # User data (mail, BBS, state)
+  logDir = "/var/log/linbpq";      # Log files
 
   openFirewall = false;
   firewallPorts = [ 8010 8011 8080 ];

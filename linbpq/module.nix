@@ -28,47 +28,48 @@ in
       description = "Group under which LinBPQ runs.";
     };
 
+    configDir = mkOption {
+      type = types.path;
+      default = "/etc/linbpq";
+      description = "Directory containing bpq32.cfg.";
+    };
+
     dataDir = mkOption {
       type = types.path;
       default = "/var/lib/linbpq";
       description = ''
-        Directory for all LinBPQ data including bpq32.cfg, user mail,
-        BBS data, and web-generated configuration. This directory must
-        persist across system rebuilds.
+        Directory for LinBPQ state data including user mail, BBS data,
+        and web-generated configuration.
       '';
     };
 
     logDir = mkOption {
       type = types.path;
-      default = "/var/lib/linbpq/logs";
+      default = "/var/log/linbpq";
       description = "Directory for LinBPQ log files.";
     };
 
     openFirewall = mkOption {
       type = types.bool;
       default = false;
-      description = ''
-        Whether to automatically open firewall ports for LinBPQ.
-        Note: You may need to manually configure ports based on your bpq32.cfg.
-      '';
+      description = "Whether to automatically open firewall ports for LinBPQ.";
     };
 
     firewallPorts = mkOption {
       type = types.listOf types.port;
       default = [ 8010 8011 8080 ];
       description = ''
-        List of TCP ports to open in the firewall.
-        Default includes common BPQ ports:
-        - 8010: TCPPORT (Telnet access)
-        - 8011: FBBPORT (FBB forwarding / QtTermTCP)
-        - 8080: HTTPPORT (Web management interface)
+        TCP ports to open in the firewall:
+        - 8010: Telnet (TCPPORT)
+        - 8011: FBB/QtTermTCP (FBBPORT)
+        - 8080: Web interface (HTTPPORT)
       '';
     };
 
     firewallUDPPorts = mkOption {
       type = types.listOf types.port;
       default = [ ];
-      description = "List of UDP ports to open in the firewall.";
+      description = "UDP ports to open in the firewall.";
     };
 
     extraArgs = mkOption {
@@ -80,7 +81,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    # Create the bpq user and group
     users.users.${cfg.user} = {
       isSystemUser = true;
       group = cfg.group;
@@ -91,14 +91,13 @@ in
 
     users.groups.${cfg.group} = { };
 
-    # Create required directories
     systemd.tmpfiles.rules = [
+      "d ${cfg.configDir} 0750 ${cfg.user} ${cfg.group} -"
       "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
       "d ${cfg.dataDir}/HTML 0750 ${cfg.user} ${cfg.group} -"
       "d ${cfg.logDir} 0750 ${cfg.user} ${cfg.group} -"
     ];
 
-    # systemd service
     systemd.services.linbpq = {
       description = "LinBPQ Packet Radio Node";
       after = [ "network.target" "network-online.target" ];
@@ -110,21 +109,20 @@ in
         User = cfg.user;
         Group = cfg.group;
         WorkingDirectory = cfg.dataDir;
-        ExecStart = "${cfg.package}/bin/linbpq -d ${cfg.dataDir} -c ${cfg.dataDir} -l ${cfg.logDir} ${concatStringsSep " " cfg.extraArgs}";
+        ExecStart = "${cfg.package}/bin/linbpq -c ${cfg.configDir} -d ${cfg.dataDir} -l ${cfg.logDir} ${concatStringsSep " " cfg.extraArgs}";
         Restart = "on-failure";
         RestartSec = 10;
 
-        # Security hardening
         NoNewPrivileges = true;
         PrivateTmp = true;
         ProtectSystem = "strict";
         ProtectHome = true;
         ReadWritePaths = [
+          cfg.configDir
           cfg.dataDir
           cfg.logDir
         ];
 
-        # Network capabilities for binding to privileged ports if needed
         AmbientCapabilities = [
           "CAP_NET_BIND_SERVICE"
           "CAP_NET_RAW"
@@ -137,18 +135,15 @@ in
         ];
       };
 
-      # Ensure config exists before starting
       preStart = ''
-        if [ ! -f ${cfg.dataDir}/bpq32.cfg ]; then
-          echo "ERROR: ${cfg.dataDir}/bpq32.cfg not found!"
-          echo "Please create a configuration file before starting LinBPQ."
-          echo "Documentation: https://www.cantab.net/users/john.wiseman/Documents/InstallingLINBPQ.htm"
+        if [ ! -f ${cfg.configDir}/bpq32.cfg ]; then
+          echo "ERROR: ${cfg.configDir}/bpq32.cfg not found!"
+          echo "Create configuration file before starting LinBPQ."
           exit 1
         fi
       '';
     };
 
-    # Firewall configuration
     networking.firewall = mkIf cfg.openFirewall {
       allowedTCPPorts = cfg.firewallPorts;
       allowedUDPPorts = cfg.firewallUDPPorts;
