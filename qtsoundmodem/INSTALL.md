@@ -1,14 +1,6 @@
 # Installing QtSoundModem on NixOS
 
-## About QtSoundModem
-
-QtSoundModem is a multi-platform sound modem for packet radio, based on UZ7HO's Sound Modem. It uses your computer's sound interface to send and receive AX.25 packet radio data.
-
-**Key Features:**
-- Supports baud rates from 300 to 9600
-- Modern protocol extensions: FX.25 and IL2P
-- Multiple modems with different KISS interfaces (up to 4 ports)
-- Compatible with various sound systems (ALSA, PulseAudio)
+QtSoundModem is a sound modem for packet radio.
 
 ## Installation
 
@@ -40,14 +32,15 @@ Then rebuild:
 sudo nixos-rebuild switch
 ```
 
-## Verifying Installation
+## Running
 
-After rebuilding:
-- Run `QtSoundModem` from the command line
-- Find "QtSoundModem" in your application menu under Network/HamRadio
+```bash
+QtSoundModem
+```
+
+Or find "QtSoundModem" in your application menu.
 
 ## Documentation
 
-- Homepage: https://github.com/g8bpq/QtSoundModem
-- Hibby's Guide: https://guide.hibbian.org/modems/qtsm/
-- OARC Wiki: https://wiki.oarc.uk/packet:qtsoundmodem
+- [QtSoundModem GitHub Repository](https://github.com/g8bpq/QtSoundModem)
+- [OARC Wiki](https://wiki.oarc.uk/packet:qtsoundmodem)

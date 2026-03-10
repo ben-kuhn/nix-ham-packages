@@ -112,12 +112,12 @@ in
 Create the configuration file before starting:
 
 ```bash
-sudo mkdir -p /var/lib/linbpq/logs
-sudo nano /var/lib/linbpq/bpq32.cfg
-sudo chown -R bpq:bpq /var/lib/linbpq
+sudo nano /etc/linbpq/bpq32.cfg
+sudo chown -R bpq:bpq /etc/linbpq
+sudo systemctl start linbpq
 ```
 
-See [linbpq/README.md](linbpq/README.md) for full documentation.
+See [linbpq/README.md](linbpq/README.md) for module options.
 
 ---
 
