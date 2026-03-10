@@ -5,12 +5,10 @@
 QtSoundModem is a multi-platform sound modem for packet radio, based on UZ7HO's Sound Modem. It uses your computer's sound interface to send and receive AX.25 packet radio data.
 
 **Key Features:**
-- Supports baud rates from 300 to 4800
+- Supports baud rates from 300 to 9600
 - Modern protocol extensions: FX.25 and IL2P
 - Multiple modems with different KISS interfaces (up to 4 ports)
 - Compatible with various sound systems (ALSA, PulseAudio)
-
-**Note:** QtSoundModem only handles modulation/demodulation. You'll need a packet terminal like QtTermTCP or LinBPQ to interact with other packet stations.
 
 ## Installation
 
@@ -47,17 +45,6 @@ sudo nixos-rebuild switch
 After rebuilding:
 - Run `QtSoundModem` from the command line
 - Find "QtSoundModem" in your application menu under Network/HamRadio
-
-## Using with QtTermTCP or LinBPQ
-
-For a complete packet radio setup:
-
-```nix
-environment.systemPackages = with pkgs; [
-  qtsoundmodem
-  qttermtcp
-];
-```
 
 ## Documentation
 
