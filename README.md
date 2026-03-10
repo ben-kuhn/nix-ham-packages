@@ -133,4 +133,3 @@ See [linbpq/README.md](linbpq/README.md) for module options.
 
 - [NixOS Manual - Overlays](https://nixos.org/manual/nixpkgs/stable/#chap-overlays)
 - [LinBPQ Documentation](https://www.cantab.net/users/john.wiseman/Documents/InstallingLINBPQ.htm)
-- [AX.25 for Linux](https://www.linux-ax25.org/)
