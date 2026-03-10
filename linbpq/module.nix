@@ -32,22 +32,19 @@ in
     dataDir = mkOption {
       type = types.path;
       default = "/var/lib/linbpq";
-      description = ''
-        Directory for LinBPQ working files (data, config, and state).
-        This is where bpq32.cfg and other runtime files are stored.
-      '';
+      description = "Directory for LinBPQ runtime data and state files.";
     };
 
     logDir = mkOption {
       type = types.path;
-      default = "/var/lib/linbpq/logs";
+      default = "/var/log/linbpq";
       description = "Directory for LinBPQ log files.";
     };
 
     configDir = mkOption {
       type = types.path;
-      default = "/var/lib/linbpq";
-      description = "Directory containing LinBPQ configuration files.";
+      default = "/etc/linbpq";
+      description = "Directory containing bpq32.cfg and other configuration files.";
     };
 
     openFirewall = mkOption {
@@ -99,9 +96,10 @@ in
 
     # Create required directories
     systemd.tmpfiles.rules = [
+      "d ${cfg.configDir} 0750 ${cfg.user} ${cfg.group} -"
       "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
-      "d ${cfg.logDir} 0750 ${cfg.user} ${cfg.group} -"
       "d ${cfg.dataDir}/HTML 0750 ${cfg.user} ${cfg.group} -"
+      "d ${cfg.logDir} 0750 ${cfg.user} ${cfg.group} -"
     ];
 
     # systemd service
