@@ -112,8 +112,8 @@ in
 Create the configuration file before starting:
 
 ```bash
-sudo nano /etc/linbpq/bpq32.cfg
-sudo chown -R bpq:bpq /etc/linbpq
+sudo nano /var/lib/linbpq/bpq32.cfg
+sudo chown -R bpq:bpq /var/lib/linbpq
 sudo systemctl start linbpq
 ```
 

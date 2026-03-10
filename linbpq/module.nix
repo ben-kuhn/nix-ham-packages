@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.services.linbpq;
-  linbpq = pkgs.linbpq;
 in
 {
   options.services.linbpq = {
@@ -32,19 +31,17 @@ in
     dataDir = mkOption {
       type = types.path;
       default = "/var/lib/linbpq";
-      description = "Directory for LinBPQ runtime data and state files.";
+      description = ''
+        Directory for all LinBPQ data including bpq32.cfg, user mail,
+        BBS data, and web-generated configuration. This directory must
+        persist across system rebuilds.
+      '';
     };
 
     logDir = mkOption {
       type = types.path;
-      default = "/var/log/linbpq";
+      default = "/var/lib/linbpq/logs";
       description = "Directory for LinBPQ log files.";
-    };
-
-    configDir = mkOption {
-      type = types.path;
-      default = "/etc/linbpq";
-      description = "Directory containing bpq32.cfg and other configuration files.";
     };
 
     openFirewall = mkOption {
@@ -96,7 +93,6 @@ in
 
     # Create required directories
     systemd.tmpfiles.rules = [
-      "d ${cfg.configDir} 0750 ${cfg.user} ${cfg.group} -"
       "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
       "d ${cfg.dataDir}/HTML 0750 ${cfg.user} ${cfg.group} -"
       "d ${cfg.logDir} 0750 ${cfg.user} ${cfg.group} -"
@@ -114,7 +110,7 @@ in
         User = cfg.user;
         Group = cfg.group;
         WorkingDirectory = cfg.dataDir;
-        ExecStart = "${cfg.package}/bin/linbpq -d ${cfg.dataDir} -c ${cfg.configDir} -l ${cfg.logDir} ${concatStringsSep " " cfg.extraArgs}";
+        ExecStart = "${cfg.package}/bin/linbpq -d ${cfg.dataDir} -c ${cfg.dataDir} -l ${cfg.logDir} ${concatStringsSep " " cfg.extraArgs}";
         Restart = "on-failure";
         RestartSec = 10;
 
@@ -126,7 +122,6 @@ in
         ReadWritePaths = [
           cfg.dataDir
           cfg.logDir
-          cfg.configDir
         ];
 
         # Network capabilities for binding to privileged ports if needed
@@ -144,10 +139,10 @@ in
 
       # Ensure config exists before starting
       preStart = ''
-        if [ ! -f ${cfg.configDir}/bpq32.cfg ]; then
-          echo "ERROR: ${cfg.configDir}/bpq32.cfg not found!"
+        if [ ! -f ${cfg.dataDir}/bpq32.cfg ]; then
+          echo "ERROR: ${cfg.dataDir}/bpq32.cfg not found!"
           echo "Please create a configuration file before starting LinBPQ."
-          echo "Documentation: https://www.cantab.net/users/john.wiseman/Documents/LinBPQ.html"
+          echo "Documentation: https://www.cantab.net/users/john.wiseman/Documents/InstallingLINBPQ.htm"
           exit 1
         fi
       '';
