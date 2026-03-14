@@ -114,7 +114,7 @@ EOF
 
       Configuration: Copy the example config to /etc/ax25/:
         sudo mkdir -p /etc/ax25
-        sudo cp $(dirname $(which ldsped))/../share/doc/ldsped/ldsped.conf.example /etc/ax25/ldsped.conf
+        sudo cp "$(dirname "$(readlink -f "$(which ldsped)")")/../share/doc/ldsped/ldsped.conf.example" /etc/ax25/ldsped.conf
     '';
     homepage = "https://github.com/ampledata/ldsped";
     license = licenses.gpl2Only;
