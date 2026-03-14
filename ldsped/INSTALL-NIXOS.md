@@ -38,7 +38,7 @@ Copy the example configuration:
 
 ```bash
 sudo mkdir -p /etc/ax25
-sudo cp "$(dirname "$(readlink -f "$(which ldsped)")")/../etc/ax25/ldsped.conf.example" /etc/ax25/ldsped.conf
+sudo cp "$(dirname "$(readlink -f "$(which ldsped)")")/../share/doc/ldsped/ldsped.conf.example" /etc/ax25/ldsped.conf
 sudo nano /etc/ax25/ldsped.conf
 ```
 
