@@ -22,8 +22,8 @@ stdenv.mkDerivation rec {
   # The configure script is pre-generated, no need for autoreconfHook
   configureFlags = [
     "--prefix=${placeholder "out"}"
-    "--sysconfdir=${placeholder "out"}/etc"
-    "--localstatedir=${placeholder "out"}/var"
+    "--sysconfdir=/etc"
+    "--localstatedir=/var"
     "--mandir=${placeholder "out"}/share/man"
   ];
 
@@ -91,15 +91,16 @@ EOF
   # -Wno-stringop-truncation: suppress strncpy truncation warnings (intentional in code)
   # -Wno-format-overflow: suppress sprintf overflow warnings (legacy buffer handling)
   preConfigure = ''
-    export AX25_SYSCONFDIR="$out/etc/ax25"
-    export AX25_LOCALSTATEDIR="$out/var/ax25"
+    export AX25_SYSCONFDIR="/etc/ax25"
+    export AX25_LOCALSTATEDIR="/var/ax25"
     export CPPFLAGS="-I$(pwd)/compat -I${linuxHeaders}/include $CPPFLAGS"
     export CFLAGS="-I$(pwd)/compat -I${linuxHeaders}/include -fcommon -Wno-pointer-sign -Wno-format-security -Wno-stringop-truncation -Wno-format-overflow $CFLAGS"
   '';
 
   postInstall = ''
-    # Install the example configuration file
-    install -Dm644 ldsped.conf.example $out/etc/ax25/ldsped.conf.example
+    # Install the example configuration file to share directory
+    # (config files go in /etc/ax25/ which is outside the Nix store)
+    install -Dm644 ldsped.conf.example $out/share/doc/ldsped/ldsped.conf.example
   '';
 
   meta = with lib; {
@@ -110,6 +111,10 @@ EOF
       and call logging utilities for amateur radio operators.
 
       Note: ldsped must be run as root since it needs to connect to system sockets.
+
+      Configuration: Copy the example config to /etc/ax25/:
+        sudo mkdir -p /etc/ax25
+        sudo cp $(dirname $(which ldsped))/../share/doc/ldsped/ldsped.conf.example /etc/ax25/ldsped.conf
     '';
     homepage = "https://github.com/ampledata/ldsped";
     license = licenses.gpl2Only;
