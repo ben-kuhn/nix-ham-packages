@@ -43,6 +43,11 @@ stdenv.mkDerivation rec {
     echo "QMAKE_CXXFLAGS -= -Werror" >> QtSoundModem.pro
   '';
 
+  # QtSoundModem loads libpulse dynamically via dlopen, so we need to add it to LD_LIBRARY_PATH
+  qtWrapperArgs = [
+    "--prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libpulseaudio ]}"
+  ];
+
   desktopItems = [
     (makeDesktopItem {
       name = "qtsoundmodem";
