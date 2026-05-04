@@ -9,6 +9,7 @@
 # - pyham-pe: AGWPE protocol client library for Python
 # - qtsoundmodem: Qt Sound Modem
 # - qttermtcp: Qt Terminal TCP client
+# - tncd: AGWPE-to-KISS Translation Bridge
 #
 # Usage: Import this file as an overlay in your NixOS configuration
 
@@ -40,4 +41,17 @@ final: prev: {
 
   # QtTermTCP - Qt Terminal TCP client for BPQ
   qttermtcp = prev.callPackage ./qttermtcp { };
+
+  # ax253 - Pure Python AX.25 stack (dependency of kiss3)
+  ax253 = prev.callPackage ./tncd/ax253.nix { };
+
+  # kiss3 - Python KISS protocol implementation (dependency of tncd)
+  kiss3 = prev.callPackage ./tncd/kiss3.nix {
+    inherit (final) ax253;
+  };
+
+  # tncd - AGWPE-to-KISS Translation Bridge
+  tncd = prev.callPackage ./tncd {
+    inherit (final) pyham-ax25 kiss3;
+  };
 }
