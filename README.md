@@ -12,6 +12,7 @@ This repository contains NixOS packages for amateur radio software.
 | `paracon` | Paracon packet radio terminal |
 | `qtsoundmodem` | Qt-based sound modem for packet radio |
 | `qttermtcp` | Qt Terminal TCP client for BPQ packet nodes |
+| `tncd` | AGWPE-to-KISS Translation Bridge (includes NixOS module for service) |
 
 ## Installation
 
@@ -121,6 +122,53 @@ See [linbpq/README.md](linbpq/README.md) for module options.
 
 ---
 
+## tncd Service
+
+tncd includes a NixOS module for running as a systemd service:
+
+```nix
+{ config, pkgs, ... }:
+
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
+{
+  nixpkgs.overlays = [
+    (import ham-packages)
+  ];
+
+  imports = [
+    "${ham-packages}/tncd/module.nix"
+  ];
+
+  services.tncd = {
+    enable = true;
+    settings = {
+      server = {
+        listen_host = "0.0.0.0";
+        listen_port = 8000;
+        callsign = "N0CALL";
+      };
+      client = {
+        type = "serial";
+        device = "/dev/ttyUSB0";
+        serial_baudrate = 9600;
+        ota_baudrate = 1200;
+      };
+    };
+  };
+}
+```
+
+For Bluetooth TNC support, set `services.tncd.bluetooth.enable = true` and add a
+`bluetooth` section to `settings`. See [tncd documentation](https://github.com/ben-kuhn/tncd/blob/main/nix/README.md)
+for full module options.
+
+---
+
 ## Package Documentation
 
 - [LinBPQ](linbpq/README.md) - Full BPQ node setup and configuration
@@ -128,6 +176,7 @@ See [linbpq/README.md](linbpq/README.md) for module options.
 - [paracon](paracon/INSTALL.md) - Packet radio terminal
 - [qtsoundmodem](qtsoundmodem/INSTALL.md) - Sound modem setup
 - [qttermtcp](qttermtcp/INSTALL.md) - Terminal client
+- [tncd](https://github.com/ben-kuhn/tncd) - AGWPE-to-KISS bridge
 
 ## Resources
 
