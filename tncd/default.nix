@@ -13,8 +13,8 @@ python3Packages.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "42c115c20d9385ef799af2f1788955e327501aec";
-    hash = "sha256-NV3KcdSdWMZT1etvf+1lgyZitz53ZAsLDlmuNK6avKA=";
+    rev = "cac0daf73e094fa37f31ec16b8f4e6443f6bfd7b";
+    hash = "sha256-tsSB3YgKTSknTAKVedQipgVOqIKiocecuUsq4qb0Y08=";
   };
 
   format = "other";
