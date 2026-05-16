@@ -4,17 +4,18 @@
   fetchFromGitHub,
   pyham-ax25,
   kiss3,
+  bluetoothSupport ? false,
 }:
 
 python3Packages.buildPythonApplication rec {
   pname = "tncd";
-  version = "0.8.1-BETA";
+  version = "0.9-BETA";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "v0.8.1-BETA";
-    hash = "sha256-G4lWsYiGvvAtj0poAZvE8OZYfFaUb/rMIwU4cRf71DE=";
+    rev = "v0.9-BETA";
+    hash = "sha256-4Lb9hkHm6oQHUJ5RjgHm5a3KAthlf3/WYU1x78aCTg4=";
   };
 
   format = "other";
@@ -25,7 +26,10 @@ python3Packages.buildPythonApplication rec {
     python3Packages.pyserial
     pyham-ax25
     kiss3
-  ];
+  ] ++ lib.optionals bluetoothSupport (with python3Packages; [
+    dbus-python
+    pygobject3
+  ]);
 
   installPhase = ''
     install -Dm755 tncd.py      $out/bin/tncd
