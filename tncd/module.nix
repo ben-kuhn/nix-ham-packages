@@ -6,6 +6,9 @@ let
   configFile = if cfg.configFile != null
     then cfg.configFile
     else iniFormat.generate "tncd.ini" cfg.settings;
+  finalPackage = if cfg.bluetooth.enable
+    then cfg.package.override { bluetoothSupport = true; }
+    else cfg.package;
 in {
   options.services.tncd = {
 
@@ -88,11 +91,6 @@ in {
       tncd = {};
     };
 
-    # Override the package to include bluetooth deps when enabled
-    services.tncd.package = lib.mkIf cfg.bluetooth.enable (
-      lib.mkDefault (cfg.package.override { bluetoothSupport = true; })
-    );
-
     systemd.services.tncd = {
       description = "AGWPE-to-KISS Translation Bridge";
       wantedBy = [ "multi-user.target" ];
@@ -103,7 +101,7 @@ in {
         Type = "simple";
         User = cfg.user;
         Group = cfg.group;
-        ExecStart = "${cfg.package}/bin/tncd -c ${configFile}";
+        ExecStart = "${finalPackage}/bin/tncd -c ${configFile}";
         Restart = "on-failure";
         RestartSec = 5;
       };
