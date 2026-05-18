@@ -40,7 +40,7 @@ in {
             listen_port = 8000;
             callsign = "N0CALL";
           };
-          client = {
+          "client.0" = {
             type = "serial";
             device = "/dev/ttyUSB0";
             serial_baudrate = 9600;
