@@ -15,7 +15,7 @@ python3Packages.buildPythonApplication rec {
     owner = "ben-kuhn";
     repo = "tncd";
     rev = "v0.11.2-BETA";
-    hash = "sha256-q7LHKSzGNFOVrQVazsGDzhAKmdEPHjOXbGf9phenh18=";
+    hash = "sha256-96XAMZNiUsxG8Kaj2ZkzH+Yl2yJRcpKAfi51K/EzP48=";
   };
 
   format = "other";
