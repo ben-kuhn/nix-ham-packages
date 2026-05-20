@@ -9,13 +9,13 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "tncd";
-  version = "0.11.1-BETA";
+  version = "0.11.2-BETA";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "v0.11.1-BETA";
-    hash = "sha256-OSXeD68bAAiBXXB0zT8PB+zA1BfoFBswGgpx8DiE8MQ=";
+    rev = "v0.11.2-BETA";
+    hash = "sha256-q7LHKSzGNFOVrQVazsGDzhAKmdEPHjOXbGf9phenh18=";
   };
 
   format = "other";
@@ -33,7 +33,6 @@ python3Packages.buildPythonApplication rec {
 
   installPhase = ''
     install -Dm755 tncd.py      $out/bin/tncd
-    install -Dm755 tncd-rfcomm  $out/bin/tncd-rfcomm
     install -Dm644 tncd.ini     $out/share/tncd/tncd.ini.example
   '';
 
@@ -43,7 +42,7 @@ python3Packages.buildPythonApplication rec {
       A bridge that allows AGWPE-client applications to communicate with KISS TNCs.
       Supports both serial and TCP KISS connections.
     '';
-    homepage = "https://github.com/ben-kuhn/tncd";
+    homepage = "https://tncd.dev";
     license = licenses.gpl3Plus;
     maintainers = [ ];
     platforms = platforms.linux;
