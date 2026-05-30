@@ -9,13 +9,13 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "tncd";
-  version = "0.11.2-BETA";
+  version = "1.0";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "v0.11.2-BETA";
-    hash = "sha256-96XAMZNiUsxG8Kaj2ZkzH+Yl2yJRcpKAfi51K/EzP48=";
+    rev = "v1.0";
+    hash = "sha256-Mk+al2roD5BWZr0bQEFs43KdKrsFdNi+d4qKaPhVPHs=";
   };
 
   format = "other";
