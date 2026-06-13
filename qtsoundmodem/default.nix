@@ -38,9 +38,11 @@ stdenv.mkDerivation rec {
   # Disable Werror that may come from hardening or qmake
   hardeningDisable = [ "all" ];
 
-  # Also ensure QMAKE_CXXFLAGS doesn't have Werror
+  # GCC 14+ promotes -Wincompatible-pointer-types to an error; upstream passes
+  # unsigned char * to strcat (const char *). Suppress for C files only.
   preConfigure = ''
     echo "QMAKE_CXXFLAGS -= -Werror" >> QtSoundModem.pro
+    echo "QMAKE_CFLAGS += -std=gnu17 -Wno-incompatible-pointer-types" >> QtSoundModem.pro
   '';
 
   # QtSoundModem loads libpulse dynamically via dlopen, so we need to add it to LD_LIBRARY_PATH
