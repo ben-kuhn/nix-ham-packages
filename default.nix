@@ -10,6 +10,7 @@
 # - qtsoundmodem: Qt Sound Modem
 # - qttermtcp: Qt Terminal TCP client
 # - tncd: AGWPE-to-KISS Translation Bridge
+# - pat: Cross-platform Winlink client (updated to v1.0.0)
 #
 # Usage: Import this file as an overlay in your NixOS configuration
 
@@ -54,4 +55,7 @@ final: prev: {
   tncd = prev.callPackage ./tncd {
     inherit (final) pyham-ax25 kiss3;
   };
+
+  # PAT - Cross-platform Winlink client (v1.0.0, upstream nixpkgs has 0.19.1)
+  pat = prev.callPackage ./pat { };
 }
