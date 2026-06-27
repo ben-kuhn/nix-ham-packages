@@ -5,6 +5,7 @@
   pkg-config,
   perl,
   openssl,
+  rustfmt,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -15,14 +16,15 @@ rustPlatform.buildRustPackage rec {
     owner = "ben-kuhn";
     repo = "docker-packet-browser";
     rev = "v${version}";
-    hash = ""; # Update with: nix-prefetch-git --rev v0.2.0 https://github.com/ben-kuhn/docker-packet-browser.git
+    hash = "sha256-O8i6VcbdaWaHheRFo/N219u/ALOjr8ZQNXJ+SdOh6uE=";
   };
 
-  cargoHash = ""; # Update with actual hash after first build attempt
+  cargoHash = "sha256-/xdcaJTacEK79mx0F69LgscaWuSlkauZAfv6uBU/u7o=";
 
   nativeBuildInputs = [
     pkg-config
     perl
+    rustfmt
   ];
 
   buildInputs = [
