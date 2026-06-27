@@ -61,4 +61,13 @@ final: prev: {
 
   # PAT - Cross-platform Winlink client (v1.0.0, upstream nixpkgs has 0.19.1)
   pat = prev.callPackage ./pat { };
+
+  # Tuxlink - Linux-native Winlink client (Tauri 2.x, Rust + React)
+  tuxlink = prev.callPackage ./tuxlink { };
+
+  # Packet Browser Server - Web page fetcher for AX.25 packet radio
+  packet-browser-server = prev.callPackage ./packet-browser-server { };
+
+  # Packet Browser Client - AGWPE client with web proxy interface
+  packet-browser-client = prev.callPackage ./packet-browser-client { };
 }
