@@ -55,7 +55,11 @@ Then rebuild:
 sudo nixos-rebuild switch
 ```
 
-After rebuilding, you can install packages with:
+The packages are now available system-wide. No additional installation steps needed.
+
+**Alternative: User-level installation**
+
+If you prefer to install packages into your user profile instead of system-wide, add only the overlay to configuration.nix (omit `environment.systemPackages`), rebuild, then:
 
 ```bash
 nix-env -iA nixos.packet-browser-client
