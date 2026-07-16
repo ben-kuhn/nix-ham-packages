@@ -8,15 +8,11 @@ buildGoModule rec {
   pname = "tncd-go";
   version = "2.0.0-dev";
 
-  # TODO: update after v2-go-port branch is pushed to GitHub:
-  #   nix-prefetch-url --unpack https://github.com/ben-kuhn/tncd/archive/c32f2c9081e3c564dec446e23c7617f5a07417a9.tar.gz
-  #   nix hash convert --hash-algo sha256 --to sri <hash>
-  # and replace lib.fakeHash below with the resulting sri hash.
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "c32f2c9081e3c564dec446e23c7617f5a07417a9";
-    hash = lib.fakeHash;
+    rev = "67ad3658e4f4d750f600624393a0cc4fe9748a22";
+    hash = "sha256-nGXzAJLZLBTkMF7vG1F3r/WDm+6fM7vl0sw4YqQY8iQ=";
   };
 
   # vendorHash was extracted from a local-src build of the same commit:
