@@ -70,4 +70,7 @@ final: prev: {
 
   # Packet Browser Client - AGWPE client with web proxy interface
   packet-browser-client = prev.callPackage ./packet-browser-client { };
+
+  # tncd-go - AGWPE-to-KISS Translation Bridge (Go port, 2.0 dev, serial OTA testing)
+  tncd-go = prev.callPackage ./tncd-go { };
 }
