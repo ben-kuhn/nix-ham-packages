@@ -12,6 +12,7 @@
 # - qtsoundmodem: Qt Sound Modem
 # - qttermtcp: Qt Terminal TCP client
 # - tncd: AGWPE-to-KISS Translation Bridge
+# - tuxlink: Native Linux Winlink client (Rust + Tauri, alpha)
 # - pat: Cross-platform Winlink client (updated to v1.0.0)
 #
 # Usage: Import this file as an overlay in your NixOS configuration

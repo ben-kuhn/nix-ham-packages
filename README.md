@@ -17,6 +17,7 @@ This repository contains NixOS packages for amateur radio software.
 | `qtsoundmodem` | Qt-based sound modem for packet radio |
 | `qttermtcp` | Qt Terminal TCP client for BPQ packet nodes |
 | `tncd` | AGWPE-to-KISS Translation Bridge (includes NixOS module for service) |
+| `tuxlink` | Native Linux Winlink client (Rust + Tauri). Alpha. |
 
 ## Installation
 
