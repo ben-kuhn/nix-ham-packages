@@ -35,6 +35,9 @@ final: prev: {
   # Not1MM dependency: CTY file parser
   notctyparser = prev.callPackage ./not1mm/notctyparser.nix { };
 
+  # Not1MM dependency: ADIF format reader/writer
+  adif-io = prev.callPackage ./not1mm/adif-io.nix { };
+
   # Paracon - Packet radio terminal application
   paracon = prev.callPackage ./paracon {
     inherit (final) pyham-ax25 pyham-pe;
