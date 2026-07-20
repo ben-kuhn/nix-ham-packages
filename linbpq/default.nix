@@ -12,13 +12,13 @@
 
 stdenv.mkDerivation rec {
   pname = "linbpq";
-  version = "25.28";
+  version = "25.30";
 
   src = fetchFromGitHub {
     owner = "g8bpq";
     repo = "linbpq";
     rev = version;
-    sha256 = "1yg0wka30pyzgwji0wljzb0rm1k168xv2zn1ckcicj97d8rik2cq";
+    sha256 = "04wdhy05g6h4aj196r3xk1zag45m8mz1drf47a2nbg1kgwwq0npi";
   };
 
   buildInputs = [
