@@ -4,6 +4,7 @@
 # - linbpq: BPQ Packet Radio Node software
 # - ldsped: AGW Packet Engine replacement
 # - mercury: Mercury Modem
+# - not1mm: Amateur radio contest logger (PyQt6)
 # - paracon: Paracon terminal (depends on pyham-ax25 and pyham-pe)
 # - pyham-ax25: AX.25 protocol library for Python
 # - pyham-pe: AGWPE protocol client library for Python
@@ -40,6 +41,11 @@ final: prev: {
 
   # Not1MM dependency: XDG app-data helpers
   appdata = prev.callPackage ./not1mm/appdata.nix { };
+
+  # Not1MM - amateur radio contest logger
+  not1mm = prev.callPackage ./not1mm {
+    inherit (final) notctyparser adif-io appdata;
+  };
 
   # Paracon - Packet radio terminal application
   paracon = prev.callPackage ./paracon {
