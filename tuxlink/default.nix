@@ -5,6 +5,7 @@
   fetchFromGitHub,
   pnpm_10,
   nodejs,
+  cmake,
   pkg-config,
   wrapGAppsHook4,
   webkitgtk_4_1,
@@ -27,13 +28,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "tuxlink";
-  version = "0.67.0";
+  version = "0.94.0";
 
   src = fetchFromGitHub {
     owner = "cameronzucker";
     repo = "tuxlink";
     rev = "v${version}";
-    hash = "sha256-rAXs+SxjlCv2YZ+GUEPQePK13tTijjuZ5A/TrZERQKY=";
+    hash = "sha256-09uGwmdcLUZ6cw0X96Xi70GFfkGeAbbjMTOvQkcDHso=";
   };
 
   sourceRoot = "${src.name}";
@@ -48,7 +49,7 @@ rustPlatform.buildRustPackage rec {
   pnpmDeps = pnpm_10.fetchDeps {
     inherit pname version src;
     fetcherVersion = 1;
-    hash = "sha256-VPNhWuBuo3eb2sVGnb5jx1qRA24ZXp4VxVrYkFHVE9E=";
+    hash = "sha256-p2hqrMHpJdrKemmxS2UleCNpB7uHR+r8WZPNlaD/fv4=";
   };
 
   nativeBuildInputs = [
@@ -56,8 +57,14 @@ rustPlatform.buildRustPackage rec {
     wrapGAppsHook4
     pnpm_10.configHook
     nodejs
+    cmake
     rustPlatform.bindgenHook
   ];
+
+  # cmake is only needed by the whisper-rs-sys build script (whisper.cpp);
+  # this is not a top-level cmake project, so keep its setup hook from
+  # taking over the configure phase.
+  dontUseCmakeConfigure = true;
 
   buildInputs = [
     webkitgtk_4_1
