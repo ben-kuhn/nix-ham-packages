@@ -47,6 +47,9 @@ final: prev: {
     inherit (final) notctyparser adif-io appdata;
   };
 
+  # cwdaemon - Morse keying daemon (used by not1mm)
+  cwdaemon = prev.callPackage ./cwdaemon { };
+
   # Paracon - Packet radio terminal application
   paracon = prev.callPackage ./paracon {
     inherit (final) pyham-ax25 pyham-pe;
