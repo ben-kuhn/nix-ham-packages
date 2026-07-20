@@ -1,46 +1,46 @@
 {
   lib,
-  python3Packages,
+  buildGoModule,
   fetchFromGitHub,
-  pyham-ax25,
-  kiss3,
-  bluetoothSupport ? false,
 }:
 
-python3Packages.buildPythonApplication rec {
+# tncd 2.0 — pure-Go rewrite of the AGWPE-to-KISS AX.25 bridge.
+# (The 1.x Python line lives on the `v1` git branch and the stable
+#  APT/RPM repos; this package tracks the 2.0 Go beta line.)
+buildGoModule rec {
   pname = "tncd";
-  version = "1.3.2";
+  version = "1.97-Beta";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "v1.3.2";
-    hash = "sha256-G0vXjehZygfrBBZe64DJCqOTPNX9QtsSDMzUqiRVKP4=";
+    rev = "v${version}";
+    hash = "sha256-X7H7QVI+yNiojiQfSnEehCgm/aN9DLxdMBc3PNhDcA8=";
   };
 
-  format = "other";
+  # go.mod is unchanged since the tncd-go dev package; same vendorHash.
+  vendorHash = "sha256-FFRXOD48HO+2C3m95wkFYpAIXmHytpXFSxl5TYbnjR8=";
 
-  disabled = python3Packages.pythonOlder "3.8";
+  env.CGO_ENABLED = 0;
 
-  dependencies = [
-    python3Packages.pyserial
-    pyham-ax25
-    kiss3
-  ] ++ lib.optionals bluetoothSupport (with python3Packages; [
-    dbus-python
-    pygobject3
-  ]);
+  subPackages = [ "cmd/tncd" ];
 
-  installPhase = ''
-    install -Dm755 tncd.py      $out/bin/tncd
-    install -Dm644 tncd.ini     $out/share/tncd/tncd.ini.example
+  ldflags = [
+    "-s"
+    "-w"
+    "-X github.com/ben-kuhn/tncd/v2/internal/version.Version=${version}"
+  ];
+
+  postInstall = ''
+    install -Dm644 tncd.ini $out/share/tncd/tncd.ini.example
   '';
 
   meta = with lib; {
-    description = "AGWPE-to-KISS Translation Bridge";
+    description = "AGWPE-to-KISS Translation Bridge (Go)";
     longDescription = ''
-      A bridge that allows AGWPE-client applications to communicate with KISS TNCs.
-      Supports both serial and TCP KISS connections.
+      A bridge that allows AGWPE-client applications (PAT/Winlink, Paracon,
+      Xastir) to communicate with KISS TNCs over serial, TCP, or Bluetooth SPP.
+      Implements AX.25 layer-2 connected mode. Pure-Go 2.0 rewrite.
     '';
     homepage = "https://tncd.dev";
     license = licenses.gpl3Plus;

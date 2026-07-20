@@ -54,10 +54,8 @@ final: prev: {
     inherit (final) ax253;
   };
 
-  # tncd - AGWPE-to-KISS Translation Bridge
-  tncd = prev.callPackage ./tncd {
-    inherit (final) pyham-ax25 kiss3;
-  };
+  # tncd - AGWPE-to-KISS Translation Bridge (2.0 Go port)
+  tncd = prev.callPackage ./tncd { };
 
   # PAT - Cross-platform Winlink client (v1.0.0, upstream nixpkgs has 0.19.1)
   pat = prev.callPackage ./pat { };
@@ -70,7 +68,4 @@ final: prev: {
 
   # Packet Browser Client - AGWPE client with web proxy interface
   packet-browser-client = prev.callPackage ./packet-browser-client { };
-
-  # tncd-go - AGWPE-to-KISS Translation Bridge (Go port, 2.0 dev, serial OTA testing)
-  tncd-go = prev.callPackage ./tncd-go { };
 }

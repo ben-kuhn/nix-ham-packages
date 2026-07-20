@@ -6,9 +6,9 @@ let
   configFile = if cfg.configFile != null
     then cfg.configFile
     else iniFormat.generate "tncd.ini" cfg.settings;
-  finalPackage = if cfg.bluetooth.enable
-    then cfg.package.override { bluetoothSupport = true; }
-    else cfg.package;
+  # The Go tncd binary has native D-Bus Bluetooth SPP built in — no rebuild
+  # variant needed (unlike the 1.x Python package's bluetoothSupport override).
+  finalPackage = cfg.package;
 in {
   options.services.tncd = {
 
@@ -69,7 +69,7 @@ in {
     };
 
     bluetooth = {
-      enable = lib.mkEnableOption "Bluetooth SPP support (adds dbus-python and PyGObject)";
+      enable = lib.mkEnableOption "Bluetooth SPP support (adds the user to the bluetooth group and orders tncd after bluetooth.service; the Go binary's D-Bus SPP support is always built in)";
     };
 
   };
