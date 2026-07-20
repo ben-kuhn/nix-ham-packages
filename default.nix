@@ -38,6 +38,9 @@ final: prev: {
   # Not1MM dependency: ADIF format reader/writer
   adif-io = prev.callPackage ./not1mm/adif-io.nix { };
 
+  # Not1MM dependency: XDG app-data helpers
+  appdata = prev.callPackage ./not1mm/appdata.nix { };
+
   # Paracon - Packet radio terminal application
   paracon = prev.callPackage ./paracon {
     inherit (final) pyham-ax25 pyham-pe;
