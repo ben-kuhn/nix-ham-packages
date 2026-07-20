@@ -6,9 +6,11 @@ This repository contains NixOS packages for amateur radio software.
 
 | Package | Description |
 |---------|-------------|
+| `cwdaemon` | Morse code (CW) keying daemon (UDP-controlled, used by Not1MM) |
 | `linbpq` | Linux BPQ Packet Radio Node (includes NixOS module for service) |
 | `ldsped` | Open-source AGW Packet Engine replacement for AX.25 packet radio |
 | `mercury-modem` | Mercury Modem for HF digital communications |
+| `not1mm` | Amateur radio contest logger (PyQt6) — talks to rigctld and cwdaemon |
 | `paracon` | Paracon packet radio terminal |
 | `packet-browser-server` | Web page fetcher for AX.25 packet radio (includes NixOS module) |
 | `packet-browser-client` | AGWPE client with web proxy interface (includes NixOS module) |
@@ -37,9 +39,11 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
+    cwdaemon
     linbpq
     ldsped
     mercury-modem
+    not1mm
     paracon
     packet-browser-server
     packet-browser-client
@@ -85,6 +89,8 @@ nix-env -iA nixpkgs.qttermtcp
 nix-env -iA nixpkgs.paracon
 nix-env -iA nixpkgs.ldsped
 nix-env -iA nixpkgs.mercury-modem
+nix-env -iA nixpkgs.not1mm
+nix-env -iA nixpkgs.cwdaemon
 ```
 
 ---
@@ -257,6 +263,20 @@ in
 After enabling the client service, open your browser to `http://localhost:8080` to access the web interface.
 
 See [packet-browser documentation](https://github.com/ben-kuhn/docker-packet-browser) for full details on the client/server architecture and BPQ integration.
+
+---
+
+## Not1MM external daemons
+
+Not1MM connects to two external daemons over the network:
+
+- `rigctld` (radio control) — provided by `hamlib` in upstream nixpkgs. Install
+  with `environment.systemPackages = [ pkgs.hamlib ];` and start `rigctld`
+  yourself (e.g. via a systemd user service or a shell).
+- `cwdaemon` (CW keying) — provided by this overlay (`pkgs.cwdaemon`). Start
+  it manually with the appropriate keyer device.
+
+Configure Not1MM to point at the host/port of each running daemon.
 
 ---
 

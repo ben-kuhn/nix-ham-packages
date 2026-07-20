@@ -1,6 +1,7 @@
 # NixOS Overlay for Amateur Radio Packages
 #
 # This overlay provides several amateur radio related packages:
+# - cwdaemon: Morse code (CW) keying daemon (used by not1mm)
 # - linbpq: BPQ Packet Radio Node software
 # - ldsped: AGW Packet Engine replacement
 # - mercury: Mercury Modem
