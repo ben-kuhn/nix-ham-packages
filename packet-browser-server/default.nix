@@ -10,16 +10,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "packet-browser-server";
-  version = "0.2.0";
+  version = "0.3.0";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
-    repo = "docker-packet-browser";
+    repo = "packet-browser";
     rev = "v${version}";
-    hash = "sha256-O8i6VcbdaWaHheRFo/N219u/ALOjr8ZQNXJ+SdOh6uE=";
+    hash = "sha256-ucMBWHBWnzoWaeSsV+Nt+aNGKYrWN0FP08U6yheeu84=";
   };
 
-  cargoHash = "sha256-/xdcaJTacEK79mx0F69LgscaWuSlkauZAfv6uBU/u7o=";
+  cargoHash = "sha256-YlujhNST+0MQRi28JLxPOGB9FJF7UNxuWFkGih/eH+U=";
 
   nativeBuildInputs = [
     pkg-config
@@ -41,7 +41,7 @@ rustPlatform.buildRustPackage rec {
 
   meta = {
     description = "Packet radio web browser server - fetches and sanitizes web pages for AX.25";
-    homepage = "https://github.com/ben-kuhn/docker-packet-browser";
+    homepage = "https://github.com/ben-kuhn/packet-browser";
     license = lib.licenses.gpl3Plus;
     platforms = lib.platforms.linux;
     mainProgram = "packet-browser-server";
