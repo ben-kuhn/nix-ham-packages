@@ -9,16 +9,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "packet-browser-client";
-  version = "0.2.0";
+  version = "0.4.0";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
-    repo = "docker-packet-browser";
+    repo = "packet-browser";
     rev = "v${version}";
-    hash = "sha256-O8i6VcbdaWaHheRFo/N219u/ALOjr8ZQNXJ+SdOh6uE=";
+    hash = "sha256-XvQ9mis3V4dkYvkOW2Lsm3v/hoAyiZT5VvgMJA+BOVQ=";
   };
 
-  cargoHash = "sha256-/xdcaJTacEK79mx0F69LgscaWuSlkauZAfv6uBU/u7o=";
+  cargoHash = "sha256-A0yj2pxQVHXF4JdJ8rERw4gFLwl2M8xD5ic/zKmheuM=";
 
   nativeBuildInputs = [
     pkg-config
@@ -45,7 +45,7 @@ rustPlatform.buildRustPackage rec {
 
   meta = {
     description = "Packet radio web browser client - AGWPE client with web proxy interface";
-    homepage = "https://github.com/ben-kuhn/docker-packet-browser";
+    homepage = "https://github.com/ben-kuhn/packet-browser";
     license = lib.licenses.gpl3Plus;
     platforms = lib.platforms.unix;
     mainProgram = "packet-browser-client";
