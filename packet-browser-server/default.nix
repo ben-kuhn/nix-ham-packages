@@ -10,16 +10,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "packet-browser-server";
-  version = "0.5.4";
+  version = "0.5.5";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "packet-browser";
     rev = "v${version}";
-    hash = "sha256-SszXx7c4mGE95ogfFKR3mC8Kd7cqQOHzsEZ9b/tlE2k=";
+    hash = "sha256-sBcv+T4sghSJZLwikRIbh3/MXU+LUs/tnMvywnws0ww=";
   };
 
-  cargoHash = "sha256-juo2bSusBY/FUkv0QWUK3dHxEURsQUEdnLJgTheDrLU=";
+  cargoHash = "sha256-CPNZDchvKyMaCXsmTShIvxrisYyPcctTG8HwRDnAkiI=";
 
   nativeBuildInputs = [
     pkg-config
