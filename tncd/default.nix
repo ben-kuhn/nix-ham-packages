@@ -9,13 +9,13 @@
 #  APT/RPM repos; this package tracks the 2.0 Go beta line.)
 buildGoModule rec {
   pname = "tncd";
-  version = "1.99-Beta";
+  version = "1.100-Beta";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
     rev = "v${version}";
-    hash = "sha256-yRZvxzNWkvmpkWUhcp5+mgLpF/Ma3dr3R9N5Vjtx5KU=";
+    hash = "sha256-+5tdTOQXhnTD/BmUFEkXHv6Vqbt9UjVr2v18Moeh8qI=";
   };
 
   # go.mod is unchanged since the tncd-go dev package; same vendorHash.
