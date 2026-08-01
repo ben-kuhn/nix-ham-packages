@@ -12,13 +12,13 @@
 
 stdenv.mkDerivation rec {
   pname = "linbpq";
-  version = "25.30";
+  version = "25.36";
 
   src = fetchFromGitHub {
     owner = "g8bpq";
     repo = "linbpq";
     rev = version;
-    sha256 = "04wdhy05g6h4aj196r3xk1zag45m8mz1drf47a2nbg1kgwwq0npi";
+    sha256 = "1384440cy8nmxk8as0jazgv44jwa8i9rb7593yvdj82s1bhiyy92";
   };
 
   buildInputs = [
@@ -36,6 +36,8 @@ stdenv.mkDerivation rec {
 
   # The Makefile uses pkg-config style linking but hardcodes library names
   # We need to ensure libraries are found
+  hardeningDisable = [ "format" "fortify" ];
+
   makeFlags = [
     "CC=${stdenv.cc.targetPrefix}cc"
   ];
