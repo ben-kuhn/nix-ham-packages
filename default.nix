@@ -1,23 +1,27 @@
 # NixOS Overlay for Amateur Radio Packages
 #
 # This overlay provides several amateur radio related packages:
+# - bpq-monitor: Web UI for BPQ node modem traffic and status
 # - cwdaemon: Morse code (CW) keying daemon (used by not1mm)
 # - linbpq: BPQ Packet Radio Node software
 # - ldsped: AGW Packet Engine replacement
 # - mercury: Mercury Modem
 # - not1mm: Amateur radio contest logger (PyQt6)
 # - paracon: Paracon terminal (depends on pyham-ax25 and pyham-pe)
+# - pat: Cross-platform Winlink client (updated to v1.0.0)
 # - pyham-ax25: AX.25 protocol library for Python
 # - pyham-pe: AGWPE protocol client library for Python
 # - qtsoundmodem: Qt Sound Modem
 # - qttermtcp: Qt Terminal TCP client
-# - tncd: AGWPE-to-KISS Translation Bridge
+# - tncd: AGWPE-to-KISS Translation Bridge (Go)
 # - tuxlink: Native Linux Winlink client (Rust + Tauri, alpha)
-# - pat: Cross-platform Winlink client (updated to v1.0.0)
 #
 # Usage: Import this file as an overlay in your NixOS configuration
 
 final: prev: {
+  # BPQ Monitor - web UI for BPQ node modem traffic and status
+  bpq-monitor = prev.callPackage ./bpq-monitor { };
+
   # LinBPQ - Linux BPQ Packet Radio Node
   linbpq = prev.callPackage ./linbpq { };
 
@@ -63,15 +67,7 @@ final: prev: {
   # QtTermTCP - Qt Terminal TCP client for BPQ
   qttermtcp = prev.callPackage ./qttermtcp { };
 
-  # ax253 - Pure Python AX.25 stack (dependency of kiss3)
-  ax253 = prev.callPackage ./tncd/ax253.nix { };
-
-  # kiss3 - Python KISS protocol implementation (dependency of tncd)
-  kiss3 = prev.callPackage ./tncd/kiss3.nix {
-    inherit (final) ax253;
-  };
-
-  # tncd - AGWPE-to-KISS Translation Bridge (2.0 Go port)
+  # tncd - AGWPE-to-KISS Translation Bridge (Go)
   tncd = prev.callPackage ./tncd { };
 
   # PAT - Cross-platform Winlink client (v1.0.0, upstream nixpkgs has 0.19.1)
