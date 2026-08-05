@@ -11,8 +11,8 @@ buildGoModule {
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "bpq-monitor";
-    rev = "995876135bd8b82731020ffb7722d4b296375a7f";
-    hash = "sha256-gai0lqdShGm7gF817P9Dsnh+IKXqodQy3aMfLBLnVdo=";
+    rev = "708ff9aff3bd3f2f8fbe3b45da6c610caa8692a9";
+    hash = "sha256-kVFiPr7uIBO1Cg0jF5GkPyL8gc1zmjI9GSqdF6gkPHg=";
   };
 
   # All dependencies are vendored in the repo.
