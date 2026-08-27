@@ -6,13 +6,13 @@
 
 buildGoModule {
   pname = "bpq-monitor";
-  version = "0-unstable-2026-08-05";
+  version = "0-unstable-2026-08-17";
 
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "bpq-monitor";
-    rev = "3fc0df9baee0741d4e4c3bcbd0c8224308788294";
-    hash = "sha256-kVFiPr7uIBO1Cg0jF5GkPyL8gc1zmjI9GSqdF6gkPHg=";
+    rev = "3dedd63b3bfa82f4441172f2f76ffdf3c841e00e";
+    hash = "sha256-pNCDlMg6bVuioRpyq8tocrkzKdU6VSEh6V0Q6GDw0E8=";
   };
 
   # All dependencies are vendored in the repo.
