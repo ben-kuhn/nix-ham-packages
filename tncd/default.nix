@@ -9,13 +9,18 @@
 #  APT/RPM repos; this package tracks the 2.0 Go beta line.)
 buildGoModule rec {
   pname = "tncd";
-  version = "1.101-Beta";
+  version = "1.101-Beta+txfix";
 
+  # Field-testing the fix/tx-silent-failure branch ahead of a tagged release:
+  # the Bluetooth TX path could accept writes that never reached the air, and
+  # tncd reported them as transmitted. Pinned to a commit rather than a tag
+  # until this has on-air time; restore the `rev = "v${version}"` form at the
+  # next release.
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "v${version}";
-    hash = "sha256-gfhNO77V8TA+c1RVXPSvO4Z3eETutHwamZuU/ry9AEQ=";
+    rev = "f6dcfb755f5f280922e4e32bf8e0435186897cc6";
+    hash = "sha256-rt/35lTGZtgIHnDoDVJMlkHxU6LQaUD/2grmAUGfo9Y=";
   };
 
   # go.mod is unchanged since the tncd-go dev package; same vendorHash.
