@@ -15,7 +15,7 @@ buildGoModule rec {
     owner = "ben-kuhn";
     repo = "tncd";
     rev = "v${version}";
-    hash = "sha256-yv+jTosxQ1PmideWVDCBrFD2zO2eCga3ilgI0yokBW8=";
+    hash = "sha256-jgQ95v/N3rdiYcGz9yoY1zNvaNGuBT+jrr41q6Kp5G4=";
   };
 
   # go.mod is unchanged since the tncd-go dev package; same vendorHash.
