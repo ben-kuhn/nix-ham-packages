@@ -9,26 +9,19 @@
 #  APT/RPM repos; this package tracks the 2.0 Go beta line.)
 buildGoModule rec {
   pname = "tncd";
-  version = "1.103-Beta+rigctl";
+  version = "1.103-Beta";
 
-  # Field-testing Benshi rig control ahead of a tagged release: an optional
-  # hamlib Net rigctl server ([rigctl.N]) that QSYs a BTech UV-PRO and
-  # relatives over the same Bluetooth link tncd already holds for KISS. Also
-  # carries the connect-setup fixes (a futile-relink budget, so an unreachable
-  # station can no longer flap the Bluetooth link, and FRACK-sized SABM/SABME
-  # retries). Pinned to a commit rather than a tag until this has on-air time;
-  # restore the `rev = "v${version}"` form at the next release.
-  #
-  # Rig control writes the channel record the radio's active VFO points at --
-  # on these radios a VFO is an index into the channel table, so that record
-  # IS the VFO. It refuses to write anything that looks like a memory channel
-  # (named, below vfo_channel_min, carrying a tx/rx split, or dual watch), but
-  # the OTA checklist for it is not signed off yet. rigctl is off by default.
+  # Tracks the latest TAGGED release, deliberately. This overlay is public and
+  # other people's configs reference it, so it must not point at whatever main
+  # happens to be. Ben's own fleet tests main by a separate `tncd-src` flake
+  # input that overrides this package's src -- see nixos-config's
+  # modules/ham-radio.nix -- which keeps "what the fleet is testing" and "what
+  # this overlay ships to everyone else" independent.
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "b1843fa4de649e88196cb8b703366cf47ca8e713";
-    hash = "sha256-u4vnb9U05FD8L0X7+HVmMuQymFIELYuQesiCZ7FJr/g=";
+    rev = "v${version}";
+    hash = "sha256-mCJ1PFeA9HkxOJyPsnF3Bcfw3APWe/RKunrL1dJhLwU=";
   };
 
   # go.mod is unchanged since the tncd-go dev package; same vendorHash.
