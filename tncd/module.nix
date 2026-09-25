@@ -52,6 +52,18 @@ in {
             # init_string = "INT KISS\r";  # command to enter KISS mode
             # init_delay = 1.0;            # seconds to wait after init_string
           };
+          # Optional hamlib Net rigctl server, one section per port, so PAT
+          # can QSY the radio. Only meaningful for Benshi-protocol radios
+          # (BTech UV-PRO, Radioddity GA-5WB/DB-50B, Vero VR-N76/VR-N7500) on
+          # a bluetooth/ble port -- rig control rides the same link as KISS.
+          # "rigctl.0" = {
+          #   enabled = true;
+          #   listen_host = "127.0.0.1";
+          #   listen_port = 4532;   # hamlib's conventional port
+          #   # allow_ptt = false;  # experimental: the radio has no separate
+          #                         # key/unkey command, only a toggle
+          #   # ptt_timeout = 30;   # seconds; bounds every key
+          # };
         }
       '';
     };
