@@ -7,9 +7,11 @@ This repository contains NixOS packages for amateur radio software.
 | Package | Description |
 |---------|-------------|
 | `cwdaemon` | Morse code (CW) keying daemon (UDP-controlled, used by Not1MM) |
+| `hams-local-relay` | Hams.com Local Hardware Relay (proprietary, pre-built; requires `allowUnfree`) |
 | `linbpq` | Linux BPQ Packet Radio Node (includes NixOS module for service) |
 | `ldsped` | Open-source AGW Packet Engine replacement for AX.25 packet radio |
 | `mercury-modem` | Mercury Modem for HF digital communications |
+| `modem73` | High-speed software modem (KISS TNC) for HF/VHF/UHF 2400 Hz radios |
 | `not1mm` | Amateur radio contest logger (PyQt6) — talks to rigctld and cwdaemon |
 | `paracon` | Paracon packet radio terminal |
 | `packet-browser-server` | Web page fetcher for AX.25 packet radio (includes NixOS module) |
@@ -17,7 +19,7 @@ This repository contains NixOS packages for amateur radio software.
 | `qtsoundmodem` | Qt-based sound modem for packet radio |
 | `qttermtcp` | Qt Terminal TCP client for BPQ packet nodes |
 | `tncd` | AGWPE-to-KISS Translation Bridge (includes NixOS module for service) |
-| `tuxlink` | Native Linux Winlink client (Rust + Tauri). Alpha. |
+| `tuxlink` | Native Linux Winlink client (Rust + Tauri). Alpha; tracks upstream pre-releases. |
 
 ## Installation
 
@@ -41,9 +43,11 @@ in
 
   environment.systemPackages = with pkgs; [
     cwdaemon
+    hams-local-relay
     linbpq
     ldsped
     mercury-modem
+    modem73
     not1mm
     paracon
     packet-browser-server
@@ -90,9 +94,85 @@ nix-env -iA nixpkgs.qttermtcp
 nix-env -iA nixpkgs.paracon
 nix-env -iA nixpkgs.ldsped
 nix-env -iA nixpkgs.mercury-modem
+nix-env -iA nixpkgs.modem73
 nix-env -iA nixpkgs.not1mm
 nix-env -iA nixpkgs.cwdaemon
+nix-env -iA nixpkgs.hams-local-relay
 ```
+
+---
+
+## Hams.com Local Relay
+
+`hams-local-relay` is hams.com's per-user daemon that connects a local radio
+(via Hamlib) and sound device to the hams.com Web Shack. It provides FT8,
+WSPR, PSK31, RTTY, FreeDV/RADE, satellite tracking, LoTW uploads, and CAT
+sharing on `127.0.0.1:4533` / `127.0.0.1:4534`.
+
+For Logbook of the World uploads, also install `pkgs.tqsl` and make sure it
+is available on the service's `PATH`; the relay shells out to the system
+`tqsl` rather than bundling it.
+
+The relay is **proprietary software** distributed by hams.com as a pre-built
+binary. This overlay repackages the official `.deb`; the source is available
+from hams.com after registration, but is not open source. Because the
+package is marked unfree, enable unfree packages in your configuration:
+```nix
+nixpkgs.config.allowUnfree = true;
+```
+
+Updates are handled through the overlay. The relay's built-in self-updater
+cannot replace a binary in the immutable Nix store, so upgrade by bumping the
+package version rather than using the relay's update button.
+
+### NixOS user service
+
+The relay runs inside your systemd user session so it can use your audio
+devices and serial ports:
+
+```nix
+{ config, pkgs, ... }:
+
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
+{
+  nixpkgs.overlays = [
+    (import ham-packages)
+  ];
+
+  nixpkgs.config.allowUnfree = true;
+
+  imports = [
+    "${ham-packages}/hams-local-relay/module.nix"
+  ];
+
+  services.hams-local-relay = {
+    enable = true;
+    # On a multi-user machine, restrict the service to one user.
+    user = "alice";
+  };
+
+  # The relay needs your sound card and radio's serial port.
+  users.users.alice.extraGroups = [ "audio" "dialout" ];
+}
+```
+
+Then open <https://localhost:7388> and accept the relay's self-signed
+certificate the first time. Use `systemctl --user status hams-local-relay`
+to check the service. To keep it running when the user is not logged in, also
+set `users.users.alice.linger = true` (or run `loginctl enable-linger alice`).
+
+Without the module, install `pkgs.hams-local-relay` and start
+`hams-local-relay` manually; it stores its data in
+`~/.local/share/hams_local_relay`.
+
+The package also ships the upstream DKMS sources for the `ch341` USB serial
+driver under `share/hams-local-relay/dkms`, for kernels that do not include
+it. NixOS kernels normally already provide `ch341`.
 
 ---
 
@@ -284,6 +364,7 @@ Configure Not1MM to point at the host/port of each running daemon.
 ## Package Documentation
 
 - [LinBPQ](linbpq/README.md) - Full BPQ node setup and configuration
+- [hams-local-relay](https://hams.com/manual/54-local-relay-installation-guide) - Hams.com Local Relay installation guide
 - [ldsped](ldsped/INSTALL-NIXOS.md) - AGW Packet Engine setup
 - [paracon](paracon/INSTALL.md) - Packet radio terminal
 - [packet-browser](https://github.com/ben-kuhn/docker-packet-browser) - Web browser over AX.25 (client/server)

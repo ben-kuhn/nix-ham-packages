@@ -6,12 +6,12 @@
 
 python3Packages.buildPythonPackage rec {
   pname = "notctyparser";
-  version = "23.6.21";
+  version = "26.8.31";
   pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-6NzyxITeow02pOGB0cm/L4bfQ1MdENVHbNFwPMnXCu8=";
+    hash = "sha256-ZUIqnI+xVs8StZ/UJFYEpsV6VtP4U+SlUYm3HToQSsg=";
   };
 
   build-system = [ python3Packages.setuptools ];

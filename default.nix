@@ -3,9 +3,11 @@
 # This overlay provides several amateur radio related packages:
 # - bpq-monitor: Web UI for BPQ node modem traffic and status
 # - cwdaemon: Morse code (CW) keying daemon (used by not1mm)
+# - hams-local-relay: Hams.com Local Hardware Relay (proprietary, binary)
 # - linbpq: BPQ Packet Radio Node software
 # - ldsped: AGW Packet Engine replacement
 # - mercury: Mercury Modem
+# - modem73: High-speed software modem (KISS TNC) for 2400 Hz radios
 # - not1mm: Amateur radio contest logger (PyQt6)
 # - paracon: Paracon terminal (depends on pyham-ax25 and pyham-pe)
 # - pat: Cross-platform Winlink client (updated to v1.0.0)
@@ -31,6 +33,9 @@ final: prev: {
   # Mercury Modem
   mercury-modem = prev.callPackage ./mercury { };
 
+  # MODEM73 - software modem (KISS TNC) for HF/VHF/UHF at 2400 Hz
+  modem73 = prev.callPackage ./modem73 { };
+
   # PyHam AX.25 - AX.25 protocol library for Python
   pyham-ax25 = prev.callPackage ./pyham-ax25 { };
 
@@ -55,6 +60,10 @@ final: prev: {
 
   # cwdaemon - Morse keying daemon (used by not1mm)
   cwdaemon = prev.callPackage ./cwdaemon { };
+
+  # Hams.com Local Hardware Relay - per-user radio/audio bridge daemon
+  # (proprietary, pre-built binary; requires allowUnfree)
+  hams-local-relay = prev.callPackage ./hams-local-relay { };
 
   # Paracon - Packet radio terminal application
   paracon = prev.callPackage ./paracon {

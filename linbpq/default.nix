@@ -8,17 +8,18 @@
 , libpcap
 , zlib
 , libcap
+, libbacktrace
 }:
 
 stdenv.mkDerivation rec {
   pname = "linbpq";
-  version = "25.36";
+  version = "26.1";
 
   src = fetchFromGitHub {
     owner = "g8bpq";
     repo = "linbpq";
     rev = version;
-    sha256 = "1384440cy8nmxk8as0jazgv44jwa8i9rb7593yvdj82s1bhiyy92";
+    sha256 = "0xnjnkvk7b605pb7syvz9sl3012pfi4nbryncdnrmbk4wlb0c1br";
   };
 
   buildInputs = [
@@ -28,6 +29,7 @@ stdenv.mkDerivation rec {
     libconfig
     libpcap
     zlib
+    libbacktrace
   ];
 
   nativeBuildInputs = [

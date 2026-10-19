@@ -28,13 +28,17 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "tuxlink";
-  version = "0.94.0";
+
+  # Tracks upstream pre-releases deliberately. tuxlink is under heavy
+  # development and has no stable line: the newest non-prerelease tag (0.94.0)
+  # lags far behind, while every tag after it is marked pre-release upstream.
+  version = "0.106.0";
 
   src = fetchFromGitHub {
     owner = "cameronzucker";
     repo = "tuxlink";
     rev = "v${version}";
-    hash = "sha256-09uGwmdcLUZ6cw0X96Xi70GFfkGeAbbjMTOvQkcDHso=";
+    hash = "sha256-n9ThsYPKjDXNPY5pek8Pskly7T3LffHP1sQCbrtX87g=";
   };
 
   sourceRoot = "${src.name}";
@@ -49,7 +53,7 @@ rustPlatform.buildRustPackage rec {
   pnpmDeps = pnpm_10.fetchDeps {
     inherit pname version src;
     fetcherVersion = 1;
-    hash = "sha256-p2hqrMHpJdrKemmxS2UleCNpB7uHR+r8WZPNlaD/fv4=";
+    hash = "sha256-zZPfwqu6IavOopYnfGCWCSchqXZdh1QiQXrWYUE+0Vk=";
   };
 
   nativeBuildInputs = [
