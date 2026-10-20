@@ -76,8 +76,13 @@ in
       wantedBy = [ "default.target" ];
 
       path = with pkgs; [
+        # The relay shells out to amixer for sound-card mixer takeover and
+        # pactl to ask PipeWire/PulseAudio for the default device.  Without
+        # these on PATH it cannot open the radio's audio device.
+        alsa-utils
         bash
         coreutils
+        pulseaudio
       ];
 
       environment = cfg.environment;
