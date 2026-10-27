@@ -20,6 +20,7 @@ This repository contains NixOS packages for amateur radio software.
 | `qttermtcp` | Qt Terminal TCP client for BPQ packet nodes |
 | `tncd` | AGWPE-to-KISS Translation Bridge (includes NixOS module for service) |
 | `tuxlink` | Native Linux Winlink client (Rust + Tauri). Alpha; tracks upstream pre-releases. |
+| `xara` | VARA-compatible HF/FM software modem (registered speeds enabled; includes `xara-monitor`) |
 
 ## Installation
 
@@ -54,6 +55,7 @@ in
     packet-browser-client
     qtsoundmodem
     qttermtcp
+    xara
   ];
 }
 ```
@@ -97,6 +99,7 @@ nix-env -iA nixpkgs.mercury-modem
 nix-env -iA nixpkgs.modem73
 nix-env -iA nixpkgs.not1mm
 nix-env -iA nixpkgs.cwdaemon
+nix-env -iA nixpkgs.xara
 nix-env -iA nixpkgs.hams-local-relay
 ```
 

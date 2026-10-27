@@ -17,6 +17,7 @@
 # - qttermtcp: Qt Terminal TCP client
 # - tncd: AGWPE-to-KISS Translation Bridge (Go)
 # - tuxlink: Native Linux Winlink client (Rust + Tauri, alpha)
+# - xara: VARA-compatible HF/FM software modem
 #
 # Usage: Import this file as an overlay in your NixOS configuration
 
@@ -84,6 +85,9 @@ final: prev: {
 
   # Tuxlink - Linux-native Winlink client (Tauri 2.x, Rust + React)
   tuxlink = prev.callPackage ./tuxlink { };
+
+  # xara - VARA-compatible HF/FM software modem
+  xara = prev.callPackage ./xara { };
 
   # Packet Browser Server - Web page fetcher for AX.25 packet radio
   packet-browser-server = prev.callPackage ./packet-browser-server { };
