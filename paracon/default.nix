@@ -69,7 +69,7 @@ EOF
       - Multiple simultaneous AX.25 connected-mode sessions
       - Unproto (datagram) mode for keyboard-to-keyboard chat
       - Cross-platform text-based console interface
-      - AGWPE protocol compatibility with servers like Direwolf and ldsped
+      - AGWPE protocol compatibility with servers such as Direwolf
 
       A straightforward packet radio terminal for ham radio enthusiasts.
     '';

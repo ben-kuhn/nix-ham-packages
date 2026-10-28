@@ -9,7 +9,6 @@ This repository contains NixOS packages for amateur radio software.
 | `cwdaemon` | Morse code (CW) keying daemon (UDP-controlled, used by Not1MM) |
 | `hams-local-relay` | Hams.com Local Hardware Relay (proprietary, pre-built; requires `allowUnfree`) |
 | `linbpq` | Linux BPQ Packet Radio Node (includes NixOS module for service) |
-| `ldsped` | Open-source AGW Packet Engine replacement for AX.25 packet radio |
 | `mercury-modem` | Mercury Modem for HF digital communications |
 | `modem73` | High-speed software modem (KISS TNC) for HF/VHF/UHF 2400 Hz radios |
 | `not1mm` | Amateur radio contest logger (PyQt6) — talks to rigctld and cwdaemon |
@@ -46,7 +45,6 @@ in
     cwdaemon
     hams-local-relay
     linbpq
-    ldsped
     mercury-modem
     modem73
     not1mm
@@ -94,7 +92,6 @@ nix-env -iA nixpkgs.packet-browser-server
 nix-env -iA nixpkgs.qtsoundmodem
 nix-env -iA nixpkgs.qttermtcp
 nix-env -iA nixpkgs.paracon
-nix-env -iA nixpkgs.ldsped
 nix-env -iA nixpkgs.mercury-modem
 nix-env -iA nixpkgs.modem73
 nix-env -iA nixpkgs.not1mm
@@ -432,7 +429,6 @@ Configure Not1MM to point at the host/port of each running daemon.
 
 - [LinBPQ](linbpq/README.md) - Full BPQ node setup and configuration
 - [hams-local-relay](https://hams.com/manual/54-local-relay-installation-guide) - Hams.com Local Relay installation guide
-- [ldsped](ldsped/INSTALL-NIXOS.md) - AGW Packet Engine setup
 - [paracon](paracon/INSTALL.md) - Packet radio terminal
 - [packet-browser](https://github.com/ben-kuhn/docker-packet-browser) - Web browser over AX.25 (client/server)
 - [qtsoundmodem](qtsoundmodem/INSTALL.md) - Sound modem setup

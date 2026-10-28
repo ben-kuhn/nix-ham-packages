@@ -5,7 +5,6 @@
 # - cwdaemon: Morse code (CW) keying daemon (used by not1mm)
 # - hams-local-relay: Hams.com Local Hardware Relay (proprietary, binary)
 # - linbpq: BPQ Packet Radio Node software
-# - ldsped: AGW Packet Engine replacement
 # - mercury: Mercury Modem
 # - modem73: High-speed software modem (KISS TNC) for 2400 Hz radios
 # - not1mm: Amateur radio contest logger (PyQt6)
@@ -27,9 +26,6 @@ final: prev: {
 
   # LinBPQ - Linux BPQ Packet Radio Node
   linbpq = prev.callPackage ./linbpq { };
-
-  # LDSPED - AGW Packet Engine replacement for AX.25 packet radio
-  ldsped = prev.callPackage ./ldsped { };
 
   # Mercury Modem
   mercury-modem = prev.callPackage ./mercury { };

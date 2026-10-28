@@ -29,7 +29,7 @@ python3Packages.buildPythonPackage rec {
     longDescription = ''
       pyham_pe provides a full client library for the AGWPE (AGW Packet Engine)
       protocol used in amateur packet radio. It enables Python applications to
-      communicate with AGWPE-compatible servers like Direwolf and ldsped.
+      communicate with AGWPE-compatible servers such as Direwolf.
 
       Features:
       - Connected mode AX.25 sessions
