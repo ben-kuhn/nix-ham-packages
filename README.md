@@ -267,6 +267,70 @@ for full module options.
 
 ---
 
+## xara Service
+
+xara includes a NixOS module with typed options for every modem setting. Any
+number of instances can run independently; each
+`services.xara.instances.<name>` becomes a `xara-<name>` systemd unit. Set
+`user` to run an instance as a systemd --user service (for that user's
+PipeWire session); otherwise it runs as a system service under the `xara` user.
+
+```nix
+{ config, pkgs, ... }:
+
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
+{
+  nixpkgs.overlays = [ (import ham-packages) ];
+
+  imports = [ "${ham-packages}/xara/module.nix" ];
+
+  services.xara = {
+    enable = true;
+
+    instances.fm = {
+      user = "ku0hn";
+      call = "N0CALL";
+      fm = "wide";
+      audio = "pulse";
+      capture = "alsa_input.usb-...";
+      playback = "alsa_output.usb-...";
+      radio = true;
+      ptt = "rigctld:127.0.0.1:4532";
+      port = 8302;       # command port; data port is port + 1
+      kissPort = 8400;
+      driveDb = -3;
+      registered = true;
+    };
+
+    instances.hf = {
+      call = "N0CALL";
+      hf = 500;
+      audio = "pulse";
+      capture = "alsa_input.usb-...";
+      playback = "alsa_output.usb-...";
+      radio = true;
+      ptt = "rigctld:127.0.0.1:4532";
+      port = 8300;
+      kissPort = null;   # disable KISS
+      driveDb = -5;
+      registered = true;
+    };
+  };
+}
+```
+
+`autoStart = false` defines the unit without enabling it (useful for A/B
+testing). `preStart`/`postStart` can wait for sound cards and pin PulseAudio
+streams. The package is built with registered mode enabled, so `registered =
+true` turns on the higher VARA speeds.
+
+---
+
 ## Packet Browser Service
 
 Packet Browser is a client/server system for browsing web pages over AX.25 packet radio. The server fetches and sanitizes web pages using headless Chromium, while the client connects via AGWPE and provides a web proxy interface.
