@@ -9,13 +9,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "xara";
-  version = "0.1.1";
+  version = "0.1.2";
 
   src = fetchFromGitHub {
     owner = "x0rro";
     repo = "xara";
     rev = "v${version}";
-    hash = "sha256-C7eSKEfiR3aXJ0xpjWQTSR1brQcxCl3d/ROk3QJwad8=";
+    hash = "sha256-jAIjd2OJZp8ZwHg/ZNW/o/zlFVUJe1ehCR+Jb97Vmaw=";
   };
 
   cargoLock.lockFile = "${src}/Cargo.lock";
