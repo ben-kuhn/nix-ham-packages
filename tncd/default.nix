@@ -13,10 +13,10 @@ buildGoModule rec {
 
   # Tracks the latest TAGGED release, deliberately. This overlay is public and
   # other people's configs reference it, so it must not point at whatever main
-  # happens to be. Ben's own fleet tests main by a separate `tncd-src` flake
-  # input that overrides this package's src -- see nixos-config's
-  # modules/ham-radio.nix -- which keeps "what the fleet is testing" and "what
-  # this overlay ships to everyone else" independent.
+  # happens to be. The maintainer's own fleet tests main by a separate
+  # `tncd-src` flake input that overrides this package's src -- see
+  # nixos-config's modules/ham-radio.nix -- which keeps "what the fleet is
+  # testing" and "what this overlay ships to everyone else" independent.
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";

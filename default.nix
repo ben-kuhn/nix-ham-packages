@@ -5,9 +5,11 @@
 # - cwdaemon: Morse code (CW) keying daemon (used by not1mm)
 # - hams-local-relay: Hams.com Local Hardware Relay (proprietary, binary)
 # - linbpq: BPQ Packet Radio Node software
-# - mercury: Mercury Modem
+# - mercury-modem: Mercury Modem
 # - modem73: High-speed software modem (KISS TNC) for 2400 Hz radios
 # - not1mm: Amateur radio contest logger (PyQt6)
+# - packet-browser-client: AGWPE client with a web proxy interface
+# - packet-browser-server: Web page fetcher for AX.25 packet radio
 # - paracon: Paracon terminal (depends on pyham-ax25 and pyham-pe)
 # - pat: Cross-platform Winlink client (updated to v1.0.0)
 # - pyham-ax25: AX.25 protocol library for Python
@@ -17,6 +19,10 @@
 # - tncd: AGWPE-to-KISS Translation Bridge (Go)
 # - tuxlink: Native Linux Winlink client (Rust + Tauri, alpha)
 # - xara: VARA-compatible HF/FM software modem
+#
+# NixOS modules live next to their packages:
+# hams-local-relay, linbpq, packet-browser-client, packet-browser-server,
+# tncd and xara each have a module.nix.
 #
 # Usage: Import this file as an overlay in your NixOS configuration
 

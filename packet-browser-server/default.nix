@@ -40,7 +40,7 @@ rustPlatform.buildRustPackage rec {
   doCheck = false;
 
   meta = {
-    description = "Packet radio web browser server - fetches and sanitizes web pages for AX.25";
+    description = "Packet radio web browser server - fetches and sanitizes web pages with headless Firefox";
     homepage = "https://github.com/ben-kuhn/packet-browser";
     license = lib.licenses.gpl3Plus;
     platforms = lib.platforms.linux;

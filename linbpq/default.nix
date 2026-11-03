@@ -127,7 +127,12 @@ EOF
       - APRS support
 
       Configuration directory: /etc/linbpq
-      Run with: linbpq -d /etc/linbpq -c /etc/linbpq -l /etc/linbpq/logs
+      NixOS module paths:
+        - configuration: /etc/linbpq
+        - data:          /var/lib/linbpq
+        - logs:          /var/log/linbpq
+      Run manually with:
+        linbpq -c /etc/linbpq -d /var/lib/linbpq -l /var/log/linbpq
     '';
     homepage = "https://www.cantab.net/users/john.wiseman/Documents/LinBPQ.html";
     license = licenses.gpl3Plus;

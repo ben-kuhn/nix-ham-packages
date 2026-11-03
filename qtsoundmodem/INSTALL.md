@@ -1,6 +1,8 @@
 # Installing QtSoundModem on NixOS
 
-QtSoundModem is a sound modem for packet radio.
+QtSoundModem is a Qt sound-card modem for packet radio. It is a multi-platform
+port of UZ7HO's Sound Modem and supports multiple modems, baud rates from 300
+to 4800, FX.25 and IL2P.
 
 ## Installation
 
@@ -40,7 +42,18 @@ QtSoundModem
 
 Or find "QtSoundModem" in your application menu.
 
+In the GUI:
+
+1. Select the sound-card capture and playback devices.
+2. Configure one or more modems (baud rate, mode, KISS port).
+3. Point your packet software (for example LinBPQ, Paracon or tncd) at the
+   KISS TCP port you configured.
+
+QtSoundModem needs access to your sound devices; on NixOS the desktop user is
+normally in the `audio` group already.
+
 ## Documentation
 
 - [QtSoundModem GitHub Repository](https://github.com/g8bpq/QtSoundModem)
 - [OARC Wiki](https://wiki.oarc.uk/packet:qtsoundmodem)
+- [QtSoundModem documentation](https://www.cantab.net/users/john.wiseman/Documents/QtSoundModem.html)

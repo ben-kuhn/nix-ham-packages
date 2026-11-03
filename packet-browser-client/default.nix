@@ -44,7 +44,7 @@ rustPlatform.buildRustPackage rec {
   '';
 
   meta = {
-    description = "Packet radio web browser client - AGWPE client with web proxy interface";
+    description = "Packet radio web browser client - AX.25/AGWPE and VARA web proxy";
     homepage = "https://github.com/ben-kuhn/packet-browser";
     license = lib.licenses.gpl3Plus;
     platforms = lib.platforms.unix;

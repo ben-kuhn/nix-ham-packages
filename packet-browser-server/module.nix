@@ -5,9 +5,17 @@ with lib;
 let
   cfg = config.services.packet-browser-server;
 
-  # Wrapper script that sets CHROMIUM_PATH and other runtime env
+  logDir = "/var/log/packet-browser";
+
+  # Firefox is launched directly by geckodriver, which rejects wrapper
+  # scripts. Use the unwrapped binary and supply the NSS/p11-kit libraries it
+  # dlopens at runtime (libnssckbi.so and the p11-kit trust module).
+  firefoxLibraryPath = makeLibraryPath [ cfg.firefoxPackage pkgs.nss pkgs.p11-kit ];
+
+  # Wrapper script that sets the runtime environment for the server. The
+  # server expects FIREFOX_PATH and GECKODRIVER_PATH; the old CHROMIUM_PATH
+  # variable was removed upstream when packet-browser switched to Firefox.
   wrapperScript = pkgs.writeShellScriptBin "packet-browser-server-wrapper" ''
-    export CHROMIUM_PATH="${cfg.chromiumPackage}/bin/chromium"
     export LISTEN_PORT="${toString cfg.listenPort}"
     export PORTAL_URL="${cfg.portalUrl}"
     export IDLE_TIMEOUT_MINUTES="${toString cfg.idleTimeoutMinutes}"
@@ -15,14 +23,17 @@ let
     export BLOCKED_RANGES="${concatStringsSep "," cfg.blockedRanges}"
     export BLOCKLIST_ENABLED="${boolToString cfg.blocklistEnabled}"
     export BLOCKLIST_REFRESH_HOURS="${toString cfg.blocklistRefreshHours}"
-    ${optionalString (cfg.blocklistUrls != []) ''export BLOCKLIST_URLS="${concatStringsSep "," cfg.blocklistUrls}"''}
-    export LOG_ROTATE_ENABLED="${boolToString cfg.logRotateEnabled}"
-    export LOG_RETAIN_DAYS="${toString cfg.logRetainDays}"
-    ${optionalString cfg.syslogEnabled ''
-      export SYSLOG_ENABLED=true
-      export SYSLOG_HOST="${cfg.syslogHost}"
-      export SYSLOG_PORT="${toString cfg.syslogPort}"
-    ''}
+    export BLOCKLIST_URLS="${concatStringsSep "," cfg.blocklistUrls}"
+    export ALLOWED_CALLSIGNS="${concatStringsSep "," cfg.allowedCallsigns}"
+    export ORIGIN_CC_HEAD_TIMEOUT_MS="${toString cfg.originCcHeadTimeoutMs}"
+    export DEFAULT_MAX_AGE_SECONDS="${toString cfg.defaultMaxAgeSeconds}"
+    export MAX_MAX_AGE_SECONDS="${toString cfg.maxMaxAgeSeconds}"
+
+    export FIREFOX_PATH="${cfg.firefoxPackage}/bin/firefox"
+    export GECKODRIVER_PATH="${cfg.geckodriverPackage}/bin/geckodriver"
+    export LD_LIBRARY_PATH="${firefoxLibraryPath}"
+    export SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+
     exec ${cfg.package}/bin/packet-browser-server
   '';
 in
@@ -37,11 +48,22 @@ in
       description = "The packet-browser-server package to use.";
     };
 
-    chromiumPackage = mkOption {
+    firefoxPackage = mkOption {
       type = types.package;
-      default = pkgs.chromium;
-      defaultText = literalExpression "pkgs.chromium";
-      description = "Chromium package to use for headless page rendering.";
+      default = pkgs.firefox-esr-unwrapped;
+      defaultText = literalExpression "pkgs.firefox-esr-unwrapped";
+      description = ''
+        Firefox package used for headless page rendering. Use the unwrapped
+        build: geckodriver passes the path directly to the browser and rejects
+        wrapper scripts that are not ELF executables.
+      '';
+    };
+
+    geckodriverPackage = mkOption {
+      type = types.package;
+      default = pkgs.geckodriver;
+      defaultText = literalExpression "pkgs.geckodriver";
+      description = "geckodriver package used to control headless Firefox.";
     };
 
     user = mkOption {
@@ -82,14 +104,21 @@ in
 
     blockedRanges = mkOption {
       type = types.listOf types.str;
-      default = [ "127.0.0.0/8" "10.0.0.0/8" "172.16.0.0/12" "192.168.0.0/16" "169.254.0.0/16" ];
+      default = [
+        "0.0.0.0/8"
+        "127.0.0.0/8"
+        "10.0.0.0/8"
+        "172.16.0.0/12"
+        "192.168.0.0/16"
+        "169.254.0.0/16"
+      ];
       description = "CIDR ranges blocked for SSRF prevention.";
     };
 
     blocklistEnabled = mkOption {
       type = types.bool;
       default = true;
-      description = "Enable hosts-based blocklist.";
+      description = "Enable the in-process hosts-based blocklist.";
     };
 
     blocklistUrls = mkOption {
@@ -105,46 +134,34 @@ in
       description = "How often to refresh blocklists from URLs (hours).";
     };
 
-    logRotateEnabled = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable automatic log rotation.";
+    allowedCallsigns = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = ''
+        Callsigns that bypass the strict ITU-shape validation. Intended for
+        off-air testing, where LinBPQ may inject synthetic callsigns such as
+        DEMOUSR or W1TEST. Matching is case-insensitive and ignores an SSID
+        suffix.
+      '';
+      example = [ "DEMOUSR" "W1TEST" ];
     };
 
-    logRetainDays = mkOption {
+    originCcHeadTimeoutMs = mkOption {
       type = types.int;
-      default = 30;
-      description = "Number of days to retain rotated logs.";
+      default = 3000;
+      description = "Timeout in milliseconds for the upstream Cache-Control HEAD probe.";
     };
 
-    syslogEnabled = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Forward logs to external syslog server.";
+    defaultMaxAgeSeconds = mkOption {
+      type = types.int;
+      default = 3600;
+      description = "Default cache max-age in seconds when the origin gives no directive.";
     };
 
-    syslogHost = mkOption {
-      type = types.str;
-      default = "";
-      description = "Syslog server hostname or IP.";
-    };
-
-    syslogPort = mkOption {
-      type = types.port;
-      default = 514;
-      description = "Syslog server port.";
-    };
-
-    logDir = mkOption {
-      type = types.path;
-      default = "/var/log/packet-browser";
-      description = "Directory for log files.";
-    };
-
-    hostsFile = mkOption {
-      type = types.path;
-      default = "/etc/packet-browser/hosts";
-      description = "Hosts file for blocklist management.";
+    maxMaxAgeSeconds = mkOption {
+      type = types.int;
+      default = 2592000;
+      description = "Upper bound in seconds for origin-provided cache max-age values.";
     };
 
     openFirewall = mkOption {
@@ -164,8 +181,7 @@ in
     users.groups.${cfg.group} = { };
 
     systemd.tmpfiles.rules = [
-      "d ${cfg.logDir} 0750 ${cfg.user} ${cfg.group} -"
-      "d ${dirOf cfg.hostsFile} 0750 ${cfg.user} ${cfg.group} -"
+      "d ${logDir} 0750 ${cfg.user} ${cfg.group} -"
     ];
 
     systemd.services.packet-browser-server = {
@@ -181,7 +197,7 @@ in
         Restart = "on-failure";
         RestartSec = 5;
 
-        ReadWritePaths = [ cfg.logDir (dirOf cfg.hostsFile) ];
+        ReadWritePaths = [ logDir ];
 
         NoNewPrivileges = true;
         PrivateTmp = true;

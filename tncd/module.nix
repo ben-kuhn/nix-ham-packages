@@ -28,9 +28,9 @@ in {
     settings = lib.mkOption {
       type = iniFormat.type;
       description = ''
-        tncd configuration written as a Nix attribute set.  Generates
-        <filename>/etc/tncd.ini</filename> automatically.  Ignored when
-        <option>configFile</option> is set.
+        tncd configuration written as a Nix attribute set.  The INI file is
+        generated into the Nix store and passed to tncd with <literal>-c</literal>.
+        Ignored when <option>configFile</option> is set.
       '';
       default = {};
       example = lib.literalExpression ''

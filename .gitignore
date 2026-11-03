@@ -1,3 +1,6 @@
 result
 result*
 */result
+
+# Local editor/agent state
+.claude/

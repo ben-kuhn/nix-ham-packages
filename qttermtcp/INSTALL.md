@@ -1,6 +1,7 @@
 # Installing QtTermTCP on NixOS
 
-QtTermTCP is a GUI terminal for connecting to BPQ packet nodes.
+QtTermTCP is a Qt terminal client for BPQ packet nodes. It supports BPQ's
+FBB mode as well as AGWPE, KISS and VARA modems.
 
 ## Installation
 
@@ -40,6 +41,14 @@ QtTermTCP
 
 Or find "QtTermTCP" in your application menu.
 
+Use the connection dialog to choose a transport:
+
+- **BPQ/FBB** — connect to a BPQ node's FBB port (8011 by default).
+- **AGWPE** — connect to an AGWPE server such as Direwolf or tncd.
+- **KISS** — connect directly to a KISS TCP port.
+- **VARA** — connect to a VARA-compatible modem such as xara.
+
 ## Documentation
 
 - [QtTermTCP GitHub Repository](https://github.com/g8bpq/QtTermTCP)
+- [QtTermTCP documentation](https://www.cantab.net/users/john.wiseman/Documents/QtTermTCP.html)
