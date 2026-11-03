@@ -83,61 +83,115 @@ The packages are now available system-wide. No additional installation steps
 are needed unless a section below says otherwise (for example, `modem73` udev
 rules or a service module).
 
-**Alternative: User-level installation**
+**Alternative: user-level packages**
 
-If you prefer to install packages into your user profile instead of
-system-wide, add only the overlay to `configuration.nix` (omit
-`environment.systemPackages`), rebuild, then:
-
-```bash
-nix-env -iA nixos.packet-browser-client
-nix-env -iA nixos.packet-browser-server
-nix-env -iA nixos.pat
-```
-
-### Non-NixOS (Nix Package Manager)
-
-For systems using the standalone Nix package manager:
-
-```bash
-# Clone the overlay
-git clone https://github.com/ben-kuhn/nix-ham-packages \
-  ~/.config/nixpkgs/overlays/nix-ham-packages
-
-# Create the overlay symlink
-ln -s ~/.config/nixpkgs/overlays/nix-ham-packages/default.nix \
-  ~/.config/nixpkgs/overlays/ham-radio.nix
-
-# Install packages
-nix-env -iA nixpkgs.bpq-monitor
-nix-env -iA nixpkgs.cwdaemon
-nix-env -iA nixpkgs.linbpq
-nix-env -iA nixpkgs.mercury-modem
-nix-env -iA nixpkgs.modem73
-nix-env -iA nixpkgs.not1mm
-nix-env -iA nixpkgs.paracon
-nix-env -iA nixpkgs.packet-browser-client
-nix-env -iA nixpkgs.packet-browser-server
-nix-env -iA nixpkgs.pat
-nix-env -iA nixpkgs.qtsoundmodem
-nix-env -iA nixpkgs.qttermtcp
-nix-env -iA nixpkgs.tncd
-nix-env -iA nixpkgs.tuxlink
-nix-env -iA nixpkgs.xara
-```
-
-`hams-local-relay` is unfree and must be enabled explicitly, and `tuxlink`
-currently only builds on `x86_64-linux`:
+On NixOS, packages can be installed into a specific user's profile
+declaratively instead of system-wide. Keep the overlay in
+`configuration.nix` and add a `packages` list to the user:
 
 ```nix
-# ~/.config/nixpkgs/config.nix
+{ config, pkgs, ... }:
+
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
 {
-  allowUnfree = true;
+  nixpkgs.overlays = [
+    (import ham-packages)
+  ];
+
+  nixpkgs.config.allowUnfree = true; # for hams-local-relay
+
+  users.users.alice.packages = with pkgs; [
+    bpq-monitor
+    cwdaemon
+    hams-local-relay
+    linbpq
+    mercury-modem
+    modem73
+    not1mm
+    paracon
+    packet-browser-client
+    packet-browser-server
+    pat
+    qtsoundmodem
+    qttermtcp
+    tncd
+    tuxlink
+    xara
+  ];
 }
 ```
 
+Merge the `packages` list into Alice's existing user definition if there is
+one. After `nixos-rebuild switch`, the packages are linked into Alice's
+`~/.nix-profile`. They are available only to that user, not system-wide.
+
+### Non-NixOS (Standalone Nix)
+
+Use [Home Manager](https://github.com/nix-community/home-manager) to install
+packages into a user profile declaratively. Add the overlay and `home.packages`
+to your Home Manager configuration:
+
+```nix
+{ config, pkgs, ... }:
+
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
+{
+  nixpkgs.overlays = [
+    (import ham-packages)
+  ];
+
+  nixpkgs.config.allowUnfree = true; # for hams-local-relay
+
+  home.packages = with pkgs; [
+    bpq-monitor
+    cwdaemon
+    hams-local-relay
+    linbpq
+    mercury-modem
+    modem73
+    not1mm
+    paracon
+    packet-browser-client
+    packet-browser-server
+    pat
+    qtsoundmodem
+    qttermtcp
+    tncd
+    tuxlink
+    xara
+  ];
+}
+```
+
+Then apply the configuration:
+
 ```bash
-nix-env -iA nixpkgs.hams-local-relay
+home-manager switch
+```
+
+The same overlay can be used from a Home Manager module on NixOS. Keep the
+overlay in one place only so it is not applied twice.
+
+For a temporary shell without changing a profile, pass the overlay to a
+`nix-shell` expression:
+
+```bash
+nix-shell -E '
+  let pkgs = import <nixpkgs> {
+    overlays = [ (import /path/to/nix-ham-packages) ];
+    config.allowUnfree = true;
+  };
+  in pkgs.pat'
 ```
 
 The NixOS modules in this repository are NixOS-only and cannot be used with
