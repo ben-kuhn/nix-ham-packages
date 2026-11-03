@@ -10,16 +10,16 @@
 
 buildGoModule rec {
   pname = "pat";
-  version = "1.0.0";
+  version = "1.0.1";
 
   src = fetchFromGitHub {
     owner = "la5nta";
     repo = "pat";
     rev = "v${version}";
-    hash = "sha256-AYaHslPYNSl/s0d7gBxmC7IRvDGEezxzbABJSgRFuPg=";
+    hash = "sha256-5pWah0l/JuSh6ZmqPOLXFGkFwzY3avmo2fjHf2N1O6U=";
   };
 
-  vendorHash = "sha256-okxrmc95EkrJevUf5A2T1ZG3t2f26qM7mO3mxU+hTpQ=";
+  vendorHash = "sha256-oyhPgo7wc0B27l6pQ24MDZLNmvH5cnEI1qOMgc2QpHA=";
 
   proxyVendor = true;
 

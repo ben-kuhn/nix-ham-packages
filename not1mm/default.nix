@@ -10,12 +10,12 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "not1mm";
-  version = "26.10.11";
+  version = "26.10.28";
   pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-S5nNa2bXFL2sqSQZRV+uPPOpJxMQ44jr0jSyyh8k3W8=";
+    hash = "sha256-uNOpLdTkGLYT1VRkBeHofYAsCjR6jwZuNYRPSuwkyCk=";
   };
 
   build-system = [ python3Packages.setuptools ];

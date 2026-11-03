@@ -10,13 +10,13 @@
 
 stdenv.mkDerivation rec {
   pname = "modem73";
-  version = "2.4.2";
+  version = "2.5.0";
 
   src = fetchFromGitHub {
     owner = "RFnexus";
     repo = "modem73";
     rev = "v${version}";
-    hash = "sha256-KDVnj0eYQ3NM3DFFFbo6llBPhvgMlfiZFuYjtSLob6E=";
+    hash = "sha256-dOw9L7t8Al/fEdynISPJ+iCrLz5JTo7cbpI+/jFQw5g=";
   };
 
   nativeBuildInputs = [ pkg-config ];

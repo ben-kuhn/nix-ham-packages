@@ -12,13 +12,15 @@ available as `pkgs.<name>`.
 | `cwdaemon` | Morse code (CW) keying daemon (UDP-controlled, used by Not1MM) |
 | `hams-local-relay` | Hams.com Local Hardware Relay (proprietary, pre-built; requires `allowUnfree`) |
 | `linbpq` | Linux BPQ Packet Radio Node (includes a NixOS module) |
-| `mercury-modem` | Mercury software-defined HF modem |
+| `mercury-modem` | Mercury software-defined HF modem (CLI) |
+| `mercury-ui` | Mercury Fyne GUI with the modem engine embedded |
+| `mercury-qt` | Mercury PySide6 GUI (connects to a running Mercury backend) |
 | `modem73` | High-speed software modem (KISS TNC) for HF/VHF/UHF 2400 Hz radios |
 | `not1mm` | Amateur radio contest logger (PyQt6) — talks to rigctld and cwdaemon |
 | `paracon` | Packet radio terminal (AGWPE client) |
 | `packet-browser-client` | AX.25/AGWPE and VARA client with a local web proxy (includes a NixOS module) |
 | `packet-browser-server` | Web page fetcher using headless Firefox (includes a NixOS module) |
-| `pat` | Cross-platform Winlink client, updated to 1.0.0 (nixpkgs still ships 0.19.1) |
+| `pat` | Cross-platform Winlink client, updated to 1.0.1 (nixpkgs still ships 0.19.1) |
 | `pyham-ax25` | Python AX.25 packet encoding/decoding library |
 | `pyham-pe` | Python AGWPE client library |
 | `qtsoundmodem` | Qt-based sound modem for packet radio |
@@ -58,6 +60,8 @@ in
     hams-local-relay
     linbpq
     mercury-modem
+    mercury-ui
+    mercury-qt
     modem73
     not1mm
     paracon
@@ -111,6 +115,8 @@ in
     hams-local-relay
     linbpq
     mercury-modem
+    mercury-ui
+    mercury-qt
     modem73
     not1mm
     paracon
@@ -158,6 +164,8 @@ in
     hams-local-relay
     linbpq
     mercury-modem
+    mercury-ui
+    mercury-qt
     modem73
     not1mm
     paracon
@@ -701,7 +709,7 @@ have been heard for an hour. See
 
 ## PAT (Winlink)
 
-`pat` is the Go Winlink client, packaged at 1.0.0 (upstream nixpkgs still has
+`pat` is the Go Winlink client, packaged at 1.0.1 (upstream nixpkgs still has
 0.19.1). It provides both a command line and a web UI, and is built with
 `libax25` support on Linux so AX.25 transports are available.
 
@@ -739,25 +747,34 @@ GPS/audio devices. There is no NixOS module.
 
 ---
 
-## Mercury Modem
+## Mercury Modem and GUIs
 
-`mercury-modem` is Rhizomatica's HERMES HF modem. The package builds the
-command-line engine (`mercury`), which presents a VARA-style TCP TNC
-interface to logging and messaging software. The separate Go/Fyne
-`mercury-ui` and Qt clients are not included.
+Rhizomatica's HERMES Mercury HF modem is packaged in three parts:
+
+- **`mercury-modem`** — the command-line engine (`mercury`), built with Hamlib
+  support. It presents a VARA-style TCP TNC interface to logging and messaging
+  software.
+- **`mercury-ui`** — the Fyne desktop GUI. It embeds the modem engine, so it
+  runs standalone without a separate backend.
+- **`mercury-qt`** — the PySide6 desktop client. It needs a running Mercury
+  backend with its WebSocket UI enabled (`mercury -G`, port 10000 by default).
 
 ```bash
-mercury -h          # command-line reference
+mercury -h          # CLI reference
 mercury -z          # list available sound cards
-mercury             # run with settings from mercury.ini
+mercury             # run the CLI with settings from mercury.ini
+mercury-ui          # standalone Fyne GUI
+mercury -G          # backend for mercury-qt (WebSocket UI)
+mercury-qt          # PySide6 GUI, connects to the backend
 ```
 
 Mercury reads `mercury.ini` from the current directory,
 `~/.config/mercury/mercury.ini`, or `/etc/mercury/mercury.ini`; command-line
-flags override it. See the
-[Mercury documentation](https://rhizomatica.github.io/mercury/) for the
+flags override it. Mercury 1.9.20 and later use the newer on-air architecture
+and do not interoperate with 1.9.19 or older; upgrade both ends together. See
+the [Mercury documentation](https://rhizomatica.github.io/mercury/) for the
 configuration file, modes, PTT backends and TCP interface. There is no NixOS
-module.
+module for Mercury; it is a desktop/CLI application.
 
 ---
 
@@ -862,6 +879,8 @@ Import them as `ax25` and `pe` respectively.
 - [BPQ Monitor](bpq-monitor/README.md) — configuration file and user service
 - [hams-local-relay](https://hams.com/manual/54-local-relay-installation-guide) — Hams.com Local Relay installation guide
 - [mercury-modem](https://rhizomatica.github.io/mercury/) — HERMES HF modem
+- [mercury-ui](https://github.com/Rhizomatica/mercury) — Fyne GUI for Mercury
+- [mercury-qt](https://github.com/Rhizomatica/mercury-qt) — PySide6 GUI for Mercury
 - [paracon](paracon/INSTALL.md) — packet radio terminal
 - [Packet Browser server](packet-browser-server/README.md) — Firefox-backed page fetcher and options
 - [Packet Browser client](packet-browser-client/README.md) — AX.25/VARA web proxy and options

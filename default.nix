@@ -6,12 +6,14 @@
 # - hams-local-relay: Hams.com Local Hardware Relay (proprietary, binary)
 # - linbpq: BPQ Packet Radio Node software
 # - mercury-modem: Mercury Modem
+# - mercury-ui: Mercury Fyne GUI (embedded modem engine)
+# - mercury-qt: Mercury PySide6 GUI
 # - modem73: High-speed software modem (KISS TNC) for 2400 Hz radios
 # - not1mm: Amateur radio contest logger (PyQt6)
-# - packet-browser-client: AGWPE client with a web proxy interface
+# - packet-browser-client: AX.25/VARA client with a web proxy interface
 # - packet-browser-server: Web page fetcher for AX.25 packet radio
 # - paracon: Paracon terminal (depends on pyham-ax25 and pyham-pe)
-# - pat: Cross-platform Winlink client (updated to v1.0.0)
+# - pat: Cross-platform Winlink client (updated to v1.0.1)
 # - pyham-ax25: AX.25 protocol library for Python
 # - pyham-pe: AGWPE protocol client library for Python
 # - qtsoundmodem: Qt Sound Modem
@@ -35,6 +37,12 @@ final: prev: {
 
   # Mercury Modem
   mercury-modem = prev.callPackage ./mercury { };
+
+  # Mercury Fyne GUI (embeds the modem engine)
+  mercury-ui = prev.callPackage ./mercury-ui { };
+
+  # Mercury Qt GUI (talks to the modem over its WebSocket UI channel)
+  mercury-qt = prev.callPackage ./mercury-qt { };
 
   # MODEM73 - software modem (KISS TNC) for HF/VHF/UHF at 2400 Hz
   modem73 = prev.callPackage ./modem73 { };

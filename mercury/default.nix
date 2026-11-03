@@ -3,29 +3,36 @@
 , fetchFromGitHub
 , libpulseaudio
 , alsa-lib
+, pkg-config
+, hamlib_4
 }:
 
 stdenv.mkDerivation rec {
   pname = "mercury-modem";
-  version = "1.9.19";
+  version = "1.9.21";
 
   src = fetchFromGitHub {
     owner = "Rhizomatica";
     repo = "mercury";
     rev = "v${version}";
-    sha256 = "1nya10mriwli8yj5acajmv67a532lb1h9h7mhl0fw8akxvvqz7na";
+    sha256 = "1zbx2cd8p6bys0hgf3d4xqg6ymzq0s9731gpsn4yhqwn48rmfdww";
   };
 
   hardeningDisable = [ "all" ];
 
+  nativeBuildInputs = [ pkg-config ];
+
   buildInputs = [
     libpulseaudio
     alsa-lib
+    hamlib_4
   ];
 
   installPhase = ''
     runHook preInstall
     install -Dm755 mercury $out/bin/mercury
+    install -Dm644 mercury.1 $out/share/man/man1/mercury.1
+    install -Dm644 mercury.ini.example $out/share/doc/mercury/mercury.ini.example
     runHook postInstall
   '';
 
