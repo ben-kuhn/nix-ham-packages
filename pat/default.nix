@@ -30,7 +30,7 @@ buildGoModule rec {
 
   nativeBuildInputs = [ installShellFiles ];
 
-  buildInputs = lib.optional stdenv.hostPlatform.isLinux [ libax25 ];
+  buildInputs = lib.optionals stdenv.hostPlatform.isLinux [ libax25 ];
 
   tags = lib.optionals stdenv.hostPlatform.isLinux [ "libax25" ];
 
