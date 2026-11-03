@@ -353,9 +353,8 @@ notes.
 ## tncd Service
 
 tncd is an AGWPE-to-KISS bridge. The package in this overlay is the 2.0 Go
-rewrite (beta), which supports serial, TCP and Bluetooth SPP TNCs. If you
-need the more battle-tested 1.3.x Python line, install it from the upstream
-APT/RPM repositories instead. The 2.0 package includes a NixOS module:
+rewrite (beta), which supports serial, TCP and Bluetooth SPP TNCs. The 2.0
+package includes a NixOS module:
 
 ```nix
 { config, pkgs, ... }:
