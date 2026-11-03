@@ -544,11 +544,13 @@ The module supplies Firefox ESR and geckodriver and sets `FIREFOX_PATH`,
 used by current Packet Browser releases. Access logs are written to
 `/var/log/packet-browser/access.log`.
 
-Private, loopback and link-local CIDR ranges are blocked by default to prevent
-SSRF; extend or replace `blockedRanges` if your setup needs it. The module also
-exposes the server's cache-age settings and `allowedCallsigns` (for off-air
-testing). See [packet-browser-server/README.md](packet-browser-server/README.md)
-for all options and standalone runtime details.
+Private, loopback, link-local and the reserved `0.0.0.0/8` range are blocked
+by default to prevent SSRF; extend or replace `blockedRanges` if your setup
+needs it. (`0.0.0.0/8` matters because Linux treats a connection to `0.0.0.0`
+as localhost.) The module also exposes the server's cache-age settings and
+`allowedCallsigns` (for off-air testing). See
+[packet-browser-server/README.md](packet-browser-server/README.md) for all
+options and standalone runtime details.
 
 ### Client Configuration
 

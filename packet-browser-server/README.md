@@ -76,6 +76,12 @@ ELF executable.
 | `maxMaxAgeSeconds` | `2592000` | Upper bound for origin-provided max-age |
 | `openFirewall` | `false` | Open `listenPort` in the firewall |
 
+`0.0.0.0/8` is blocked deliberately. It is IANA's reserved "this network"
+range, not usable public address space, and on Linux a connection to
+`0.0.0.0` is treated as localhost. Without the block, a URL such as
+`http://0.0.0.0:<port>/` could reach services on the server itself and bypass
+the loopback filter.
+
 `allowedCallsigns` is useful with demo setups where LinBPQ injects synthetic
 callsigns such as `DEMOUSR` or `W1TEST`. Matching is case-insensitive and an
 SSID suffix is ignored.
