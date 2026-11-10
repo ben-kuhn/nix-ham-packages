@@ -7,8 +7,8 @@ let
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "deviation-station";
-    rev = "472515079e83c71440402fa11961355cf82a6ee6";
-    hash = "sha256-f3xdr4XBemCMRDDALLZDoQ8u2JGBE4V04MHqrVwkGQY=";
+    rev = "34f9a0958bd448654f64a5c787e30af46243276d";
+    hash = "sha256-5ZIgTEATa8eH1ThU5U2BCkwxS7j/QVkGpjfLaoxE0Rk=";
   };
 in
 callPackage "${src}/nix/package.nix" {
