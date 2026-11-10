@@ -9,16 +9,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "xara";
-  # NR5P's fork carries the post-0.1.2 audio/throughput fixes.  Pin the exact
-  # main commit so the build is reproducible; bump this when tracking newer
-  # main.  (The x0rro upstream repo/tags are no longer reachable.)
-  version = "0.1.2-unstable-2026-11-09";
+  # Our own fork of the last good upstream release.  The original x0rro/xara
+  # repo and tags are gone (v0.1.3 archive 404s).  This is the unmodified
+  # v0.1.3 tree, which measured better on the BBS than NR5P's 0.1.2 line.
+  version = "0.1.3";
 
   src = fetchFromGitHub {
-    owner = "NR5P";
+    owner = "ben-kuhn";
     repo = "xara";
-    rev = "bd8300a36e4f76fae7d561335bf08649474bdc6d";
-    hash = "sha256-JDJYiuE6M+irtfJtd2Rh5EO4qRQypTPD3odOQo5Nih8=";
+    rev = "v${version}";
+    hash = "sha256-Ws902p9+qWJ97bg2y2al/Ezi8Tu17FZS4vtGNDtFs6M=";
   };
 
   cargoLock.lockFile = "${src}/Cargo.lock";
@@ -69,8 +69,8 @@ rustPlatform.buildRustPackage rec {
       CM108/CM119 HID GPIO, hamlib rigctld and VOX, and offers a web UI.
       The package also includes xara-monitor, a passive VARA HF monitor.
     '';
-    homepage = "https://github.com/NR5P/xara";
-    changelog = "https://github.com/NR5P/xara/blob/bd8300a36e4f76fae7d561335bf08649474bdc6d/CHANGELOG.md";
+    homepage = "https://github.com/ben-kuhn/xara";
+    changelog = "https://github.com/ben-kuhn/xara/blob/v${version}/CHANGELOG.md";
     license = licenses.mit;
     maintainers = [ ];
     platforms = platforms.linux;
