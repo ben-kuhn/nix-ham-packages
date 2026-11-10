@@ -3,6 +3,7 @@
 # This overlay provides several amateur radio related packages:
 # - bpq-monitor: Web UI for BPQ node modem traffic and status
 # - cwdaemon: Morse code (CW) keying daemon (used by not1mm)
+# - deviation-station: GNU Radio FM deviation instrument
 # - hams-local-relay: Hams.com Local Hardware Relay (proprietary, binary)
 # - linbpq: BPQ Packet Radio Node software
 # - mercury-modem: Mercury Modem
@@ -71,6 +72,9 @@ final: prev: {
 
   # cwdaemon - Morse keying daemon (used by not1mm)
   cwdaemon = prev.callPackage ./cwdaemon { };
+
+  # DeviationStation - GNU Radio FM deviation instrument
+  deviation-station = prev.callPackage ./deviation-station { };
 
   # Hams.com Local Hardware Relay - per-user radio/audio bridge daemon
   # (proprietary, pre-built binary; requires allowUnfree)

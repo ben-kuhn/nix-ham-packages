@@ -10,6 +10,7 @@ available as `pkgs.<name>`.
 |---------|-------------|
 | `bpq-monitor` | Web UI for watching BPQ node modem traffic and status |
 | `cwdaemon` | Morse code (CW) keying daemon (UDP-controlled, used by Not1MM) |
+| `deviation-station` | GNU Radio FM deviation instrument for bench work, repeaters, and sound-card modem calibration |
 | `hams-local-relay` | Hams.com Local Hardware Relay (proprietary, pre-built; requires `allowUnfree`) |
 | `linbpq` | Linux BPQ Packet Radio Node (includes a NixOS module) |
 | `mercury-modem` | Mercury software-defined HF modem (CLI) |
@@ -57,6 +58,7 @@ in
   environment.systemPackages = with pkgs; [
     bpq-monitor
     cwdaemon
+    deviation-station
     hams-local-relay
     linbpq
     mercury-modem
@@ -112,6 +114,7 @@ in
   users.users.alice.packages = with pkgs; [
     bpq-monitor
     cwdaemon
+    deviation-station
     hams-local-relay
     linbpq
     mercury-modem
@@ -161,6 +164,7 @@ in
   home.packages = with pkgs; [
     bpq-monitor
     cwdaemon
+    deviation-station
     hams-local-relay
     linbpq
     mercury-modem
@@ -875,6 +879,7 @@ Import them as `ax25` and `pe` respectively.
 
 ## Package Documentation
 
+- [DeviationStation](https://github.com/ben-kuhn/deviation-station) — FM deviation instrument and installation guide
 - [LinBPQ](linbpq/README.md) — full BPQ node setup, module options and ports
 - [BPQ Monitor](bpq-monitor/README.md) — configuration file and user service
 - [hams-local-relay](https://hams.com/manual/54-local-relay-installation-guide) — Hams.com Local Relay installation guide
