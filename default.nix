@@ -3,6 +3,7 @@
 # This overlay provides several amateur radio related packages:
 # - bpq-monitor: Web UI for BPQ node modem traffic and status
 # - cwdaemon: Morse code (CW) keying daemon (used by not1mm)
+# - data2g: Open-source HF data modem with a VARA-compatible TNC
 # - deviation-station: GNU Radio FM deviation instrument
 # - hams-local-relay: Hams.com Local Hardware Relay (proprietary, binary)
 # - linbpq: BPQ Packet Radio Node software
@@ -72,6 +73,9 @@ final: prev: {
 
   # cwdaemon - Morse keying daemon (used by not1mm)
   cwdaemon = prev.callPackage ./cwdaemon { };
+
+  # Data2G - open-source HF data modem with a VARA-compatible TNC
+  data2g = prev.callPackage ./data2g { };
 
   # DeviationStation - GNU Radio FM deviation instrument
   deviation-station = prev.callPackage ./deviation-station { };

@@ -9,13 +9,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "xara";
-  # Our own fork of the last good upstream release.  The original x0rro/xara
-  # repo and tags are gone (v0.1.3 archive 404s).  This is the unmodified
-  # v0.1.3 tree, which measured better on the BBS than NR5P's 0.1.2 line.
+  # xssfox's fork retains the full upstream commit history.  The original
+  # x0rro/xara repo and tags are gone (v0.1.3 archive 404s); this v0.1.3 tree
+  # is identical to the previous ben-kuhn fork, but with provenance.
   version = "0.1.3";
 
   src = fetchFromGitHub {
-    owner = "ben-kuhn";
+    owner = "xssfox";
     repo = "xara";
     rev = "v${version}";
     hash = "sha256-Ws902p9+qWJ97bg2y2al/Ezi8Tu17FZS4vtGNDtFs6M=";
@@ -69,8 +69,8 @@ rustPlatform.buildRustPackage rec {
       CM108/CM119 HID GPIO, hamlib rigctld and VOX, and offers a web UI.
       The package also includes xara-monitor, a passive VARA HF monitor.
     '';
-    homepage = "https://github.com/ben-kuhn/xara";
-    changelog = "https://github.com/ben-kuhn/xara/blob/v${version}/CHANGELOG.md";
+    homepage = "https://github.com/xssfox/xara";
+    changelog = "https://github.com/xssfox/xara/blob/v${version}/CHANGELOG.md";
     license = licenses.mit;
     maintainers = [ ];
     platforms = platforms.linux;

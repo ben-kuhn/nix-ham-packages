@@ -10,6 +10,7 @@ available as `pkgs.<name>`.
 |---------|-------------|
 | `bpq-monitor` | Web UI for watching BPQ node modem traffic and status |
 | `cwdaemon` | Morse code (CW) keying daemon (UDP-controlled, used by Not1MM) |
+| `data2g` | Open-source HF data modem with a VARA-compatible TNC and KISS (Qt host + GUI) |
 | `deviation-station` | GNU Radio FM deviation instrument for bench work, repeaters, and sound-card modem calibration |
 | `hams-local-relay` | Hams.com Local Hardware Relay (proprietary, pre-built; requires `allowUnfree`) |
 | `linbpq` | Linux BPQ Packet Radio Node (includes a NixOS module) |
@@ -58,6 +59,7 @@ in
   environment.systemPackages = with pkgs; [
     bpq-monitor
     cwdaemon
+    data2g
     deviation-station
     hams-local-relay
     linbpq
@@ -114,6 +116,7 @@ in
   users.users.alice.packages = with pkgs; [
     bpq-monitor
     cwdaemon
+    data2g
     deviation-station
     hams-local-relay
     linbpq
@@ -164,6 +167,7 @@ in
   home.packages = with pkgs; [
     bpq-monitor
     cwdaemon
+    data2g
     deviation-station
     hams-local-relay
     linbpq
