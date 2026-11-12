@@ -9,19 +9,15 @@
 #  APT/RPM repos; this package tracks the 2.0 Go beta line.)
 buildGoModule rec {
   pname = "tncd";
-  version = "1.103-Beta";
+  version = "2.0.0-unstable-2026-10-09";
 
-  # Tracks the latest TAGGED release, deliberately. This overlay is public and
-  # other people's configs reference it, so it must not point at whatever main
-  # happens to be. The maintainer's own fleet tests main by a separate
-  # `tncd-src` flake input that overrides this package's src -- see
-  # nixos-config's modules/ham-radio.nix -- which keeps "what the fleet is
-  # testing" and "what this overlay ships to everyone else" independent.
+  # Track the main branch. The stable 1.x line lives on the `v1` branch and
+  # in the APT/RPM repos; this package follows the 2.0 Go development tree.
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "v${version}";
-    hash = "sha256-mCJ1PFeA9HkxOJyPsnF3Bcfw3APWe/RKunrL1dJhLwU=";
+    rev = "5e3004cfd10bf4e4402a646e239ac2564e4f907b";
+    hash = "sha256-4zs9Dv6k2lsel76vJ0E20n5er2nXxY253wvmBaOyFuo=";
   };
 
   # go.mod is unchanged since the tncd-go dev package; same vendorHash.

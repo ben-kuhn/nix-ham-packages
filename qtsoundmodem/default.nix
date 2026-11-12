@@ -12,13 +12,14 @@
 
 stdenv.mkDerivation rec {
   pname = "qtsoundmodem";
-  version = "0.76";
+  # Latest G8BPQ beta; the 0.76 tag points at 0.0.0.74 Beta 2, master is 0.0.0.76.
+  version = "0.0.0.76";
 
   src = fetchFromGitHub {
     owner = "g8bpq";
     repo = "QtSoundModem";
-    rev = version;
-    hash = "sha256-GnAWhUEoAgoO8tPX1POcoEtiaBIKmm/Uwn5raCGGqdQ=";
+    rev = "9cd2735bc97000fb2d46de2a8ee8cfaa0580a34b";
+    hash = "sha256-vBz0zY150TChufN4dpcMhNh2q9eFEbqn3z0T8+VWTd0=";
   };
 
   nativeBuildInputs = [
@@ -30,6 +31,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     qt5.qtbase
     qt5.qtserialport
+    qt5.qtmultimedia
     alsa-lib
     libpulseaudio
     fftwFloat

@@ -9,13 +9,14 @@
 
 stdenv.mkDerivation rec {
   pname = "qttermtcp";
-  version = "0.81";
+  # Latest G8BPQ beta; the 0.81 tag points at 0.0.0.79, master is 0.0.0.81.
+  version = "0.0.0.81";
 
   src = fetchFromGitHub {
     owner = "g8bpq";
     repo = "QtTermTCP";
-    rev = version;
-    hash = "sha256:0hslzvn8lxpd0x4hj1b93160l0rc0x0n17jly4p121nj8ylrnh7s";
+    rev = "00ca15573c4653882265d6bfc884fca619556c30";
+    hash = "sha256-Wy7eTmTF9f7NjXYqgx6rtSPTnUBRjqRDZ+at+A0kp0k=";
   };
 
   nativeBuildInputs = [
@@ -35,6 +36,9 @@ stdenv.mkDerivation rec {
 
   # Remove Werror from qmake flags
   preConfigure = ''
+    # Upstream ships prebuilt object files (notably ax25.o) which are not
+    # usable on this architecture; force them to be rebuilt.
+    rm -f *.o
     echo "QMAKE_CXXFLAGS -= -Werror" >> QtTermTCP.pro
     echo "QMAKE_CFLAGS -= -Werror" >> QtTermTCP.pro
   '';

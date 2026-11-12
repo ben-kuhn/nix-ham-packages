@@ -13,13 +13,15 @@
 
 stdenv.mkDerivation rec {
   pname = "linbpq";
-  version = "26.1";
+  # Latest G8BPQ beta.  The tags use mixed date/version names and are behind
+  # master: tag 26.1 is 6.0.25.41, while master is 6.0.26.1.
+  version = "6.0.26.1";
 
   src = fetchFromGitHub {
     owner = "g8bpq";
     repo = "linbpq";
-    rev = version;
-    sha256 = "0xnjnkvk7b605pb7syvz9sl3012pfi4nbryncdnrmbk4wlb0c1br";
+    rev = "228047d76f410e13a564fb00787516f69b96ff44";
+    sha256 = "18xhn056hj9xl4bziqhgifs4pdkm6y53dkgrz5vaqvhlw4chx3xg";
   };
 
   buildInputs = [

@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation rec {
   pname = "mercury-modem";
-  version = "1.9.21";
+  version = "1.9.23";
 
   src = fetchFromGitHub {
     owner = "Rhizomatica";
     repo = "mercury";
     rev = "v${version}";
-    sha256 = "1zbx2cd8p6bys0hgf3d4xqg6ymzq0s9731gpsn4yhqwn48rmfdww";
+    sha256 = "0byjmx5qw6x91fshk3dyxwv55g1ij3kvq24f6lwa2d0s8gkq6kfa";
   };
 
   hardeningDisable = [ "all" ];
