@@ -25,6 +25,7 @@
 # - tncd: AGWPE-to-KISS Translation Bridge (Go)
 # - tuxlink: Native Linux Winlink client (Rust + Tauri, alpha)
 # - vardefm: VARA FM-compatible FM data modem
+# - voacapl: VOACAP HF propagation prediction engine
 # - xara: VARA-compatible HF/FM software modem
 #
 # NixOS modules live next to their packages:
@@ -120,6 +121,9 @@ final: prev: {
 
   # VardeFM - VARA FM-compatible FM data modem
   vardefm = prev.callPackage ./vardefm { };
+
+  # voacapl - VOACAP HF propagation engine for Pat
+  voacapl = prev.callPackage ./voacapl { };
 
   # xara - VARA-compatible HF/FM software modem
   xara = prev.callPackage ./xara { };

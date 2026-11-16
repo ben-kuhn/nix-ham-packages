@@ -32,6 +32,7 @@ available as `pkgs.<name>`.
 | `tncd` | AGWPE-to-KISS translation bridge (2.0 Go rewrite, beta; includes a NixOS module) |
 | `tuxlink` | Linux-native Winlink client (Rust + Tauri; alpha, tracks upstream pre-releases) |
 | `vardefm` | VARA FM-compatible FM data modem (Rust) |
+| `voacapl` | VOACAP HF propagation prediction engine for Pat |
 | `xara` | VARA-compatible HF/FM software modem (registered speeds enabled; includes `xara-monitor` and a NixOS module) |
 
 `tuxlink` is currently `x86_64-linux` only. The other packages support the
@@ -82,6 +83,7 @@ in
     tncd
     tuxlink
     vardefm
+    voacapl
     xara
   ];
 }
@@ -142,6 +144,7 @@ in
     tncd
     tuxlink
     vardefm
+    voacapl
     xara
   ];
 }
@@ -196,6 +199,7 @@ in
     tncd
     tuxlink
     vardefm
+    voacapl
     xara
   ];
 }
@@ -749,6 +753,26 @@ through Hamlib (`rigctld`) and connects to Winlink gateways over the
 transports you configure. There is no NixOS module for PAT; run it as your
 user or wrap it in your own systemd service.
 
+For propagation-ranked RMS lists (`pat rmslist -q` and the web UI), install
+`voacapl` and point Pat at its engine and data directory:
+
+```json
+{
+  "locator": "EN52xx",
+  "prediction": {
+    "engine": "voacap",
+    "voacap": {
+      "executable": "/run/current-system/sw/bin/voacapl",
+      "data_dir": "/run/current-system/sw/share/voacapl/itshfbc"
+    }
+  }
+}
+```
+
+The `locator` is required. The portable package keeps the `itshfbc` data
+read-only; Pat runs `voacapl` with a temporary `--run-dir`, so no writable
+copy in `$HOME` is needed.
+
 ---
 
 ## Tuxlink (Winlink)
@@ -965,6 +989,7 @@ Import them as `ax25` and `pe` respectively.
 - [PAT](https://getpat.io/) — Winlink client
 - [Tuxlink](https://github.com/cameronzucker/tuxlink) — native Linux Winlink client
 - [VardeFM](https://github.com/notepid/vardeFM) — VARA FM-compatible FM modem
+- [voacapl](https://github.com/jawatson/voacapl) — VOACAP HF propagation engine
 
 ## Resources
 
