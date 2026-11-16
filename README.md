@@ -513,21 +513,21 @@ in
   services.open-rmslist = {
     enable = true;
     listenAddress = "0.0.0.0";   # or "127.0.0.1" for local-only
-    port = 8080;
+    port = 8079;
     openFirewall = true;
     serviceCodes = [ "PUBLIC" "MERCURY" "VardeFM" ];
   };
 }
 ```
 
-Then open `http://<host>:8080`. Module options:
+Then open `http://<host>:8079`. Module options:
 
 | Option | Default | Description |
 |--------|---------|-------------|
 | `enable` | `false` | Enable the service |
 | `package` | `pkgs.open-rmslist` | Package to use |
 | `listenAddress` | `"127.0.0.1"` | Bind address |
-| `port` | `8080` | HTTP port |
+| `port` | `8079` | HTTP port |
 | `serviceCodes` | `[ "PUBLIC" "MERCURY" "VardeFM" ]` | Winlink service codes to fetch |
 | `refreshInterval` | `"15m"` | Gateway list refresh interval |
 | `cacheDir` | `"/var/lib/open-rmslist"` | Cache directory |
