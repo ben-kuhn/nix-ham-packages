@@ -13,6 +13,7 @@ available as `pkgs.<name>`.
 | `data2g` | Open-source HF data modem with a VARA-compatible TNC and KISS (Qt host + GUI) |
 | `deviation-station` | GNU Radio FM deviation instrument for bench work, repeaters, and sound-card modem calibration |
 | `hams-local-relay` | Hams.com Local Hardware Relay (proprietary, pre-built; requires `allowUnfree`) |
+| `ionhf` | Ion HF adaptive HF data modem (Rust/egui; alpha) |
 | `linbpq` | Linux BPQ Packet Radio Node (includes a NixOS module) |
 | `mercury-modem` | Mercury software-defined HF modem (CLI) |
 | `mercury-ui` | Mercury Fyne GUI with the modem engine embedded |
@@ -29,6 +30,7 @@ available as `pkgs.<name>`.
 | `qttermtcp` | Qt terminal client for BPQ (FBB, AGWPE, KISS and VARA) |
 | `tncd` | AGWPE-to-KISS translation bridge (2.0 Go rewrite, beta; includes a NixOS module) |
 | `tuxlink` | Linux-native Winlink client (Rust + Tauri; alpha, tracks upstream pre-releases) |
+| `vardefm` | VARA FM-compatible FM data modem (Rust) |
 | `xara` | VARA-compatible HF/FM software modem (registered speeds enabled; includes `xara-monitor` and a NixOS module) |
 
 `tuxlink` is currently `x86_64-linux` only. The other packages support the
@@ -62,6 +64,7 @@ in
     data2g
     deviation-station
     hams-local-relay
+    ionhf
     linbpq
     mercury-modem
     mercury-ui
@@ -76,6 +79,7 @@ in
     qttermtcp
     tncd
     tuxlink
+    vardefm
     xara
   ];
 }
@@ -119,6 +123,7 @@ in
     data2g
     deviation-station
     hams-local-relay
+    ionhf
     linbpq
     mercury-modem
     mercury-ui
@@ -133,6 +138,7 @@ in
     qttermtcp
     tncd
     tuxlink
+    vardefm
     xara
   ];
 }
@@ -170,6 +176,7 @@ in
     data2g
     deviation-station
     hams-local-relay
+    ionhf
     linbpq
     mercury-modem
     mercury-ui
@@ -184,6 +191,7 @@ in
     qttermtcp
     tncd
     tuxlink
+    vardefm
     xara
   ];
 }
@@ -786,6 +794,31 @@ module for Mercury; it is a desktop/CLI application.
 
 ---
 
+## VardeFM and Ion HF
+
+Two Rust modems with VARA-style host interfaces (TCP 8300/8301):
+
+- **`vardefm`** — VARA FM-compatible FM modem. It is *not* on-air compatible
+  with VARA FM: both stations must run VardeFM. Start it against a radio with:
+
+  ```bash
+  vardefm devices
+  vardefm modem --audio-in "USB" --audio-out "USB" --ptt rigctld
+  vardefm tone --audio-out "USB" --ptt rigctld --seconds 10
+  ```
+
+  The CM108/AIOC udev rule is installed under `lib/udev/rules.d`; add the
+  package to `services.udev.packages` to enable non-root PTT access. The user
+  guide, radio notes and protocol description are in `share/doc/vardefm`.
+
+- **`ionhf`** — adaptive HF data modem (alpha) with an egui desktop interface.
+  It spans MFSK through 64QAM OFDM and presents a VARA-style port for Pat and
+  Winlink Express, plus KISS broadcast groups on port 8100. Run it from the
+  desktop menu or with `ionhf`; `ionhf --loopback` starts a simulated station
+  with no radio. Configuration lives in `~/.config/ionhf`.
+
+---
+
 ## MODEM73
 
 MODEM73 turns a sound-card interface into a KISS TNC for HF/VHF/UHF radios
@@ -887,6 +920,7 @@ Import them as `ax25` and `pe` respectively.
 - [LinBPQ](linbpq/README.md) — full BPQ node setup, module options and ports
 - [BPQ Monitor](bpq-monitor/README.md) — configuration file and user service
 - [hams-local-relay](https://hams.com/manual/54-local-relay-installation-guide) — Hams.com Local Relay installation guide
+- [Ion HF](https://github.com/jesseforkum/ion-hf) — adaptive HF data modem
 - [mercury-modem](https://rhizomatica.github.io/mercury/) — HERMES HF modem
 - [mercury-ui](https://github.com/Rhizomatica/mercury) — Fyne GUI for Mercury
 - [mercury-qt](https://github.com/Rhizomatica/mercury-qt) — PySide6 GUI for Mercury
@@ -900,6 +934,7 @@ Import them as `ax25` and `pe` respectively.
 - [xara](https://github.com/x0rro/xara) — VARA-compatible modem
 - [PAT](https://getpat.io/) — Winlink client
 - [Tuxlink](https://github.com/cameronzucker/tuxlink) — native Linux Winlink client
+- [VardeFM](https://github.com/notepid/vardeFM) — VARA FM-compatible FM modem
 
 ## Resources
 

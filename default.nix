@@ -6,6 +6,7 @@
 # - data2g: Open-source HF data modem with a VARA-compatible TNC
 # - deviation-station: GNU Radio FM deviation instrument
 # - hams-local-relay: Hams.com Local Hardware Relay (proprietary, binary)
+# - ionhf: Ion HF adaptive HF data modem
 # - linbpq: BPQ Packet Radio Node software
 # - mercury-modem: Mercury Modem
 # - mercury-ui: Mercury Fyne GUI (embedded modem engine)
@@ -22,6 +23,7 @@
 # - qttermtcp: Qt Terminal TCP client
 # - tncd: AGWPE-to-KISS Translation Bridge (Go)
 # - tuxlink: Native Linux Winlink client (Rust + Tauri, alpha)
+# - vardefm: VARA FM-compatible FM data modem
 # - xara: VARA-compatible HF/FM software modem
 #
 # NixOS modules live next to their packages:
@@ -84,6 +86,9 @@ final: prev: {
   # (proprietary, pre-built binary; requires allowUnfree)
   hams-local-relay = prev.callPackage ./hams-local-relay { };
 
+  # Ion HF - adaptive HF data modem
+  ionhf = prev.callPackage ./ionhf { };
+
   # Paracon - Packet radio terminal application
   paracon = prev.callPackage ./paracon {
     inherit (final) pyham-ax25 pyham-pe;
@@ -103,6 +108,9 @@ final: prev: {
 
   # Tuxlink - Linux-native Winlink client (Tauri 2.x, Rust + React)
   tuxlink = prev.callPackage ./tuxlink { };
+
+  # VardeFM - VARA FM-compatible FM data modem
+  vardefm = prev.callPackage ./vardefm { };
 
   # xara - VARA-compatible HF/FM software modem
   xara = prev.callPackage ./xara { };
