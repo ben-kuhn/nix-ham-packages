@@ -37,7 +37,9 @@ stdenv.mkDerivation rec {
       Pat can use it read-only because voacapl supports --run-dir.
     '';
     homepage = "https://github.com/jawatson/voacapl";
-    license = licenses.gpl2Plus;
+    # Core engine: U.S. Government public domain (NTIA/ITS). J.A. Watson's
+    # modifications: CC0. dst2csv/dst2ascii: GPL-3+.
+    license = [ licenses.publicDomain licenses.cc0 licenses.gpl3Plus ];
     maintainers = [ ];
     platforms = platforms.linux;
     mainProgram = "voacapl";
