@@ -21,6 +21,7 @@ available as `pkgs.<name>`.
 | `mercury-qt` | Mercury PySide6 GUI (connects to a running Mercury backend) |
 | `modem73` | High-speed software modem (KISS TNC) for HF/VHF/UHF 2400 Hz radios |
 | `not1mm` | Amateur radio contest logger (PyQt6) — talks to rigctld and cwdaemon |
+| `open-rmslist` | Winlink RMS gateway map (Go) — service-code filtering + propagation ranking; includes a NixOS module |
 | `paracon` | Packet radio terminal (AGWPE client) |
 | `packet-browser-client` | AX.25/AGWPE and VARA client with a local web proxy (includes a NixOS module) |
 | `packet-browser-server` | Web page fetcher using headless Firefox (includes a NixOS module) |
@@ -74,6 +75,7 @@ in
     mercury-qt
     modem73
     not1mm
+    open-rmslist
     paracon
     packet-browser-client
     packet-browser-server
@@ -135,6 +137,7 @@ in
     mercury-qt
     modem73
     not1mm
+    open-rmslist
     paracon
     packet-browser-client
     packet-browser-server
@@ -190,6 +193,7 @@ in
     mercury-qt
     modem73
     not1mm
+    open-rmslist
     paracon
     packet-browser-client
     packet-browser-server
@@ -236,6 +240,7 @@ does.
 |--------|---------|
 | `hams-local-relay/module.nix` | `services.hams-local-relay` |
 | `linbpq/module.nix` | `services.linbpq` |
+| `open-rmslist/module.nix` | `services.open-rmslist` |
 | `packet-browser-client/module.nix` | `services.packet-browser-client` |
 | `packet-browser-server/module.nix` | `services.packet-browser-server` |
 | `tncd/module.nix` | `services.tncd` |
@@ -481,6 +486,53 @@ services.tncd.settings."rigctl.0" = {
   listen_port = 4532;
 };
 ```
+
+---
+
+## open-rmslist Service
+
+`open-rmslist` is a self-hosted web map of Winlink RMS gateways with
+service-code filtering (including community modems such as MERCURY and
+VardeFM) and propagation-based link ranking. The package includes a NixOS
+module that runs it as a systemd service:
+
+```nix
+{ config, pkgs, ... }:
+
+let
+  ham-packages = builtins.fetchGit {
+    url = "https://github.com/ben-kuhn/nix-ham-packages";
+    ref = "main";
+  };
+in
+{
+  nixpkgs.overlays = [ (import ham-packages) ];
+
+  imports = [ "${ham-packages}/open-rmslist/module.nix" ];
+
+  services.open-rmslist = {
+    enable = true;
+    listenAddress = "0.0.0.0";   # or "127.0.0.1" for local-only
+    port = 8080;
+    openFirewall = true;
+    serviceCodes = [ "PUBLIC" "MERCURY" "VardeFM" ];
+  };
+}
+```
+
+Then open `http://<host>:8080`. Module options:
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `enable` | `false` | Enable the service |
+| `package` | `pkgs.open-rmslist` | Package to use |
+| `listenAddress` | `"127.0.0.1"` | Bind address |
+| `port` | `8080` | HTTP port |
+| `serviceCodes` | `[ "PUBLIC" "MERCURY" "VardeFM" ]` | Winlink service codes to fetch |
+| `refreshInterval` | `"15m"` | Gateway list refresh interval |
+| `cacheDir` | `"/var/lib/open-rmslist"` | Cache directory |
+| `voacapUrl` | `null` | Optional remote VOACAP API URL |
+| `openFirewall` | `false` | Open the HTTP port in the firewall |
 
 ---
 
@@ -978,6 +1030,7 @@ Import them as `ax25` and `pe` respectively.
 - [mercury-modem](https://rhizomatica.github.io/mercury/) — HERMES HF modem
 - [mercury-ui](https://github.com/Rhizomatica/mercury) — Fyne GUI for Mercury
 - [mercury-qt](https://github.com/Rhizomatica/mercury-qt) — PySide6 GUI for Mercury
+- [open-rmslist](https://github.com/ben-kuhn/open-rmslist) — Winlink RMS gateway map
 - [paracon](paracon/INSTALL.md) — packet radio terminal
 - [Packet Browser server](packet-browser-server/README.md) — Firefox-backed page fetcher and options
 - [Packet Browser client](packet-browser-client/README.md) — AX.25/VARA web proxy and options
