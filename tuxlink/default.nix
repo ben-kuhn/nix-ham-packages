@@ -50,6 +50,17 @@ rustPlatform.buildRustPackage rec {
     lockFile = ./Cargo.lock;
   };
 
+  # Dependabot security updates.  The newer APIs used by tuxlink are
+  # compatible with these releases; the lock file carries the resolved
+  # versions (zip 9.5.1, printpdf 0.12.9/lopdf 0.44, rustls 0.23.46).
+  postPatch = ''
+    cp ${./Cargo.lock} src-tauri/Cargo.lock
+    patch -p1 < ${./zip9-api.patch}
+    substituteInPlace src-tauri/Cargo.toml \
+      --replace-fail 'printpdf = "0.10"' 'printpdf = "0.12"' \
+      --replace-fail 'zip = { version = "2"' 'zip = { version = "9"'
+  '';
+
   pnpmDeps = pnpm_10.fetchDeps {
     inherit pname version src;
     fetcherVersion = 1;

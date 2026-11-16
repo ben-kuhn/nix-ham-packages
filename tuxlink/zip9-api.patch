@@ -1,0 +1,74 @@
+diff --git a/src-tauri/src/forms/import.rs b/src-tauri/src/forms/import.rs
+index 093049d..1670fe9 100644
+--- a/src-tauri/src/forms/import.rs
++++ b/src-tauri/src/forms/import.rs
+@@ -681,7 +681,13 @@ fn stage_zip(src: &Path, dir: &Path, counters: &mut Counters) -> Result<(), Impo
+             Some(p) => p.to_path_buf(),
+             None => {
+                 return Err(ImportError::StagingFailed {
+-                    reason: format!("zip entry {i} path traversal: {}", entry.name()),
++                    reason: format!(
++                        "zip entry {i} path traversal: {}",
++                        entry
++                            .name()
++                            .map(|n| n.to_string())
++                            .unwrap_or_else(|e| format!("<invalid: {e}>"))
++                    ),
+                 })
+             }
+         };
+@@ -699,7 +705,13 @@ fn stage_zip(src: &Path, dir: &Path, counters: &mut Counters) -> Result<(), Impo
+             Some(p) => p.to_path_buf(),
+             None => {
+                 return Err(ImportError::StagingFailed {
+-                    reason: format!("zip entry {i} path traversal: {}", entry.name()),
++                    reason: format!(
++                        "zip entry {i} path traversal: {}",
++                        entry
++                            .name()
++                            .map(|n| n.to_string())
++                            .unwrap_or_else(|e| format!("<invalid: {e}>"))
++                    ),
+                 })
+             }
+         };
+diff --git a/src-tauri/src/forms/updater.rs b/src-tauri/src/forms/updater.rs
+index edb9b4a..61d1407 100644
+--- a/src-tauri/src/forms/updater.rs
++++ b/src-tauri/src/forms/updater.rs
+@@ -474,7 +474,10 @@ fn extract_zip(zip_path: &Path, dest_dir: &Path) -> Result<usize, UpdaterError>
+         let first = archive
+             .by_index(0)
+             .map_err(|e| UpdaterError::Zip(format!("read first entry: {e}")))?;
+-        !first.name().starts_with("Standard_Forms/")
++        let first_name = first
++            .name()
++            .map_err(|e| UpdaterError::Zip(format!("read first entry name: {e}")))?;
++        !first_name.starts_with("Standard_Forms/")
+     };
+ 
+     std::fs::create_dir_all(dest_dir)
+@@ -494,7 +497,10 @@ fn extract_zip(zip_path: &Path, dest_dir: &Path) -> Result<usize, UpdaterError>
+             None => {
+                 return Err(UpdaterError::Zip(format!(
+                     "entry {i} has an invalid path (likely path traversal): {}",
+-                    entry.name()
++                    entry
++                        .name()
++                        .map(|n| n.to_string())
++                        .unwrap_or_else(|e| format!("<invalid: {e}>"))
+                 )))
+             }
+         };
+@@ -510,7 +516,10 @@ fn extract_zip(zip_path: &Path, dest_dir: &Path) -> Result<usize, UpdaterError>
+         if !dest_path.starts_with(&canonical_dest) {
+             return Err(UpdaterError::Zip(format!(
+                 "entry {i} escapes dest dir: {}",
+-                entry.name()
++                entry
++                    .name()
++                    .map(|n| n.to_string())
++                    .unwrap_or_else(|e| format!("<invalid: {e}>"))
+             )));
+         }
+ 
