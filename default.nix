@@ -6,6 +6,7 @@
 # - data2g: Open-source HF data modem with a VARA-compatible TNC
 # - deviation-station: GNU Radio FM deviation instrument
 # - hams-local-relay: Hams.com Local Hardware Relay (proprietary, binary)
+# - htcommander: Bluetooth radio control/programming GUI
 # - ionhf: Ion HF adaptive HF data modem
 # - linbpq: BPQ Packet Radio Node software
 # - mercury-modem: Mercury Modem
@@ -85,6 +86,14 @@ final: prev: {
   # Hams.com Local Hardware Relay - per-user radio/audio bridge daemon
   # (proprietary, pre-built binary; requires allowUnfree)
   hams-local-relay = prev.callPackage ./hams-local-relay { };
+
+  # HTCommander - build from source when the available Flutter is new enough
+  # (nixpkgs-unstable); otherwise use the official Linux release bundle.
+  htcommander =
+    if prev ? flutter347 then
+      prev.callPackage ./htcommander/source.nix { }
+    else
+      prev.callPackage ./htcommander/binary.nix { };
 
   # Ion HF - adaptive HF data modem
   ionhf = prev.callPackage ./ionhf { };

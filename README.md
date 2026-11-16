@@ -13,6 +13,7 @@ available as `pkgs.<name>`.
 | `data2g` | Open-source HF data modem with a VARA-compatible TNC and KISS (Qt host + GUI) |
 | `deviation-station` | GNU Radio FM deviation instrument for bench work, repeaters, and sound-card modem calibration |
 | `hams-local-relay` | Hams.com Local Hardware Relay (proprietary, pre-built; requires `allowUnfree`) |
+| `htcommander` | Bluetooth radio control/programming GUI (source on unstable, prebuilt bundle on stable) |
 | `ionhf` | Ion HF adaptive HF data modem (Rust/egui; alpha) |
 | `linbpq` | Linux BPQ Packet Radio Node (includes a NixOS module) |
 | `mercury-modem` | Mercury software-defined HF modem (CLI) |
@@ -64,6 +65,7 @@ in
     data2g
     deviation-station
     hams-local-relay
+    htcommander
     ionhf
     linbpq
     mercury-modem
@@ -123,6 +125,7 @@ in
     data2g
     deviation-station
     hams-local-relay
+    htcommander
     ionhf
     linbpq
     mercury-modem
@@ -176,6 +179,7 @@ in
     data2g
     deviation-station
     hams-local-relay
+    htcommander
     ionhf
     linbpq
     mercury-modem
@@ -763,6 +767,30 @@ GPS/audio devices. There is no NixOS module.
 
 ---
 
+## HTCommander
+
+HTCommander is a Flutter desktop application for Bluetooth-enabled radios
+including the BTech UV-Pro/UV-50Pro, Radioddity GA-5WB, and Vero VR-N75/
+VR-N76/VR-N7500/VR-N7600. It provides channel programming, APRS, Winlink
+mail, a packet terminal and BBS, SSTV, Bluetooth audio, and an AGWPE
+interface on Linux.
+
+The package adapts to the available nixpkgs Flutter:
+
+- On `nixpkgs-unstable` (Flutter 3.47+/Dart 3.13) it builds HTCommander from
+  source using `flutter347` and the committed pub lock data.
+- On stable `nixpkgs` (Flutter 3.41/Dart 3.11) it installs the official
+  0.1.97 Linux x86-64 release bundle, because upstream requires Dart 3.12+.
+
+The source build includes the desktop app; the hosted web UI is only in the
+prebuilt bundle (the nixpkgs Flutter package lacks the web SDK artifacts).
+
+```bash
+htcommander
+```
+
+---
+
 ## Mercury Modem and GUIs
 
 Rhizomatica's HERMES Mercury HF modem is packaged in three parts:
@@ -920,6 +948,7 @@ Import them as `ax25` and `pe` respectively.
 - [LinBPQ](linbpq/README.md) — full BPQ node setup, module options and ports
 - [BPQ Monitor](bpq-monitor/README.md) — configuration file and user service
 - [hams-local-relay](https://hams.com/manual/54-local-relay-installation-guide) — Hams.com Local Relay installation guide
+- [HTCommander](https://github.com/Ylianst/HTCommander) — Bluetooth radio control and programming
 - [Ion HF](https://github.com/jesseforkum/ion-hf) — adaptive HF data modem
 - [mercury-modem](https://rhizomatica.github.io/mercury/) — HERMES HF modem
 - [mercury-ui](https://github.com/Rhizomatica/mercury) — Fyne GUI for Mercury
