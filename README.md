@@ -782,8 +782,9 @@ The package adapts to the available nixpkgs Flutter:
 - On stable `nixpkgs` (Flutter 3.41/Dart 3.11) it installs the official
   0.1.97 Linux x86-64 release bundle, because upstream requires Dart 3.12+.
 
-The source build includes the desktop app; the hosted web UI is only in the
-prebuilt bundle (the nixpkgs Flutter package lacks the web SDK artifacts).
+Both builds include the hosted web UI.  The source build compiles it with a
+separate web-target Flutter derivation, since `buildFlutterApplication`'s
+Linux target deliberately omits the web SDK artifacts.
 
 ```bash
 htcommander

@@ -27,8 +27,7 @@
   stdenv,
 }:
 
-flutter347.buildFlutterApplication rec {
-  pname = "htcommander";
+let
   version = "0.1.97";
 
   src = fetchFromGitHub {
@@ -38,8 +37,6 @@ flutter347.buildFlutterApplication rec {
     hash = "sha256-6zJCxQClp/ndEaDzyCq4a44NpcYlepmmLmJfZajhjYI=";
   };
 
-  sourceRoot = "${src.name}/src";
-
   # Upstream does not commit pubspec.lock; this was generated with Flutter
   # 3.47.4 (Dart 3.13.3) from the v0.1.97 source tree.
   pubspecLock = lib.importJSON ./pubspec.lock.json;
@@ -47,7 +44,7 @@ flutter347.buildFlutterApplication rec {
   # HTCommander uses SQLite, not SQLCipher.  nixpkgs' sqlite3 asset builder
   # always fetches a prebuilt SQLCipher library and has no hash for 3.9.1;
   # point both lookups at the system SQLite instead.
-  customSourceBuilders.sqlite3 = { version, src, ... }:
+  sqliteBuilder = { version, src, ... }:
     stdenv.mkDerivation {
       pname = "sqlite3";
       inherit version src;
@@ -62,6 +59,25 @@ flutter347.buildFlutterApplication rec {
         cp --recursive . $out
       '';
     };
+
+  # The Linux Flutter wrapper deliberately omits the web SDK artifacts.
+  # Build the hosted web UI with a web-target Flutter and copy it into the
+  # desktop bundle below.
+  web = flutter347.buildFlutterApplication {
+    pname = "htcommander-web";
+    inherit version src pubspecLock;
+    sourceRoot = "${src.name}/src";
+    targetFlutterPlatform = "web";
+    customSourceBuilders.sqlite3 = sqliteBuilder;
+  };
+in
+flutter347.buildFlutterApplication rec {
+  pname = "htcommander";
+  inherit version src pubspecLock;
+
+  sourceRoot = "${src.name}/src";
+
+  customSourceBuilders.sqlite3 = sqliteBuilder;
 
   nativeBuildInputs = [
     pkg-config
@@ -113,6 +129,8 @@ flutter347.buildFlutterApplication rec {
     # asset builder points at system SQLite, so expose it in the bundle.
     ln -sf ${lib.getLib sqlite}/lib/libsqlite3.so $out/app/htcommander/lib/libsqlite3.so
     ln -sf ${lib.getLib sqlite}/lib/libsqlite3.so.0 $out/app/htcommander/lib/libsqlite3.so.0
+
+    cp -r ${web}/. $out/app/htcommander/web_app/
   '';
 
   meta = with lib; {
