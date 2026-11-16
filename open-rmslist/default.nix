@@ -25,8 +25,8 @@ buildGoModule rec {
 
   src = source;
 
-  # Zero Go dependencies: hash of an empty vendor directory.
-  vendorHash = "sha256-pQpattmS9VmO3ZIQUFn66az8GSmB4IvYhTTCFn6SUmo=";
+  # Zero Go dependencies: no vendoring.
+  vendorHash = null;
 
   env.CGO_ENABLED = "0";
 
