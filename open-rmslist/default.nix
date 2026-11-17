@@ -30,6 +30,10 @@ buildGoModule rec {
 
   env.CGO_ENABLED = "0";
 
+  postInstall = ''
+    install -Dm644 contrib/desktop/open-rmslist.desktop $out/share/applications/open-rmslist.desktop
+  '';
+
   ldflags = [
     "-s"
     "-w"

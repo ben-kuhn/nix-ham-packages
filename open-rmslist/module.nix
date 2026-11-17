@@ -85,6 +85,7 @@ in {
       datadir = if cfg.voacapDataDir != null then cfg.voacapDataDir
         else if cfg.voacapl != null then "${cfg.voacapl}/share/voacapl/itshfbc" else null;
       args = [
+        "-d"
         "-listen" "${cfg.listenAddress}:${toString cfg.port}"
         "-cache-dir" cfg.cacheDir
         "-service-codes" (lib.concatStringsSep "," cfg.serviceCodes)
