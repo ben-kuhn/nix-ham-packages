@@ -14,7 +14,7 @@
 # - mercury-qt: Mercury PySide6 GUI
 # - modem73: High-speed software modem (KISS TNC) for 2400 Hz radios
 # - not1mm: Amateur radio contest logger (PyQt6)
-# - open-rmslist: Winlink RMS gateway map (Go, includes a NixOS module)
+# - rms-radar: Winlink RMS gateway map (Go, includes a NixOS module)
 # - packet-browser-client: AX.25/VARA client with a web proxy interface
 # - packet-browser-server: Web page fetcher for AX.25 packet radio
 # - paracon: Paracon terminal (depends on pyham-ax25 and pyham-pe)
@@ -30,7 +30,7 @@
 # - xara: VARA-compatible HF/FM software modem
 #
 # NixOS modules live next to their packages:
-# hams-local-relay, linbpq, open-rmslist, packet-browser-client,
+# hams-local-relay, linbpq, rms-radar, packet-browser-client,
 # packet-browser-server, tncd and xara each have a module.nix.
 #
 # Usage: Import this file as an overlay in your NixOS configuration
@@ -114,8 +114,8 @@ final: prev: {
   # tncd - AGWPE-to-KISS Translation Bridge (Go)
   tncd = prev.callPackage ./tncd { };
 
-  # open-rmslist - Winlink RMS gateway map (Go)
-  open-rmslist = prev.callPackage ./open-rmslist { };
+  # rms-radar - Winlink RMS gateway map (Go)
+  rms-radar = prev.callPackage ./rms-radar { };
 
   # PAT - Cross-platform Winlink client (v1.0.0, upstream nixpkgs has 0.19.1)
   pat = prev.callPackage ./pat { };

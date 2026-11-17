@@ -1,13 +1,13 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.services.open-rmslist;
+  cfg = config.services.rms-radar;
 in {
-  options.services.open-rmslist = {
+  options.services.rms-radar = {
 
-    enable = lib.mkEnableOption "open-rmslist, a self-hosted Winlink RMS gateway map";
+    enable = lib.mkEnableOption "RMS Radar, a self-hosted Winlink RMS gateway map";
 
-    package = lib.mkPackageOption pkgs "open-rmslist" { };
+    package = lib.mkPackageOption pkgs "rms-radar" { };
 
     listenAddress = lib.mkOption {
       type = lib.types.str;
@@ -41,7 +41,7 @@ in {
 
     cacheDir = lib.mkOption {
       type = lib.types.str;
-      default = "/var/lib/open-rmslist";
+      default = "/var/lib/rms-radar";
       description = "Directory for the cached gateway list and propagation data.";
     };
 
@@ -78,7 +78,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.services.open-rmslist = let
+    systemd.services.rms-radar = let
       # Prefer explicit overrides; otherwise derive from the voacapl package.
       exe = if cfg.voacapExecutable != null then cfg.voacapExecutable
         else if cfg.voacapl != null then "${cfg.voacapl}/bin/voacapl" else null;
@@ -94,15 +94,15 @@ in {
         ++ lib.optionals (datadir != null) [ "-voacap-data-dir" datadir ]
         ++ lib.optionals (cfg.voacapUrl != null) [ "-voacap-url" cfg.voacapUrl ];
     in {
-      description = "open-rmslist Winlink gateway map";
+      description = "RMS Radar Winlink gateway map";
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
       serviceConfig = {
         Type = "simple";
         DynamicUser = true;
-        StateDirectory = "open-rmslist";
-        ExecStart = "${cfg.package}/bin/open-rmslist ${lib.concatStringsSep " " (map lib.escapeShellArg args)}";
+        StateDirectory = "rms-radar";
+        ExecStart = "${cfg.package}/bin/rms-radar ${lib.concatStringsSep " " (map lib.escapeShellArg args)}";
         Restart = "on-failure";
         RestartSec = 5;
         NoNewPrivileges = true;

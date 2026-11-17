@@ -5,33 +5,33 @@
   src ? null,
 }:
 
-# open-rmslist — Winlink RMS gateway map (Go, zero external dependencies).
+# RMS Radar — Winlink RMS gateway map (Go; the web build is CGO-free).
 #
 # `src` defaults to the upstream GitHub release. It can also be built from a
 # local checkout with (run from the nix-ham-packages dir):
 #   nix build --impure --expr \
-#     'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./open-rmslist { src = ../../open-rmslist; }'
+#     'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./rms-radar { src = ../../rms-radar; }'
 let
   source = if src != null then src else fetchFromGitHub {
     owner = "ben-kuhn";
-    repo = "open-rmslist";
+    repo = "rms-radar";
     rev = "3f879be4fa4e370a65815b1640f0462eceebee50";
     hash = "sha256-QKP3Bam1h52uih1JKLjgH21hLkOWGAdq8qYRnGSj/+I=";
   };
 in
 buildGoModule rec {
-  pname = "open-rmslist";
+  pname = "rms-radar";
   version = "0.1.2";
 
   src = source;
 
-  # Zero Go dependencies: no vendoring.
+  # webview_go (desktop build only) is vendored; the web build stays CGO-free.
   vendorHash = "sha256-uBpnnb7C2KOraXl/axTpKD1v7voEMSNCUGDdAHTzE8g=";
 
   env.CGO_ENABLED = "0";
 
   postInstall = ''
-    install -Dm644 contrib/desktop/open-rmslist.desktop $out/share/applications/open-rmslist.desktop
+    install -Dm644 contrib/desktop/rms-radar.desktop $out/share/applications/rms-radar.desktop
   '';
 
   ldflags = [
@@ -41,17 +41,17 @@ buildGoModule rec {
   ];
 
   meta = with lib; {
-    description = "Winlink RMS gateway map with service-code filtering and propagation ranking";
+    description = "RMS Radar — Winlink RMS gateway map with service-code filtering and propagation ranking";
     longDescription = ''
       A minimal, self-hostable web service that periodically refreshes the
       Winlink RMS gateway list, maps gateways on OpenStreetMap, and lets users
       filter and rank stations by service code (e.g. MERCURY), band, and mode
       and mode using current propagation conditions.
     '';
-    homepage = "https://github.com/ben-kuhn/open-rmslist";
+    homepage = "https://github.com/ben-kuhn/rms-radar";
     license = licenses.mit;
     maintainers = [ ];
     platforms = platforms.unix;
-    mainProgram = "open-rmslist";
+    mainProgram = "rms-radar";
   };
 }

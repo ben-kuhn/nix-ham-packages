@@ -1,4 +1,4 @@
-name: Update open-rmslist pin
+name: Update RMS Radar pin
 
 on:
   schedule:
@@ -14,18 +14,18 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: check open-rmslist main
+      - name: check RMS Radar main
         id: up
         run: |
-          SHA="$(git ls-remote https://github.com/ben-kuhn/open-rmslist.git refs/heads/main | cut -f1)"
-          [ -n "$SHA" ] || { echo "could not resolve open-rmslist main" >&2; exit 1; }
-          CUR="$(sed -n 's/.*rev = "\([^"]*\)".*/\1/p' open-rmslist/default.nix)"
+          SHA="$(git ls-remote https://github.com/ben-kuhn/rms-radar.git refs/heads/main | cut -f1)"
+          [ -n "$SHA" ] || { echo "could not resolve RMS Radar main" >&2; exit 1; }
+          CUR="$(sed -n 's/.*rev = "\([^"]*\)".*/\1/p' rms-radar/default.nix)"
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
           echo "current=$CUR" >> "$GITHUB_OUTPUT"
           if [ "$SHA" = "$CUR" ]; then
             echo "pin already at $SHA"
           else
-            echo "open-rmslist main is $SHA (pinned at $CUR)"
+            echo "rms-radar main is $SHA (pinned at $CUR)"
           fi
 
       - uses: cachix/install-nix-action@v27
@@ -36,27 +36,27 @@ jobs:
         env:
           SHA: ${{ steps.up.outputs.sha }}
         run: |
-          RAW="$(nix-prefetch-url --unpack "https://github.com/ben-kuhn/open-rmslist/archive/${SHA}.tar.gz" 2>/dev/null)"
+          RAW="$(nix-prefetch-url --unpack "https://github.com/ben-kuhn/rms-radar/archive/${SHA}.tar.gz" 2>/dev/null)"
           HASH="$(nix hash convert --hash-algo sha256 --to sri "$RAW")"
-          VER="$(curl -fsSL "https://raw.githubusercontent.com/ben-kuhn/open-rmslist/${SHA}/main.go" \
+          VER="$(curl -fsSL "https://raw.githubusercontent.com/ben-kuhn/rms-radar/${SHA}/shared.go" \
             | sed -n 's/^var version = "\([^"]*\)"/\1/p')"
-          [ -n "$VER" ] || VER="$(sed -n 's/.*version = "\([^"]*\)".*/\1/p' open-rmslist/default.nix)"
+          [ -n "$VER" ] || VER="$(sed -n 's/.*version = "\([^"]*\)".*/\1/p' rms-radar/default.nix)"
           python3 - "$VER" "$SHA" "$HASH" <<'PY'
           import re, sys
           ver, rev, h = sys.argv[1:4]
-          p = "open-rmslist/default.nix"
+          p = "rms-radar/default.nix"
           s = open(p).read()
           s = re.sub(r'version = "[^"]*";', f'version = "{ver}";', s, count=1)
           s = re.sub(r'rev = "[^"]*";', f'rev = "{rev}";', s, count=1)
           s = re.sub(r'hash = "[^"]*";', f'hash = "{h}";', s, count=1)
           open(p, "w").write(s)
           PY
-          git add open-rmslist/default.nix
+          git add rms-radar/default.nix
           if git diff --cached --quiet; then
             echo "no change after rewrite"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "open-rmslist: track main @ ${SHA:0:7}"
+          git commit -m "rms-radar: track main @ ${SHA:0:7}"
           git push

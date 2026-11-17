@@ -21,7 +21,6 @@ available as `pkgs.<name>`.
 | `mercury-qt` | Mercury PySide6 GUI (connects to a running Mercury backend) |
 | `modem73` | High-speed software modem (KISS TNC) for HF/VHF/UHF 2400 Hz radios |
 | `not1mm` | Amateur radio contest logger (PyQt6) — talks to rigctld and cwdaemon |
-| `open-rmslist` | Winlink RMS gateway map (Go) — service-code filtering + propagation ranking; includes a NixOS module |
 | `paracon` | Packet radio terminal (AGWPE client) |
 | `packet-browser-client` | AX.25/AGWPE and VARA client with a local web proxy (includes a NixOS module) |
 | `packet-browser-server` | Web page fetcher using headless Firefox (includes a NixOS module) |
@@ -30,6 +29,7 @@ available as `pkgs.<name>`.
 | `pyham-pe` | Python AGWPE client library |
 | `qtsoundmodem` | Qt-based sound modem for packet radio |
 | `qttermtcp` | Qt terminal client for BPQ (FBB, AGWPE, KISS and VARA) |
+| `rms-radar` | Winlink RMS gateway map (Go) — service-code filtering + propagation ranking; includes a NixOS module |
 | `tncd` | AGWPE-to-KISS translation bridge (2.0 Go rewrite, beta; includes a NixOS module) |
 | `tuxlink` | Linux-native Winlink client (Rust + Tauri; alpha, tracks upstream pre-releases) |
 | `vardefm` | VARA FM-compatible FM data modem (Rust) |
@@ -75,7 +75,7 @@ in
     mercury-qt
     modem73
     not1mm
-    open-rmslist
+    rms-radar
     paracon
     packet-browser-client
     packet-browser-server
@@ -137,7 +137,7 @@ in
     mercury-qt
     modem73
     not1mm
-    open-rmslist
+    rms-radar
     paracon
     packet-browser-client
     packet-browser-server
@@ -193,7 +193,7 @@ in
     mercury-qt
     modem73
     not1mm
-    open-rmslist
+    rms-radar
     paracon
     packet-browser-client
     packet-browser-server
@@ -240,7 +240,7 @@ does.
 |--------|---------|
 | `hams-local-relay/module.nix` | `services.hams-local-relay` |
 | `linbpq/module.nix` | `services.linbpq` |
-| `open-rmslist/module.nix` | `services.open-rmslist` |
+| `rms-radar/module.nix` | `services.rms-radar` |
 | `packet-browser-client/module.nix` | `services.packet-browser-client` |
 | `packet-browser-server/module.nix` | `services.packet-browser-server` |
 | `tncd/module.nix` | `services.tncd` |
@@ -489,9 +489,9 @@ services.tncd.settings."rigctl.0" = {
 
 ---
 
-## open-rmslist Service
+## RMS Radar Service
 
-`open-rmslist` is a self-hosted web map of Winlink RMS gateways with
+RMS Radar is a self-hosted web map of Winlink RMS gateways with
 service-code filtering (including community modems such as MERCURY and
 VardeFM) and propagation-based link ranking. The package includes a NixOS
 module that runs it as a systemd service:
@@ -508,9 +508,9 @@ in
 {
   nixpkgs.overlays = [ (import ham-packages) ];
 
-  imports = [ "${ham-packages}/open-rmslist/module.nix" ];
+  imports = [ "${ham-packages}/rms-radar/module.nix" ];
 
-  services.open-rmslist = {
+  services.rms-radar = {
     enable = true;
     listenAddress = "0.0.0.0";   # or "127.0.0.1" for local-only
     port = 8079;
@@ -525,12 +525,12 @@ Then open `http://<host>:8079`. Module options:
 | Option | Default | Description |
 |--------|---------|-------------|
 | `enable` | `false` | Enable the service |
-| `package` | `pkgs.open-rmslist` | Package to use |
+| `package` | `pkgs.rms-radar` | Package to use |
 | `listenAddress` | `"127.0.0.1"` | Bind address |
 | `port` | `8079` | HTTP port |
 | `serviceCodes` | `[ "PUBLIC" "MERCURY" ]` | Winlink service codes to fetch |
 | `refreshInterval` | `"1h"` | Gateway list refresh interval |
-| `cacheDir` | `"/var/lib/open-rmslist"` | Cache directory |
+| `cacheDir` | `"/var/lib/rms-radar"` | Cache directory |
 | `voacapUrl` | `null` | Optional remote VOACAP API URL |
 | `openFirewall` | `false` | Open the HTTP port in the firewall |
 
@@ -1030,7 +1030,7 @@ Import them as `ax25` and `pe` respectively.
 - [mercury-modem](https://rhizomatica.github.io/mercury/) — HERMES HF modem
 - [mercury-ui](https://github.com/Rhizomatica/mercury) — Fyne GUI for Mercury
 - [mercury-qt](https://github.com/Rhizomatica/mercury-qt) — PySide6 GUI for Mercury
-- [open-rmslist](https://github.com/ben-kuhn/open-rmslist) — Winlink RMS gateway map
+- [RMS Radar](https://github.com/ben-kuhn/rms-radar) — Winlink RMS gateway map
 - [paracon](paracon/INSTALL.md) — packet radio terminal
 - [Packet Browser server](packet-browser-server/README.md) — Firefox-backed page fetcher and options
 - [Packet Browser client](packet-browser-client/README.md) — AX.25/VARA web proxy and options
