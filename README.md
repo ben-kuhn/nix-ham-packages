@@ -515,7 +515,7 @@ in
     listenAddress = "0.0.0.0";   # or "127.0.0.1" for local-only
     port = 8079;
     openFirewall = true;
-    serviceCodes = [ "PUBLIC" "EMCOMM" "MERCURY" "VARDEFM" "MODEM73" "DATA2G" ];
+    serviceCodes = [ "PUBLIC" "EMCOMM" ]; # add your community/private codes
   };
 }
 ```
@@ -528,7 +528,7 @@ Then open `http://<host>:8079`. Module options:
 | `package` | `pkgs.rms-radar` | Package to use |
 | `listenAddress` | `"127.0.0.1"` | Bind address |
 | `port` | `8079` | HTTP port |
-| `serviceCodes` | `[ "PUBLIC" "EMCOMM" "MERCURY" "VARDEFM" "MODEM73" "DATA2G" ]` | Winlink service codes to fetch (add any community or private code) |
+| `serviceCodes` | `[ "PUBLIC" "EMCOMM" ]` | Winlink service codes to fetch (add any community or private code; the app can also manage this at runtime) |
 | `refreshInterval` | `"1h"` | Gateway list refresh interval |
 | `cacheDir` | `"/var/lib/rms-radar"` | Cache directory |
 | `voacapUrl` | `null` | Optional remote VOACAP API URL |
