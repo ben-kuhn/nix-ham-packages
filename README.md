@@ -529,7 +529,7 @@ Then open `http://<host>:8079`. Module options:
 | `listenAddress` | `"127.0.0.1"` | Bind address |
 | `port` | `8079` | HTTP port |
 | `serviceCodes` | `[ "PUBLIC" "MERCURY" ]` | Winlink service codes to fetch |
-| `refreshInterval` | `"15m"` | Gateway list refresh interval |
+| `refreshInterval` | `"1h"` | Gateway list refresh interval |
 | `cacheDir` | `"/var/lib/open-rmslist"` | Cache directory |
 | `voacapUrl` | `null` | Optional remote VOACAP API URL |
 | `openFirewall` | `false` | Open the HTTP port in the firewall |
