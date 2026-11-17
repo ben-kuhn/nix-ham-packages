@@ -15,8 +15,8 @@ let
   source = if src != null then src else fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "open-rmslist";
-    rev = "27760fd79e6d1095e9c6604ccf80a2fae69c66bb";
-    hash = "sha256-OyemGilCsgO3c69cSUVH5/tosuiSbgJL2Pvzy6TX0hU=";
+    rev = "6b720f9127c03fa9085987ee6436480a2016e49a";
+    hash = "sha256-ddOztpVhRjNgfge04pHDyjt5zXdlfgp99j586+2pHi8=";
   };
 in
 buildGoModule rec {
