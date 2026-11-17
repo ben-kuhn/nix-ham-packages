@@ -25,7 +25,7 @@ in {
 
     serviceCodes = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "PUBLIC" "MERCURY" "VardeFM" ];
+      default = [ "PUBLIC" "MERCURY" ];
       description = ''
         Winlink service codes to fetch. The web UI offers a dropdown of the
         codes actually present in the returned data.

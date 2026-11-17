@@ -41,7 +41,7 @@ buildGoModule rec {
     longDescription = ''
       A minimal, self-hostable web service that periodically refreshes the
       Winlink RMS gateway list, maps gateways on OpenStreetMap, and lets users
-      filter and rank stations by service code (e.g. MERCURY, VardeFM), band,
+      filter and rank stations by service code (e.g. MERCURY), band, and mode
       and mode using current propagation conditions.
     '';
     homepage = "https://github.com/ben-kuhn/open-rmslist";
