@@ -15,8 +15,8 @@ let
   source = if src != null then src else fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "rms-radar";
-    rev = "3d5c41d5a68432e0b8c74ad21aa41ac7cbba85d6";
-    hash = "sha256-y9KTvqbaNBogILaFfbrv6lscQLlPmkErw3EZY2h+nK0=";
+    rev = "91b80bd59779f29c6d3103afdcc0fa9fedd1f403";
+    hash = "sha256-jlRfvLtcrgZJnHkgRw1/0lg8Sc3Yy2CjXM3S0PmoB6A=";
   };
 in
 buildGoModule rec {
