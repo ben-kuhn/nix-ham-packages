@@ -25,9 +25,10 @@ in {
 
     serviceCodes = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "PUBLIC" "MERCURY" ];
+      default = [ "PUBLIC" "EMCOMM" "MERCURY" "VARDEFM" ];
       description = ''
-        Winlink service codes to fetch. The web UI offers a dropdown of the
+        Winlink service codes to fetch. The API has no wildcard, so this lists
+        the codes to request explicitly; the web UI offers a dropdown of the
         codes actually present in the returned data.
       '';
     };
