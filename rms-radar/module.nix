@@ -33,6 +33,16 @@ in {
       '';
     };
 
+    adminToken = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = ''
+        Optional admin token. When set, service-code changes require the
+        X-RMS-Radar-Admin header (the web dialog can store it for the tab).
+        Leave null to disable service-code editing on the server.
+      '';
+    };
+
     refreshInterval = lib.mkOption {
       type = lib.types.str;
       default = "1h";
@@ -98,6 +108,9 @@ in {
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
+      environment = lib.optionalAttrs (cfg.adminToken != null) {
+        RMSRADAR_ADMIN_TOKEN = cfg.adminToken;
+      };
       serviceConfig = {
         Type = "simple";
         DynamicUser = true;

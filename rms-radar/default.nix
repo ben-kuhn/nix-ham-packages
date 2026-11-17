@@ -15,18 +15,18 @@ let
   source = if src != null then src else fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "rms-radar";
-    rev = "6f997fa1e076d8932733ba3d52cf4720b83e3b04";
-    hash = "sha256-NWMAkpjNBSx8CUw4Ojco8ErTPc8Y0gipZMBCZDifxso=";
+    rev = "835f56cbaaa8d7c98d8e4297696d8d67c5a607d4";
+    hash = "sha256-/fJT65rRMDvhEGhhyAxDk1Z5j5fVEfj6xdv4WQ3oquY=";
   };
 in
 buildGoModule rec {
   pname = "rms-radar";
-  version = "0.2.3";
+  version = "0.2.4";
 
   src = source;
 
   # webview_go (desktop build only) is vendored; the web build stays CGO-free.
-  vendorHash = "sha256-uBpnnb7C2KOraXl/axTpKD1v7voEMSNCUGDdAHTzE8g=";
+  vendorHash = "sha256-xp94e2pplRwZuOBs0WNIqSu268G/RTSboWNHmBbAjZ0=";
 
   env.CGO_ENABLED = "0";
 
