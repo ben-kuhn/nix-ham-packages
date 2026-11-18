@@ -45,8 +45,8 @@ in {
 
     refreshInterval = lib.mkOption {
       type = lib.types.str;
-      default = "1h";
-      description = "Gateway list refresh interval (Go duration, e.g. 1h).";
+      default = "24h";
+      description = "Gateway list refresh interval (Go duration, e.g. 24h). The UI Refresh button forces an update.";
     };
 
     cacheDir = lib.mkOption {
