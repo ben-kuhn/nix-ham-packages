@@ -15,6 +15,7 @@
 # - modem73: High-speed software modem (KISS TNC) for 2400 Hz radios
 # - not1mm: Amateur radio contest logger (PyQt6)
 # - rms-radar: Winlink RMS gateway map (Go, includes a NixOS module)
+- rms-radar-desktop: native WebKitGTK desktop window for RMS Radar
 # - packet-browser-client: AX.25/VARA client with a web proxy interface
 # - packet-browser-server: Web page fetcher for AX.25 packet radio
 # - paracon: Paracon terminal (depends on pyham-ax25 and pyham-pe)
@@ -116,6 +117,7 @@ final: prev: {
 
   # rms-radar - Winlink RMS gateway map (Go)
   rms-radar = prev.callPackage ./rms-radar { };
+  rms-radar-desktop = prev.callPackage ./rms-radar/desktop.nix { src = null; };
 
   # PAT - Cross-platform Winlink client (v1.0.0, upstream nixpkgs has 0.19.1)
   pat = prev.callPackage ./pat { };

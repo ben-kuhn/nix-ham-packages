@@ -12,12 +12,7 @@
 #   nix build --impure --expr \
 #     'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./rms-radar { src = ../../rms-radar; }'
 let
-  source = if src != null then src else fetchFromGitHub {
-    owner = "ben-kuhn";
-    repo = "rms-radar";
-    rev = "96345e0e083d6fc6ff4d07241b83518c564d65db";
-    hash = "sha256-REM7GxW+6ZRnqafCaWKgRNCa/0ZZlIRsIpvGhQbP5MI=";
-  };
+  source = import ./source.nix { inherit fetchFromGitHub src; };
 in
 buildGoModule rec {
   pname = "rms-radar";
