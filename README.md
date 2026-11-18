@@ -34,7 +34,7 @@ available as `pkgs.<name>`.
 | `tuxlink` | Linux-native Winlink client (Rust + Tauri; alpha, tracks upstream pre-releases) |
 | `vardefm` | VARA FM-compatible FM data modem (Rust) |
 | `voacapl` | VOACAP HF propagation prediction engine for Pat |
-| `xara` | VARA-compatible HF/FM software modem (registered speeds enabled; includes `xara-monitor` and a NixOS module) |
+| `xara` | XaraNext 1.2 VARA-compatible HF/FM modem (registered speeds, 2027 keying directories, `xara-monitor`; includes a NixOS module) |
 
 `tuxlink` is currently `x86_64-linux` only. The other packages support the
 platforms listed in their `meta.platforms`.
@@ -598,6 +598,18 @@ Each instance requires exactly one of `hf` (500, 2300 or 2750) or `fm`
 true` requires a `ptt` method (`vox`, `rigctld`, `cm108`, `rts` or `dtr`).
 Port numbers below 65535 are enforced because the data port is `port + 1`.
 
+XaraNext 1.2 supports the VARA HF 4.9.1 / FM 4.4.1 2027 waveform but does
+not redistribute those tables. Point `hfKeyingDir` and `fmKeyingDir` at your
+own VARA installation (or a copy of its `Binary*.dat` / `Mod*.dat` files):
+
+```nix
+instances.hf.hfKeyingDir = "/home/alice/vara/drive_c/VARA HF";
+instances.fm.fmKeyingDir = "/home/alice/vara/drive_c/VARA FM";
+```
+
+`waveform = "auto"` follows VARA's clock rule; `"legacy"` always uses the old
+waveform, and `"2027"` requires the matching keying directory.
+
 Other useful instance options:
 
 | Option | Default | Description |
@@ -615,6 +627,8 @@ Other useful instance options:
 | `kissPort` | `8100` | KISS TCP port; `null` disables KISS |
 | `persistence` | `null` | KISS p-persistence, 0–1 |
 | `digi` | `null` | FM digipeater callsign (requires `fm`) |
+| `hfKeyingDir` / `fmKeyingDir` | `null` | VARA HF/FM 2027 table directories; tables are not shipped |
+| `waveform` | `null` | `auto`, `legacy`, or `2027` keying |
 | `registered`, `offerLevel` | `false`, `null` | Enable registered speeds and preferred level |
 | `ui.*` | disabled | Web UI port/address/hosts/control/token |
 | `stateDir`, `record` | `null` | State directory and RX/TX recording path |

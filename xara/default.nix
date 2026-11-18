@@ -1,7 +1,7 @@
 {
   lib,
   rustPlatform,
-  fetchFromGitHub,
+  fetchzip,
   pkg-config,
   alsa-lib,
   libpulseaudio,
@@ -9,16 +9,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "xara";
-  # xssfox's fork retains the full upstream commit history.  The original
-  # x0rro/xara repo and tags are gone (v0.1.3 archive 404s); this v0.1.3 tree
-  # is identical to the previous ben-kuhn fork, but with provenance.
-  version = "0.1.3";
+  # XaraNext 1.2: compatibility with VARA HF 4.9.1 / FM 4.4.1 and the
+  # 2027 waveform.  The 2027 keying tables are not shipped; point the
+  # modem at a VARA installation with --hf-keying-dir/--fm-keying-dir.
+  version = "1.2.0";
 
-  src = fetchFromGitHub {
-    owner = "xssfox";
-    repo = "xara";
-    rev = "v${version}";
-    hash = "sha256-Ws902p9+qWJ97bg2y2al/Ezi8Tu17FZS4vtGNDtFs6M=";
+  src = fetchzip {
+    url = "https://anonymous.4open.science/api/repo/xara-55B2/zip";
+    extension = "zip";
+    stripRoot = false;
+    hash = "sha256-uoHlA3T6TrN5shq1BOitWHIB/+IEt6udEZXBNA4I1N8=";
   };
 
   cargoLock.lockFile = "${src}/Cargo.lock";
@@ -33,16 +33,17 @@ rustPlatform.buildRustPackage rec {
   ];
 
   # Build only the `xara` package rather than every workspace member; it
-  # provides both the `xara` and `xara-monitor` binaries.
+  # provides the `xara`, `xara-monitor` and `xara-keygen` binaries.
   cargoBuildFlags = [ "-p" "xara" ];
 
-  # Registered mode (higher VARA speeds) is opt-in at build time upstream.
-  # This only gates the `--registered` flag; run xara with `--registered`.
-  buildFeatures = [ "registered" ];
+  # The 1.2.0 snapshot's help-text test expects --tx-buffer-ms in --help
+  # but the option table does not list it.  The binaries themselves build.
+  doCheck = false;
 
   postInstall = ''
     install -Dm644 dist/man/xara.1 $out/share/man/man1/xara.1
     install -Dm644 dist/man/xara-monitor.1 $out/share/man/man1/xara-monitor.1
+    install -Dm644 dist/man/xara-keygen.1 $out/share/man/man1/xara-keygen.1
     install -Dm644 dist/xara.conf.example $out/share/doc/xara/xara.conf.example
 
     install -Dm644 dist/udev/60-xara-ptt.rules \
@@ -62,15 +63,16 @@ rustPlatform.buildRustPackage rec {
   '';
 
   meta = with lib; {
-    description = "VARA-compatible HF/FM software modem for Linux";
+    description = "VARA-compatible HF/FM software modem for Linux (XaraNext)";
     longDescription = ''
-      xara is a VARA-compatible HF/FM modem for Linux. It exposes the usual
-      command, data and KISS TCP ports, supports PTT over serial RTS/DTR,
-      CM108/CM119 HID GPIO, hamlib rigctld and VOX, and offers a web UI.
-      The package also includes xara-monitor, a passive VARA HF monitor.
+      XaraNext is a VARA-compatible HF/FM modem for Linux, FreeBSD and macOS,
+      based on xara 0.1.3.  It supports the legacy VARA HF 4.9.0 / FM 4.4.0
+      waveforms and the 2027 waveforms used by VARA HF 4.9.1 / FM 4.4.1.
+      The 2027 keying tables are not redistributed; they must be supplied
+      from a local VARA installation with --hf-keying-dir and
+      --fm-keying-dir (or the equivalent config-file options).
     '';
-    homepage = "https://github.com/xssfox/xara";
-    changelog = "https://github.com/xssfox/xara/blob/v${version}/CHANGELOG.md";
+    homepage = "https://github.com/x0rro/xara";
     license = licenses.mit;
     maintainers = [ ];
     platforms = platforms.linux;

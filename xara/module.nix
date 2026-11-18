@@ -34,6 +34,9 @@ let
     ++ (if icfg.kissPort == null then [ "--kiss-port" "off" ] else [ "--kiss-port" (toString icfg.kissPort) ])
     ++ lib.optionals (icfg.persistence != null) [ "--persistence" (toString icfg.persistence) ]
     ++ lib.optionals (icfg.digi != null) [ "--digi" icfg.digi ]
+    ++ lib.optionals (icfg.hfKeyingDir != null) [ "--hf-keying-dir" icfg.hfKeyingDir ]
+    ++ lib.optionals (icfg.fmKeyingDir != null) [ "--fm-keying-dir" icfg.fmKeyingDir ]
+    ++ lib.optionals (icfg.waveform != null) [ "--waveform" icfg.waveform ]
     ++ lib.optionals icfg.registered [ "--registered" ]
     ++ lib.optionals (icfg.offerLevel != null) [ "--offer-level" (toString icfg.offerLevel) ]
     ++ lib.optionals (icfg.stateDir != null) [ "--state-dir" icfg.stateDir ]
@@ -266,6 +269,40 @@ in
             description = "FM digipeater callsign (`--digi`, requires fm).";
           };
 
+          hfKeyingDir = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            example = "/home/ku0hn/vara/drive_c/VARA HF";
+            description = ''
+              Directory containing the VARA HF 4.9.1 tables for the 2027
+              waveform (`--hf-keying-dir`): Binary1.dat, Binary2.dat,
+              Binary3.dat, Mod1.dat and Mod2.dat.  The tables are not shipped
+              with xara; point this at your own VARA installation.
+            '';
+          };
+
+          fmKeyingDir = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            example = "/home/ku0hn/vara/drive_c/VARA FM";
+            description = ''
+              Directory containing the VARA FM 4.4.1 tables for the 2027
+              waveform (`--fm-keying-dir`): Binary1.dat and Binary2.dat.
+              The tables are not shipped with xara; point this at your own
+              VARA installation.
+            '';
+          };
+
+          waveform = lib.mkOption {
+            type = lib.types.nullOr (lib.types.enum [ "auto" "legacy" "2027" ]);
+            default = null;
+            description = ''
+              Waveform keying (`--waveform`).  `auto` follows VARA's clock
+              rule, `legacy` always uses the old waveform, and `2027` requires
+              the matching keying directory.
+            '';
+          };
+
           registered = lib.mkOption {
             type = lib.types.bool;
             default = false;
@@ -435,6 +472,10 @@ in
       {
         assertion = i.digi == null || i.fm != null;
         message = "services.xara.instances.${name}: `digi` requires `fm`.";
+      }
+      {
+        assertion = i.waveform != "2027" || (if i.fm != null then i.fmKeyingDir != null else i.hfKeyingDir != null);
+        message = "services.xara.instances.${name}: `waveform = \"2027\"` requires the matching keying directory.";
       }
       {
         assertion = i.call != "";
