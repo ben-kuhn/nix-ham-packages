@@ -15,7 +15,7 @@ let
 in
 buildGoModule rec {
   pname = "rms-radar-desktop";
-  version = "0.2.8";
+  version = "0.2.9";
 
   src = source;
   vendorHash = "sha256-xp94e2pplRwZuOBs0WNIqSu268G/RTSboWNHmBbAjZ0=";
@@ -49,6 +49,8 @@ EOF
     mv $out/bin/rms-radar $out/bin/rms-radar-desktop
     install -Dm644 contrib/desktop/rms-radar-desktop.desktop \
       $out/share/applications/rms-radar-desktop.desktop
+    install -Dm644 contrib/desktop/rms-radar.svg \
+      $out/share/icons/hicolor/scalable/apps/rms-radar.svg
   '';
 
   meta = with lib; {

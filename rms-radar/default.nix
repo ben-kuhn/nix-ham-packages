@@ -16,7 +16,7 @@ let
 in
 buildGoModule rec {
   pname = "rms-radar";
-  version = "0.2.8";
+  version = "0.2.9";
 
   src = source;
 
@@ -27,6 +27,7 @@ buildGoModule rec {
 
   postInstall = ''
     install -Dm644 contrib/desktop/rms-radar.desktop $out/share/applications/rms-radar.desktop
+    install -Dm644 contrib/desktop/rms-radar.svg $out/share/icons/hicolor/scalable/apps/rms-radar.svg
   '';
 
   ldflags = [
