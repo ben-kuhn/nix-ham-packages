@@ -34,7 +34,7 @@ available as `pkgs.<name>`.
 | `tuxlink` | Linux-native Winlink client (Rust + Tauri; alpha, tracks upstream pre-releases) |
 | `vardefm` | VARA FM-compatible FM data modem (Rust) |
 | `voacapl` | VOACAP HF propagation prediction engine for Pat |
-| `xara` | XaraNext 1.2 VARA-compatible HF/FM modem (registered speeds, 2027 keying directories, `xara-monitor`; includes a NixOS module) |
+| `xara` | XaraNext 1.3 VARA-compatible HF/FM modem (registered speeds, 2027 keying directories, `xara-monitor`; includes a NixOS module) |
 
 `tuxlink` is currently `x86_64-linux` only. The other packages support the
 platforms listed in their `meta.platforms`.
@@ -598,7 +598,7 @@ Each instance requires exactly one of `hf` (500, 2300 or 2750) or `fm`
 true` requires a `ptt` method (`vox`, `rigctld`, `cm108`, `rts` or `dtr`).
 Port numbers below 65535 are enforced because the data port is `port + 1`.
 
-XaraNext 1.2 supports the VARA HF 4.9.1 / FM 4.4.1 2027 waveform but does
+XaraNext 1.3 supports the VARA HF 4.9.1 / FM 4.4.1 2027 waveform but does
 not redistribute those tables. Point `hfKeyingDir` and `fmKeyingDir` at your
 own VARA installation (or a copy of its `Binary*.dat` / `Mod*.dat` files):
 

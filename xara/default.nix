@@ -9,7 +9,7 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "xara";
-  # XaraNext 1.2: compatibility with VARA HF 4.9.1 / FM 4.4.1 and the
+  # XaraNext 1.3: compatibility with VARA HF 4.9.1 / FM 4.4.1 and the
   # 2027 waveform.  The 2027 keying tables are not shipped; point the
   # modem at a VARA installation with --hf-keying-dir/--fm-keying-dir.
   version = "1.3.0";
