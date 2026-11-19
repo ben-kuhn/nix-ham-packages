@@ -12,13 +12,13 @@ rustPlatform.buildRustPackage rec {
   # XaraNext 1.2: compatibility with VARA HF 4.9.1 / FM 4.4.1 and the
   # 2027 waveform.  The 2027 keying tables are not shipped; point the
   # modem at a VARA installation with --hf-keying-dir/--fm-keying-dir.
-  version = "1.2.0";
+  version = "1.3.0";
 
   src = fetchzip {
     url = "https://anonymous.4open.science/api/repo/xara-55B2/zip";
     extension = "zip";
     stripRoot = false;
-    hash = "sha256-uoHlA3T6TrN5shq1BOitWHIB/+IEt6udEZXBNA4I1N8=";
+    hash = "sha256-2ln+E89GfApumH1EinqCsmtZ34SXf41hdlXS8DagaKs=";
   };
 
   cargoLock.lockFile = "${src}/Cargo.lock";
