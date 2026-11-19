@@ -2,8 +2,8 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
-  src ? null,
-}:
+  ...
+}@args:
 
 # RMS Radar — Winlink RMS gateway map (Go; the web build is CGO-free).
 #
@@ -12,11 +12,17 @@
 #   nix build --impure --expr \
 #     'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./rms-radar { src = ../../rms-radar; }'
 let
-  source = import ./source.nix { inherit fetchFromGitHub src; };
+  # Do not declare `src` as a formal argument: callPackage would inject
+  # nixpkgs' unrelated `src` package (Simple Revision Control). An explicit
+  # `src` override still arrives through the extra arguments.
+  source = import ./source.nix {
+    inherit fetchFromGitHub;
+    src = args.src or null;
+  };
 in
 buildGoModule rec {
   pname = "rms-radar";
-  version = "1.0.0";
+  version = "1.0.1";
 
   src = source;
 
@@ -28,6 +34,7 @@ buildGoModule rec {
   postInstall = ''
     install -Dm644 contrib/desktop/rms-radar.desktop $out/share/applications/rms-radar.desktop
     install -Dm644 contrib/desktop/rms-radar.svg $out/share/icons/hicolor/scalable/apps/rms-radar.svg
+    install -Dm644 contrib/desktop/rms-radar-1024.png $out/share/icons/hicolor/1024x1024/apps/rms-radar.png
   '';
 
   ldflags = [

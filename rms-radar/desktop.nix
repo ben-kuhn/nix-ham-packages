@@ -6,17 +6,22 @@
   gtk3,
   webkitgtk_4_1,
   librsvg,
-  src ? null,
-}:
+  ...
+}@args:
 
 # RMS Radar native desktop window (WebKitGTK). The web build in default.nix is
 # CGO-free; this one requires webview_go and a platform webview runtime.
 let
-  source = import ./source.nix { inherit fetchFromGitHub src; };
+  # See default.nix: keep `src` out of the formal arguments so callPackage
+  # cannot inject nixpkgs' unrelated `src` package.
+  source = import ./source.nix {
+    inherit fetchFromGitHub;
+    src = args.src or null;
+  };
 in
 buildGoModule rec {
   pname = "rms-radar-desktop";
-  version = "1.0.0";
+  version = "1.0.1";
 
   src = source;
   vendorHash = "sha256-xp94e2pplRwZuOBs0WNIqSu268G/RTSboWNHmBbAjZ0=";
@@ -51,11 +56,13 @@ EOF
     install -Dm644 contrib/desktop/rms-radar-desktop.desktop \
       $out/share/applications/rms-radar-desktop.desktop
     install -Dm644 contrib/desktop/rms-radar.svg \
-      $out/share/icons/hicolor/scalable/apps/rms-radar.svg
+      $out/share/icons/hicolor/scalable/apps/rms-radar-desktop.svg
+    install -Dm644 contrib/desktop/rms-radar-1024.png \
+      $out/share/icons/hicolor/1024x1024/apps/rms-radar-desktop.png
     for size in 256 512; do
       install -d "$out/share/icons/hicolor/''${size}x''${size}/apps"
       rsvg-convert -w "$size" -h "$size" contrib/desktop/rms-radar.svg \
-        -o "$out/share/icons/hicolor/''${size}x''${size}/apps/rms-radar.png"
+        -o "$out/share/icons/hicolor/''${size}x''${size}/apps/rms-radar-desktop.png"
     done
   '';
 
