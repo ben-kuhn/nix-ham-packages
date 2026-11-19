@@ -5,6 +5,7 @@
   pkg-config,
   gtk3,
   webkitgtk_4_1,
+  librsvg,
   src ? null,
 }:
 
@@ -23,7 +24,7 @@ buildGoModule rec {
   env.CGO_ENABLED = "1";
   tags = [ "desktop" ];
 
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [ pkg-config librsvg ];
   buildInputs = [ gtk3 webkitgtk_4_1 ];
 
   # webview_go asks pkg-config for webkit2gtk-4.0; modern distributions ship the
@@ -51,6 +52,11 @@ EOF
       $out/share/applications/rms-radar-desktop.desktop
     install -Dm644 contrib/desktop/rms-radar.svg \
       $out/share/icons/hicolor/scalable/apps/rms-radar.svg
+    for size in 256 512; do
+      install -d "$out/share/icons/hicolor/''${size}x''${size}/apps"
+      rsvg-convert -w "$size" -h "$size" contrib/desktop/rms-radar.svg \
+        -o "$out/share/icons/hicolor/''${size}x''${size}/apps/rms-radar.png"
+    done
   '';
 
   meta = with lib; {
