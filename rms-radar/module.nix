@@ -25,7 +25,7 @@ in {
 
     serviceCodes = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "PUBLIC" "MERCURY" "VARDEFM" "MODEM73" "DATA2G" "IONHF" ];
+      default = [ "PUBLIC" "EMCOMM" "MERCURY" "VARDEFM" "MODEM73" "DATA2G" "IONHF" ];
       description = ''
         Winlink service codes to fetch. The API has no wildcard and does not
         publish private group codes, so this lists the known public/community

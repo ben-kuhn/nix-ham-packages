@@ -16,7 +16,7 @@ let
 in
 buildGoModule rec {
   pname = "rms-radar";
-  version = "0.2.9";
+  version = "0.2.10";
 
   src = source;
 
