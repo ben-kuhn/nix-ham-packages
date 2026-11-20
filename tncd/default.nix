@@ -5,19 +5,18 @@
 }:
 
 # tncd 2.0 — pure-Go rewrite of the AGWPE-to-KISS AX.25 bridge.
-# (The 1.x Python line lives on the `v1` git branch and the stable
-#  APT/RPM repos; this package tracks the 2.0 Go beta line.)
+# (The 1.x Python line is maintenance-only on the `v1` git branch; the public
+#  APT/RPM repos serve the Go line since v2.0.0.)
 buildGoModule rec {
   pname = "tncd";
-  version = "2.0.0-unstable-2026-10-09";
+  version = "2.0.0";
 
-  # Track the main branch. The stable 1.x line lives on the `v1` branch and
-  # in the APT/RPM repos; this package follows the 2.0 Go development tree.
+  # The stable release tag, not the development tree.
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "5e3004cfd10bf4e4402a646e239ac2564e4f907b";
-    hash = "sha256-4zs9Dv6k2lsel76vJ0E20n5er2nXxY253wvmBaOyFuo=";
+    rev = "v2.0.0";
+    hash = "sha256-jFBkN6yJc1K55+gb06eDiZKkzdBjhdwxCnQIpwGaNtc=";
   };
 
   # go.mod is unchanged since the tncd-go dev package; same vendorHash.
