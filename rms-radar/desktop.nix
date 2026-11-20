@@ -21,7 +21,7 @@ let
 in
 buildGoModule rec {
   pname = "rms-radar-desktop";
-  version = "1.0.5";
+  version = "1.0.6";
 
   src = source;
   vendorHash = "sha256-xp94e2pplRwZuOBs0WNIqSu268G/RTSboWNHmBbAjZ0=";
