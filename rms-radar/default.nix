@@ -22,7 +22,7 @@ let
 in
 buildGoModule rec {
   pname = "rms-radar";
-  version = "1.0.10";
+  version = "1.0.11";
 
   src = source;
 
