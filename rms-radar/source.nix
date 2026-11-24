@@ -2,6 +2,6 @@
 if src != null then src else fetchFromGitHub {
   owner = "ben-kuhn";
   repo = "rms-radar";
-  rev = "f286220d4445ae521376b751631d7a26e202c937";
-  hash = "sha256-5PvaGyZvnU8R/xS7LFeVgkXTAS9QfIwnJlpQOP+ACe4=";
+  rev = "5d0312a28bff34929504f712d2410e7e7ca480de";
+  hash = "sha256-XsvpT/+2LKsHsdYTQdUtegdLlx8IB50DU0Tgpse/KBU=";
 }
