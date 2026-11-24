@@ -25,7 +25,7 @@ in {
 
     serviceCodes = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "PUBLIC" "MERCURY" "VARDEFM" "MODEM73" "DATA2G" "IONHF" "XARA" ];
+      default = [ "PUBLIC" "MERCURY" "VARDEFM" "MODEM73" "DATA2G" "IONHF" "XARA" "AETHER" ];
       description = ''
         Winlink service codes to fetch. The API has no wildcard and does not
         publish private group codes, so this lists the known public/community
@@ -48,7 +48,13 @@ in {
     refreshInterval = lib.mkOption {
       type = lib.types.str;
       default = "24h";
-      description = "Gateway list refresh interval (Go duration, e.g. 24h). The UI Refresh button forces an update.";
+      description = "Winlink gateway list refresh interval (Go duration, e.g. 24h). The UI Refresh button forces an update.";
+    };
+
+    radiopostRefresh = lib.mkOption {
+      type = lib.types.str;
+      default = "10m";
+      description = "RadioPost directory/status polling interval (Go duration; minimum 1m).";
     };
 
     cacheDir = lib.mkOption {
@@ -102,6 +108,7 @@ in {
         "-cache-dir" cfg.cacheDir
         "-service-codes" (lib.concatStringsSep "," cfg.serviceCodes)
         "-refresh" cfg.refreshInterval
+        "-radiopost-refresh" cfg.radiopostRefresh
       ] ++ lib.optionals (exe != null) [ "-voacap-executable" exe ]
         ++ lib.optionals (datadir != null) [ "-voacap-data-dir" datadir ]
         ++ lib.optionals (cfg.voacapUrl != null) [ "-voacap-url" cfg.voacapUrl ];
