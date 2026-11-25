@@ -20,16 +20,16 @@
 rustPlatform.buildRustPackage rec {
   pname = "ionhf";
   # Tracks main; upstream is still in the 0.1.0 alpha series.
-  version = "0.1.0-alpha.6-unstable-2026-11-02";
+  version = "0.1.0-alpha.6-unstable-2026-11-19";
 
   src = fetchFromGitHub {
     owner = "jesseforkum";
     repo = "ion-hf";
-    rev = "1eb7dca01803e120eeb0924fd02d4ccc563557a4";
-    hash = "sha256-R7+CdOl7fzeqHq45GZeE4SwKn0a+fAHz7yGCe6xe588=";
+    rev = "a2a2b7716e9f73f75efb8f51237b4d20a308c673";
+    hash = "sha256-fmYmEMQVOyiMMN7kcvC7J/8dzD5+mWu8xs3Dp7vzbqc=";
   };
 
-  cargoHash = "sha256-kwQ09XGhLMKWqRo235znBBu9cmv0yWYvtbDPMH01in8=";
+  cargoHash = "sha256-x2AfdCYx01AbLcOYK55vrYnGZrZnXNS7K4OeKLKosTE=";
 
   nativeBuildInputs = [
     pkg-config

@@ -28,17 +28,17 @@
 }:
 
 let
-  version = "0.1.97";
+  version = "0.2.0";
 
   src = fetchFromGitHub {
     owner = "Ylianst";
     repo = "HTCommander";
     tag = "v${version}";
-    hash = "sha256-6zJCxQClp/ndEaDzyCq4a44NpcYlepmmLmJfZajhjYI=";
+    hash = "sha256-SK1E+4mrp1ySQh7cbmJ84XjIceqnLqb/eHr2qoDCynA=";
   };
 
   # Upstream does not commit pubspec.lock; this was generated with Flutter
-  # 3.47.4 (Dart 3.13.3) from the v0.1.97 source tree.
+  # 3.47.4 (Dart 3.13.3) from the v0.2.0 source tree.
   pubspecLock = lib.importJSON ./pubspec.lock.json;
 
   # HTCommander uses SQLite, not SQLCipher.  nixpkgs' sqlite3 asset builder

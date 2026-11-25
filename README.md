@@ -30,7 +30,7 @@ available as `pkgs.<name>`.
 | `qtsoundmodem` | Qt-based sound modem for packet radio |
 | `qttermtcp` | Qt terminal client for BPQ (FBB, AGWPE, KISS and VARA) |
 | `rms-radar` | Winlink RMS gateway map (Go) — service-code filtering + propagation ranking; includes a NixOS module |
-| `tncd` | AGWPE-to-KISS translation bridge (2.0 Go rewrite, beta; includes a NixOS module) |
+| `tncd` | AGWPE-to-KISS translation bridge (2.x Go rewrite; includes a NixOS module) |
 | `tuxlink` | Linux-native Winlink client (Rust + Tauri; alpha, tracks upstream pre-releases) |
 | `vardefm` | VARA FM-compatible FM data modem (Rust) |
 | `voacapl` | VOACAP HF propagation prediction engine for Pat |
@@ -389,9 +389,9 @@ notes.
 
 ## tncd Service
 
-tncd is an AGWPE-to-KISS bridge. The package in this overlay is the 2.0 Go
-rewrite (beta), which supports serial, TCP and Bluetooth SPP TNCs. The 2.0
-package includes a NixOS module:
+tncd is an AGWPE-to-KISS bridge. The package in this overlay is the 2.x Go
+rewrite, which supports serial, TCP and Bluetooth SPP TNCs. The package
+includes a NixOS module:
 
 ```nix
 { config, pkgs, ... }:
@@ -871,7 +871,7 @@ The package adapts to the available nixpkgs Flutter:
 - On `nixpkgs-unstable` (Flutter 3.47+/Dart 3.13) it builds HTCommander from
   source using `flutter347` and the committed pub lock data.
 - On stable `nixpkgs` (Flutter 3.41/Dart 3.11) it installs the official
-  0.1.97 Linux x86-64 release bundle, because upstream requires Dart 3.12+.
+  0.2.0 Linux x86-64 release bundle, because upstream requires Dart 3.12+.
 
 Both builds include the hosted web UI.  The source build compiles it with a
 separate web-target Flutter derivation, since `buildFlutterApplication`'s
@@ -906,8 +906,9 @@ mercury-qt          # PySide6 GUI, connects to the backend
 
 Mercury reads `mercury.ini` from the current directory,
 `~/.config/mercury/mercury.ini`, or `/etc/mercury/mercury.ini`; command-line
-flags override it. Mercury 1.9.20 and later use the newer on-air architecture
-and do not interoperate with 1.9.19 or older; upgrade both ends together. See
+flags override it. Mercury 1.9.20–1.9.24 use a newer on-air architecture that
+does not interoperate with 1.9.19 or older, and 1.9.25 does not interoperate
+with any earlier version; upgrade both ends (gateways first) together. See
 the [Mercury documentation](https://rhizomatica.github.io/mercury/) for the
 configuration file, modes, PTT backends and TCP interface. There is no NixOS
 module for Mercury; it is a desktop/CLI application.

@@ -13,13 +13,13 @@
 
 stdenv.mkDerivation rec {
   pname = "data2g";
-  version = "0.4.3";
+  version = "0.5.3";
 
   src = fetchFromGitHub {
     owner = "arodland";
     repo = "Data2G";
     rev = "v${version}";
-    hash = "sha256-sk7jXO+jN2L3Hm07SJyY9Td95hc1GddRpqc3vns76UI=";
+    hash = "sha256-jnrpgRAxm0+J9lnP/m28t0efdTJ3dvf7rTWXJ6rjzH0=";
   };
 
   # The project root has the Python reference; the native C++/Qt build with

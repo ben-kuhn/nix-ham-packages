@@ -24,18 +24,18 @@
 
 buildGoModule rec {
   pname = "mercury-ui";
-  version = "1.9.23";
+  version = "1.9.25";
 
   src = fetchFromGitHub {
     owner = "Rhizomatica";
     repo = "mercury";
     rev = "v${version}";
-    hash = "sha256-yk2D50MaNKE4NY4IvOeQMbxSNu++jQm1C6kbjkuv0i8=";
+    hash = "sha256-E/DiUDbTjAE8tz3X/XF9qUiAebxoGzyViR2QdUcC+hQ=";
   };
 
   modRoot = "gui_interface/fyne-ui";
 
-  vendorHash = "sha256-WtsT8zoekeILnGme5ZmitoN66m6GsAAoM2I4rALdTnU=";
+  vendorHash = "sha256-8vdDiCkiV9/StMMEqg7xslez1wCEFafYxs1bLFDX7h8=";
 
   nativeBuildInputs = [
     pkg-config

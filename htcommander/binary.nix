@@ -28,14 +28,14 @@
 
 stdenv.mkDerivation rec {
   pname = "htcommander";
-  version = "0.1.97";
+  version = "0.2.0";
 
-  # Upstream ships a self-contained Linux bundle.  A source build currently
-  # needs Flutter 3.47.9 / Dart 3.12.2; nixpkgs has Flutter 3.41.9 / Dart
-  # 3.11.5, and upstream does not commit a pubspec.lock, so use the release.
+  # Upstream ships a self-contained Linux bundle.  A source build needs a
+  # newer Flutter/Dart (3.47.x / Dart 3.12+) than stable nixpkgs ships, and
+  # upstream does not commit a pubspec.lock, so use the release here.
   src = fetchurl {
     url = "https://github.com/Ylianst/HTCommander/releases/download/v${version}/htcommander-linux-x64.tar.gz";
-    hash = "sha256-NfzHNoXs2xSWu1TOSaT3LZatM8V+pN/MIYysjmQ5AhE=";
+    hash = "sha256-1UFvGTI61yaMvqvIoMMqZRMFM2GV47ZSLVN+LgO1GOQ=";
   };
 
   sourceRoot = ".";
