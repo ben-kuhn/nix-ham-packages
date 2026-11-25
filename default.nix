@@ -1,6 +1,8 @@
 # NixOS Overlay for Amateur Radio Packages
 #
 # This overlay provides several amateur radio related packages:
+# - aether-hf: Aether HF open-source HF modem (desktop shell + aetherd)
+# - aetherd: headless Aether HF modem daemon
 # - bpq-monitor: Web UI for BPQ node modem traffic and status
 # - cwdaemon: Morse code (CW) keying daemon (used by not1mm)
 # - data2g: Open-source HF data modem with a VARA-compatible TNC
@@ -37,6 +39,10 @@
 # Usage: Import this file as an overlay in your NixOS configuration
 
 final: prev: {
+  # Aether HF - open-source HF data modem (desktop shell and daemon)
+  aether-hf = prev.callPackage ./aether-hf { };
+  aetherd = final.aether-hf.passthru.aetherd;
+
   # BPQ Monitor - web UI for BPQ node modem traffic and status
   bpq-monitor = prev.callPackage ./bpq-monitor { };
 

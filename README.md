@@ -8,6 +8,8 @@ available as `pkgs.<name>`.
 
 | Package | Description |
 |---------|-------------|
+| `aether-hf` | Aether HF open-source HF data modem (desktop panel + daemon) |
+| `aetherd` | Headless Aether HF modem daemon for gateways and unattended stations |
 | `bpq-monitor` | Web UI for watching BPQ node modem traffic and status |
 | `cwdaemon` | Morse code (CW) keying daemon (UDP-controlled, used by Not1MM) |
 | `data2g` | Open-source HF data modem with a VARA-compatible TNC and KISS (Qt host + GUI) |
@@ -62,6 +64,7 @@ in
   nixpkgs.config.allowUnfree = true; # for hams-local-relay
 
   environment.systemPackages = with pkgs; [
+    aether-hf
     bpq-monitor
     cwdaemon
     data2g
@@ -124,6 +127,7 @@ in
   nixpkgs.config.allowUnfree = true; # for hams-local-relay
 
   users.users.alice.packages = with pkgs; [
+    aether-hf
     bpq-monitor
     cwdaemon
     data2g
@@ -180,6 +184,7 @@ in
   nixpkgs.config.allowUnfree = true; # for hams-local-relay
 
   home.packages = with pkgs; [
+    aether-hf
     bpq-monitor
     cwdaemon
     data2g
@@ -915,6 +920,26 @@ module for Mercury; it is a desktop/CLI application.
 
 ---
 
+## Aether HF
+
+`aether-hf` is the Aether HF desktop station: the Tauri panel plus the
+`aetherd` modem daemon it supervises. `aetherd` is the same daemon packaged
+on its own for headless gateways and unattended stations such as the BBS.
+Both provide a VARA-compatible host interface (command/data ports 8300/8301
+by default), and the daemon serves the station panel at
+<http://127.0.0.1:8515/>.
+
+Configuration lives in `~/.config/aether-hf/station.toml`. A first run is
+receive-only until Setup saves the callsign, radio and audio interfaces, and
+the regulatory profile/control/licence class — Aether refuses to transmit
+without those.
+
+Aether HF's link protocol changes between some beta releases. Both ends of a
+contact must run the same protocol; a release whose notes say **Update
+required** will not connect to older stations.
+
+---
+
 ## VardeFM and Ion HF
 
 Two Rust modems with VARA-style host interfaces (TCP 8300/8301):
@@ -1037,6 +1062,7 @@ Import them as `ax25` and `pe` respectively.
 
 ## Package Documentation
 
+- [Aether HF](https://github.com/KK4ODA/aether-hf) — open-source HF data modem and gateway daemon
 - [DeviationStation](https://github.com/ben-kuhn/deviation-station) — FM deviation instrument and installation guide
 - [LinBPQ](linbpq/README.md) — full BPQ node setup, module options and ports
 - [BPQ Monitor](bpq-monitor/README.md) — configuration file and user service
