@@ -9,18 +9,18 @@
 #  APT/RPM repos serve the Go line since v2.0.0.)
 buildGoModule rec {
   pname = "tncd";
-  version = "2.0.0";
+  version = "2.1.0";
 
   # The stable release tag, not the development tree.
   src = fetchFromGitHub {
     owner = "ben-kuhn";
     repo = "tncd";
-    rev = "v2.0.0";
-    hash = "sha256-jFBkN6yJc1K55+gb06eDiZKkzdBjhdwxCnQIpwGaNtc=";
+    rev = "v2.1.0";
+    hash = "sha256-fYiCnKdF6pDUQNzV2iwjqJpeRdBL306/GNS2W8FhgAM=";
   };
 
   # go.mod is unchanged since the tncd-go dev package; same vendorHash.
-  vendorHash = "sha256-iRvDXz9Dn7Pi6m2rA+nwgDYCgqd3KWJATBMSKvxwRZ8=";
+  vendorHash = "sha256-X4SXvrLJ5mzi2tmMfYYZhebqZumTuB2cruoE/be1uaw=";
 
   env.CGO_ENABLED = 0;
 
